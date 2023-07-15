@@ -14,46 +14,45 @@ class CreateConsultasTable extends Migration
     public function up()
     {
         Schema::create('Consultas', function (Blueprint $table) {
-            $table->string('Consulta')->primary();
+            $table->id('Consulta');
 
             //DATOS DE LA CITA
-            $table->string('Cita')->nullable(); 
+            $table->unsignedBigInteger('Cita')->nullable(); 
             $table->foreign('Cita')->references('Cita')->on('Citas')->onDelete('set null')->onUpdate('cascade');
 
             $table->dateTime('Fecha');
             
             //ENFERMERO - DOCTOR
-            $table->string('Profesional')->nullable();
+            $table->unsignedBigInteger('Profesional')->nullable();
             $table->foreign('Profesional')->references('Empleado')->on('NomEmpledos');
 
             //PACIENTE
-            $table->string('Pacientable')->nullable();// PACIENTE - ID TIPO
+            $table->unsignedBigInteger('Pacientable')->nullable();// PACIENTE - ID TIPO
             $table->string('PacientableType')->nullable();// PACIENTE - TIPO
 
             //SIGNOS VITALES E INFORMACION DEL PACIENTE
-            $table->time('TriajeClasificacion');
-            $table->smallInteger('PrecionDiastolica');
-            $table->smallInteger('FrecuenciaRespiratoria');
-            $table->smallInteger('FrecuenciaCardiaca');
-            $table->smallInteger('Temperatura');
-            $table->smallInteger('Peso');
-            $table->smallInteger('Edad');
-            $table->decimal('Talla');
-            $table->decimal('GrucemiaCapilar');
+            $table->time('TriajeClasificacion')->nullable();
+            $table->smallInteger('PrecionDiastolica')->nullable();
+            $table->smallInteger('FrecuenciaRespiratoria')->nullable();
+            $table->smallInteger('FrecuenciaCardiaca')->nullable();
+            $table->smallInteger('Temperatura')->nullable();
+            $table->smallInteger('Peso')->nullable();
+            $table->decimal('Talla')->nullable();
+            $table->decimal('GrucemiaCapilar')->nullable();
 
             //SOAP
-            $table->longText('Subjetivo');
-            $table->longText('Objetivo');
-            $table->longText('Analisis');
-            $table->longText('Plan');
+            $table->longText('Subjetivo')->nullable();
+            $table->longText('Objetivo')->nullable();
+            $table->longText('Analisis')->nullable();
+            $table->longText('Plan')->nullable();
 
             //RECETA
-            $table->longText('Diagnostico');
-            $table->longText('Receta');
+            $table->longText('Diagnostico')->nullable();
+            $table->longText('Receta')->nullable();
 
             //INCAPACIDADES
-            $table->enum('Pronostico', ['Favorable', 'Moderado', 'Grave', 'Reservado']);
-            $table->boolean('Incapacidad');
+            $table->enum('Pronostico', ['Favorable', 'Moderado', 'Grave', 'Reservado'])->nullable();
+            $table->boolean('Incapacidad')->nullable();
 
             $table->timestamps();
         });

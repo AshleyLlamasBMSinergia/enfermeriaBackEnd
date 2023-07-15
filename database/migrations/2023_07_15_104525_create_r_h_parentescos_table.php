@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateImagenesTable extends Migration
+class CreateRHParentescosTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,15 +13,9 @@ class CreateImagenesTable extends Migration
      */
     public function up()
     {
-        Schema::create('Imagenes', function (Blueprint $table) {
-            $table->string('Imagen')->primary();
-
-            $table->unsignedBigInteger('Foto');
-            $table->string('Categoria')->nullable();
-
-            $table->unsignedBigInteger('imageable_id');
-            $table->string('imageable_type');
-
+        Schema::create('RHParentescos', function (Blueprint $table) {
+            $table->string('Parentesco')->primary();
+            $table->string('Nombre')->nullable();
             $table->timestamps();
         });
     }
@@ -33,6 +27,6 @@ class CreateImagenesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('Imagenes');
+        Schema::dropIfExists('r_h_parentescos');
     }
 }

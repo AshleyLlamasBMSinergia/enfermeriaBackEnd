@@ -14,16 +14,16 @@ class CreateCitasTable extends Migration
     public function up()
     {
         Schema::create('citas', function (Blueprint $table) {
-            $table->string('Cita')->primary();
+            $table->id('Cita');
 
-            $table->dateTime('Fecha');
+            $table->dateTime('Fecha')->nullable();
             $table->enum('Tipo', ['Consulta', ' Psicólogo', 'Nutriólogo']);
-            $table->string('Motivo');
+            $table->string('Motivo')->nullable();
 
-            $table->string('Paciente')->nullable();
+            $table->unsignedBigInteger('Paciente')->nullable();
             $table->foreign('Paciente')->references('HistorialMedico')->on('HistorialesMedicos');
             
-            $table->string('Profesional')->nullable();
+            $table->unsignedBigInteger('Profesional')->nullable();
             $table->foreign('Profesional')->references('Empleado')->on('NomEmpledos');
             
             // $table->string('Paciente')->nullable();

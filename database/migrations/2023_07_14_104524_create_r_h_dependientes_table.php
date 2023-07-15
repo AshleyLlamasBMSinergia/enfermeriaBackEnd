@@ -1,0 +1,44 @@
+<?php
+
+use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
+
+class CreateRHDependientesTable extends Migration
+{
+    /**
+     * Run the migrations.
+     *
+     * @return void
+     */
+    public function up()
+    {
+        Schema::create('r_h_dependientes', function (Blueprint $table) {
+            $table->decimal('Dependiente')->primary();
+
+            $table->unsignedBigInteger('Empleado')->nullable();
+            $table->foreign('Empleado')->references('Empleado')->on('NomEmpledos')->onDelete('set null')->onUpdate('cascade');
+
+            $table->string('Paterno')->nullable();
+            $table->string('Materno')->nullable();
+            $table->string('Nombres')->nullable();
+            $table->dateTime('Nacimiento')->nullable();
+            $table->string('Sexo')->nullable();
+            $table->string('Parentesco')->nullable();
+            $table->string('Status')->nullable();
+            $table->boolean('Beneficiario')->nullable();
+
+            $table->timestamps();
+        });
+    }
+
+    /**
+     * Reverse the migrations.
+     *
+     * @return void
+     */
+    public function down()
+    {
+        Schema::dropIfExists('r_h_dependientes');
+    }
+}

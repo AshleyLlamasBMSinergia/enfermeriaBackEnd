@@ -15,7 +15,7 @@ class CreateNomEmpledosTable extends Migration
     public function up()
     {
         Schema::create('NomEmpledos', function (Blueprint $table) {
-            $table->string('Empleado')->primary();
+            $table->id('Empleado');
 
             $table->string('Paterno')->nullable();
             $table->string('Materno')->nullable();

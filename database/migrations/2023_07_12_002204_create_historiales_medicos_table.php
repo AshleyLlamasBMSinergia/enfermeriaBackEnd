@@ -15,10 +15,14 @@ class CreateHistorialesMedicosTable extends Migration
     {
         Schema::create('HistorialesMedicos', function (Blueprint $table) {
 
-            $table->string('HistorialMedico')->primary();
+            $table->id('HistorialMedico');
 
             // $table->unsignedBigInteger('Usuario')->nullable()->nullable();
             // $table->foreign('Usuario')->references('id')->on('users')->onDelete('set null')->onUpdate('cascade');
+
+            //PACIENTE: EMPLEADO - DEPENDIENTE
+            $table->string('Pacientable')->nullable();// PACIENTE - ID TIPO
+            $table->string('PacientableType')->nullable();// PACIENTE - TIPO
 
             $table->string('Usuario')->nullable();
             $table->foreign('Usuario')->references('Usuario')->on('Usuarios')->onDelete('set null')->onUpdate('cascade');
