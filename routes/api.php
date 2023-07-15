@@ -1,19 +1,27 @@
 <?php
 
-use Illuminate\Http\Request;
+use App\Http\Controllers\Enfermeria\ConsultaController;
+use App\Http\Controllers\Enfermeria\EnfermeriaController;
+use App\Http\Controllers\Enfermeria\EstadisticaController;
+use App\Http\Controllers\Enfermeria\HistorialMedicoController;
+use App\Http\Controllers\Enfermeria\InsumoMedicoController;
+use App\Http\Controllers\Enfermeria\RequisicionController;
 use Illuminate\Support\Facades\Route;
 
-/*
-|--------------------------------------------------------------------------
-| API Routes
-|--------------------------------------------------------------------------
-|
-| Here is where you can register API routes for your application. These
-| routes are loaded by the RouteServiceProvider within a group which
-| is assigned the "api" middleware group. Enjoy building your API!
-|
-*/
+Route::get('enfermeria', [EnfermeriaController::class, 'index']);
 
-Route::middleware('auth:api')->get('/user', function (Request $request) {
-    return $request->user();
-});
+
+//CONSULTAS
+Route::get('/consultas', [ConsultaController::class, 'index']);
+
+//ESTADISTICAS
+Route::get('/estadisticas', [EstadisticaController::class, 'index']);
+
+//HISTORIALES MEDICOS
+Route::get('/historiales-medicos', [HistorialMedicoController::class, 'index']);
+
+//INSUMOS MEDICOS
+Route::get('/insumos-medicos', [InsumoMedicoController::class, 'index']);
+
+//REQUISICIONES
+Route::get('/requisiciones', [RequisicionController::class, 'index']);
