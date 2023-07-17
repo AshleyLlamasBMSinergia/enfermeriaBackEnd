@@ -10,7 +10,7 @@ class Usuarios extends Model
 {
     use HasFactory, Notifiable;
 
-    protected $table = "Usarios";
+    protected $table = "Usuarios";
 
     protected $primaryKey = 'Usuario';
 

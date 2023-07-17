@@ -5,7 +5,7 @@ use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
 
-class CreateNomEmpledosTable extends Migration
+class CreateNomEmpleadosTable extends Migration
 {
     /**
      * Run the migrations.
@@ -14,7 +14,7 @@ class CreateNomEmpledosTable extends Migration
      */
     public function up()
     {
-        Schema::create('NomEmpledos', function (Blueprint $table) {
+        Schema::create('NomEmpleados', function (Blueprint $table) {
             $table->id('Empleado');
 
             $table->string('Paterno')->nullable();
@@ -45,9 +45,9 @@ class CreateNomEmpledosTable extends Migration
             $table->smallInteger('DiasContrato')->nullable();
             $table->smallInteger('DiasSemana')->nullable();
             $table->smallInteger('Horario')->nullable();
-            $table->smallInteger('Sueldo')->nullable();
-            $table->smallInteger('SDI')->nullable();
-            $table->smallInteger('Integrado')->nullable();
+            $table->decimal('Sueldo')->nullable();
+            $table->decimal('SDI')->nullable();
+            $table->decimal('Integrado')->nullable();
             $table->dateTime('FechaIngreso')->nullable();
             $table->dateTime('FechaBaja')->nullable();
             $table->string('CausaBaja')->nullable();
@@ -56,7 +56,7 @@ class CreateNomEmpledosTable extends Migration
             $table->boolean('PagoElectronico')->nullable();
             $table->string('Cuenta')->nullable();
             $table->string('Sodexo')->nullable();
-            $table->string('Baja')->nullable();
+            $table->boolean('Baja')->nullable();
             $table->string('Observaciones')->nullable();
             $table->string('Observaciones2')->nullable();
             $table->string('Observaciones3')->nullable();
@@ -106,6 +106,6 @@ class CreateNomEmpledosTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('NomEmpledos');
+        Schema::dropIfExists('NomEmpleados');
     }
 }

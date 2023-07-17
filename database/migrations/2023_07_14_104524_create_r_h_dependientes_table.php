@@ -13,11 +13,11 @@ class CreateRHDependientesTable extends Migration
      */
     public function up()
     {
-        Schema::create('r_h_dependientes', function (Blueprint $table) {
+        Schema::create('RHDependientes', function (Blueprint $table) {
             $table->decimal('Dependiente')->primary();
 
             $table->unsignedBigInteger('Empleado')->nullable();
-            $table->foreign('Empleado')->references('Empleado')->on('NomEmpledos')->onDelete('set null')->onUpdate('cascade');
+            $table->foreign('Empleado')->references('Empleado')->on('NomEmpleados')->onDelete('set null')->onUpdate('cascade');
 
             $table->string('Paterno')->nullable();
             $table->string('Materno')->nullable();
@@ -39,6 +39,6 @@ class CreateRHDependientesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('r_h_dependientes');
+        Schema::dropIfExists('RHDependientes');
     }
 }

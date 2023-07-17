@@ -27,6 +27,6 @@ class CreateRHParentescosTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('r_h_parentescos');
+        Schema::dropIfExists('RHParentescos');
     }
 }

@@ -13,17 +13,15 @@ class CreateExternosTable extends Migration
      */
     public function up()
     {
-        Schema::create('externos', function (Blueprint $table) {
+        Schema::create('Externos', function (Blueprint $table) {
             $table->string('Externo');
 
             $table->string('Paterno')->nullable();
             $table->string('Materno')->nullable();
             $table->string('Nombres')->nullable();
 
-            $table->string('Imss')->nullable();
             $table->string('Sexo')->nullable();
             $table->date('FechaNacimiento')->nullable();
-            $table->string('EstadoCivil')->nullable();
             $table->string('Telefono')->nullable();
             $table->string('Calle')->nullable();
             $table->string('Exterior')->nullable();
@@ -44,6 +42,6 @@ class CreateExternosTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('externos');
+        Schema::dropIfExists('Externos');
     }
 }

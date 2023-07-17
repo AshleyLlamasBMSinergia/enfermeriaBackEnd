@@ -8,4 +8,22 @@ use Illuminate\Database\Eloquent\Model;
 class RHDependiente extends Model
 {
     use HasFactory;
+
+    protected $table = 'RHDependientes';
+
+    protected $primaryKey = 'Dependiente';
+
+    protected $guarded = ['id', 'created_at', 'updated'];
+
+    protected $fillable = [
+        'Empleado',
+        'Paterno',
+        'Materno',
+        'Nombres',
+        'Nacimiento',
+        'Sexo',
+        'Parentesco',
+        'Status',
+        'Beneficiario',
+    ];
 }

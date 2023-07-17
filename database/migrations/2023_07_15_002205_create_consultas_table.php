@@ -24,7 +24,7 @@ class CreateConsultasTable extends Migration
             
             //ENFERMERO - DOCTOR
             $table->unsignedBigInteger('Profesional')->nullable();
-            $table->foreign('Profesional')->references('Empleado')->on('NomEmpledos');
+            $table->foreign('Profesional')->references('Empleado')->on('NomEmpleados');
 
             //PACIENTE
             $table->unsignedBigInteger('Pacientable')->nullable();// PACIENTE - ID TIPO

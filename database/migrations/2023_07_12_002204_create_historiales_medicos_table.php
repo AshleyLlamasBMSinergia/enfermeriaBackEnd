@@ -21,8 +21,8 @@ class CreateHistorialesMedicosTable extends Migration
             // $table->foreign('Usuario')->references('id')->on('users')->onDelete('set null')->onUpdate('cascade');
 
             //PACIENTE: EMPLEADO - DEPENDIENTE
-            $table->string('Pacientable')->nullable();// PACIENTE - ID TIPO
-            $table->string('PacientableType')->nullable();// PACIENTE - TIPO
+            $table->string('pacientable_id')->nullable();// PACIENTE - ID TIPO
+            $table->string('pacientable_type')->nullable();// PACIENTE - TIPO
 
             $table->string('Usuario')->nullable();
             $table->foreign('Usuario')->references('Usuario')->on('Usuarios')->onDelete('set null')->onUpdate('cascade');

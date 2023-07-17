@@ -2,9 +2,10 @@
 
 namespace Database\Seeders;
 
+use App\Models\NomEmpleado;
 use Illuminate\Database\Seeder;
 
-class NomEmpledoSeeder extends Seeder
+class NomEmpleadoSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -13,6 +14,6 @@ class NomEmpledoSeeder extends Seeder
      */
     public function run()
     {
-        //
+        NomEmpleado::factory(10)->create();
     }
 }

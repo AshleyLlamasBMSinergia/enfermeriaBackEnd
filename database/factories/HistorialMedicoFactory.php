@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Models\Usuarios;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 class HistorialMedicoFactory extends Factory
@@ -13,8 +14,14 @@ class HistorialMedicoFactory extends Factory
      */
     public function definition()
     {
+        static $usuarioId = 1;
+
+        static $id = 1;
+
         return [
-            //
+            'pacientable_id' => $id++,
+            'pacientable_type' => Usuarios::class,
+            'Usuario' => Usuarios::all()->random()->Usuario,
         ];
     }
 }

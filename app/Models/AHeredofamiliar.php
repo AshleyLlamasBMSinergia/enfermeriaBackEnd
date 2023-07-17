@@ -8,4 +8,6 @@ use Illuminate\Database\Eloquent\Model;
 class AHeredofamiliar extends Model
 {
     use HasFactory;
+
+    protected $guarded = ['id', 'created_at', 'updated'];
 }

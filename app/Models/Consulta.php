@@ -9,10 +9,32 @@ class Consulta extends Model
 {
     use HasFactory;
 
-    protected $table = "Consultas";
+    protected $table = 'Consultas';
+
+    protected $primaryKey = 'Consulta';
+
+    protected $guarded = ['id', 'created_at', 'updated'];
 
     protected $fillable = [
-      'fecha',
-      'HistorialMedico'
+        'Cita',
+        'Fecha',
+        'Profesional',
+        'Pacientable',
+        'TriajeClasificacion',
+        'PrecionDiastolica',
+        'FrecuenciaRespiratoria',
+        'FrecuenciaCardiaca',
+        'Temperatura',
+        'Peso',
+        'Talla',
+        'GrucemiaCapilar',
+        'Subjetivo',
+        'Objetivo',
+        'Analisis',
+        'Plan',
+        'Diagnostico',
+        'Receta',
+        'Pronostico',
+        'Incapacidad'
     ];
 }

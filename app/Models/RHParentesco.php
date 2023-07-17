@@ -8,4 +8,14 @@ use Illuminate\Database\Eloquent\Model;
 class RHParentesco extends Model
 {
     use HasFactory;
+
+    protected $table = 'RHParentescos';
+
+    protected $primaryKey = 'Parentesco';
+    
+    protected $guarded = ['id', 'created_at', 'updated'];
+
+    protected $fillable = [
+        'Nombre'
+    ];
 }

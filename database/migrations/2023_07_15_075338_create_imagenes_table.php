@@ -14,7 +14,7 @@ class CreateImagenesTable extends Migration
     public function up()
     {
         Schema::create('Imagenes', function (Blueprint $table) {
-            $table->string('Imagen')->primary();
+            $table->id();
 
             $table->unsignedBigInteger('Foto');
             $table->string('Categoria')->nullable();

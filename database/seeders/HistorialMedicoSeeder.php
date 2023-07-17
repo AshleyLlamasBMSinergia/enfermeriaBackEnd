@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\HistorialMedico;
 use Illuminate\Database\Seeder;
 
 class HistorialMedicoSeeder extends Seeder
@@ -13,6 +14,6 @@ class HistorialMedicoSeeder extends Seeder
      */
     public function run()
     {
-        //
+        HistorialMedico::factory(10)->create();
     }
 }
