@@ -30,4 +30,9 @@ class Externo extends Model
         'Localidad',
         'Correo'
     ];
+
+    //Uno a uno polimorfico
+    public function historialMedico(){
+        return $this->morphOne('App\Models\HistorialMedico', 'pacientable');
+    }
 }

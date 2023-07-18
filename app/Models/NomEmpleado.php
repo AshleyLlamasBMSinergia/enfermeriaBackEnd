@@ -87,4 +87,9 @@ class NomEmpleado extends Model
         'EsCorporativo',
         'ReemplazaA',
     ];
+
+    //Uno a uno polimorfico
+    public function historialMedico(){
+        return $this->morphOne('App\Models\HistorialMedico', 'pacientable');
+    }
 }

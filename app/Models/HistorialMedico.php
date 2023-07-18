@@ -16,8 +16,17 @@ class HistorialMedico extends Model
     protected $guarded = ['id', 'created_at', 'updated'];
 
     protected $fillable = [
-        'Pacientable',
+        'pacientable_id',
         'pacientable_type',
         'Usuario'
     ];
+
+    public function pacientable(){
+        return $this->morphTo();
+    }
+
+    //Uno a Uno Inversa
+    public function usuario(){
+        return $this->belongsTo('App\Models\Usuario', 'Usuario');
+    }
 }

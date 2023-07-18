@@ -26,4 +26,9 @@ class RHDependiente extends Model
         'Status',
         'Beneficiario',
     ];
+
+    //Uno a uno polimorfico
+    public function historialMedico(){
+        return $this->morphOne('App\Models\HistorialMedico', 'pacientable');
+    }
 }

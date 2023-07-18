@@ -32,4 +32,10 @@ class Usuarios extends Model
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    //Uno a Uno
+    public function area(){
+        return $this->hasOne('App\Models\HistorialMedico', 'HistorialMedico');
+    }
+
 }
