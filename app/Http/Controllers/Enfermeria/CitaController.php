@@ -43,4 +43,12 @@ class CitaController extends Controller
             // 'cita' => $cita
         ]);
     }
+
+    public function destroy($Cita){
+        Cita::find($Cita)->delete();
+
+        return response()->json([
+            'message' => "Cita cancelada exitosamente",
+        ]);
+    }
 }

@@ -15,6 +15,7 @@ use Illuminate\Support\Facades\Route;
 //CALENDARIO
 Route::get('/calendario', [CalendarioController::class, 'index']);
 Route::post('/citas/create', [CitaController::class, 'create']);
+Route::delete('/citas/{Cita}',[ CitaController::class, 'destroy']);
 
 //CONSULTAS
 Route::get('/consultas', [ConsultaController::class, 'index']);
