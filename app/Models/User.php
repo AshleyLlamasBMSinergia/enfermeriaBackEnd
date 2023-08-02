@@ -37,4 +37,9 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    //Uno a Uno
+    public function nomEmpleado(){
+        return $this->hasOne('App\Models\NomEmpleado', 'Empleado');
+    }
 }

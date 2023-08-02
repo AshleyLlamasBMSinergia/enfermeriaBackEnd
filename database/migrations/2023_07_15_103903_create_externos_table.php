@@ -14,7 +14,7 @@ class CreateExternosTable extends Migration
     public function up()
     {
         Schema::create('Externos', function (Blueprint $table) {
-            $table->string('Externo');
+            $table->id('Externo');
 
             $table->string('Paterno')->nullable();
             $table->string('Materno')->nullable();

@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\Consulta;
 use Illuminate\Database\Seeder;
 
 class ConsultaSeeder extends Seeder
@@ -13,6 +14,6 @@ class ConsultaSeeder extends Seeder
      */
     public function run()
     {
-        //
+        Consulta::factory(20)->create();
     }
 }

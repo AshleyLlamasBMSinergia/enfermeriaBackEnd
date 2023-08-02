@@ -35,7 +35,10 @@ class CreateNomEmpleadosTable extends Migration
             $table->string('CP')->nullable();
             $table->string('Localidad')->nullable();
             $table->string('Correo')->nullable();
-            $table->smallInteger('Puesto')->nullable();
+
+            $table->unsignedBigInteger('Puesto')->nullable();
+            $table->foreign('Puesto')->references('Puesto')->on('NomPuestos')->onDelete('set null')->onUpdate('cascade');
+            
             $table->smallInteger('Departamento')->nullable();
             $table->string('Leyenda')->nullable();
             $table->smallInteger('Plaza')->nullable();
@@ -48,7 +51,7 @@ class CreateNomEmpleadosTable extends Migration
             $table->decimal('Sueldo')->nullable();
             $table->decimal('SDI')->nullable();
             $table->decimal('Integrado')->nullable();
-            $table->dateTime('FechaIngreso')->nullable();
+            $table->date('FechaIngreso')->nullable();
             $table->dateTime('FechaBaja')->nullable();
             $table->string('CausaBaja')->nullable();
             $table->boolean('Sindicato')->nullable();

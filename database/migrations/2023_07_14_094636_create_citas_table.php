@@ -17,7 +17,9 @@ class CreateCitasTable extends Migration
             $table->id('Cita');
 
             $table->dateTime('Fecha')->nullable();
-            $table->enum('Tipo', ['Consulta', ' Psicólogo', 'Nutriólogo']);
+            $table->string('Tipo');
+            // $table->enum('Tipo', ['Consulta', ' Psicólogo', 'Nutriólogo']);
+            $table->string('Color')->nullable();
             $table->string('Motivo')->nullable();
 
             $table->unsignedBigInteger('Paciente')->nullable();

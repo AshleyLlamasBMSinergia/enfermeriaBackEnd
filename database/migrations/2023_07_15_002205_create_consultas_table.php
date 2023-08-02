@@ -27,16 +27,16 @@ class CreateConsultasTable extends Migration
             $table->foreign('Profesional')->references('Empleado')->on('NomEmpleados');
 
             //PACIENTE
-            $table->unsignedBigInteger('Pacientable')->nullable();// PACIENTE - ID TIPO
-            $table->string('PacientableType')->nullable();// PACIENTE - TIPO
+            $table->unsignedBigInteger('pacientable_id')->nullable();// PACIENTE - ID TIPO
+            $table->string('pacientable_type')->nullable();// PACIENTE - TIPO
 
             //SIGNOS VITALES E INFORMACION DEL PACIENTE
-            $table->time('TriajeClasificacion')->nullable();
+            $table->smallInteger('TriajeClasificacion')->nullable();
             $table->smallInteger('PrecionDiastolica')->nullable();
             $table->smallInteger('FrecuenciaRespiratoria')->nullable();
             $table->smallInteger('FrecuenciaCardiaca')->nullable();
             $table->smallInteger('Temperatura')->nullable();
-            $table->smallInteger('Peso')->nullable();
+            $table->decimal('Peso')->nullable();
             $table->decimal('Talla')->nullable();
             $table->decimal('GrucemiaCapilar')->nullable();
 

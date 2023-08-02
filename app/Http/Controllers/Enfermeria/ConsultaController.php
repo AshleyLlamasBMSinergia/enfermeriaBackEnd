@@ -10,7 +10,7 @@ use Illuminate\Http\Request;
 class ConsultaController extends Controller
 {
     public function index(){
-        $data = Consulta::get();
+        $data = Consulta::with(['cita', 'profesional', 'pacientable'])->get();
         return response()->json($data, 200);
     }
 }

@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\Cita;
 use Illuminate\Database\Seeder;
 
 class CitaSeeder extends Seeder
@@ -13,6 +14,6 @@ class CitaSeeder extends Seeder
      */
     public function run()
     {
-        //
+        Cita::factory(80)->create();
     }
 }

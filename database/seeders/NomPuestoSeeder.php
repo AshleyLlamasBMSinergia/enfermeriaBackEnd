@@ -2,10 +2,10 @@
 
 namespace Database\Seeders;
 
-use App\Models\Externo;
+use App\Models\NomPuesto;
 use Illuminate\Database\Seeder;
 
-class ExternoSeeder extends Seeder
+class NomPuestoSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -14,6 +14,6 @@ class ExternoSeeder extends Seeder
      */
     public function run()
     {
-        Externo::factory(50)->create();
+        NomPuesto::factory(10)->create();
     }
 }

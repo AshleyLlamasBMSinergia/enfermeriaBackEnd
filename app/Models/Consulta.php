@@ -19,7 +19,8 @@ class Consulta extends Model
         'Cita',
         'Fecha',
         'Profesional',
-        'Pacientable',
+        'pacientable_id',
+        'pacientable_type',
         'TriajeClasificacion',
         'PrecionDiastolica',
         'FrecuenciaRespiratoria',
@@ -37,4 +38,19 @@ class Consulta extends Model
         'Pronostico',
         'Incapacidad'
     ];
+
+    public function pacientable(){
+        return $this->morphTo();
+    }
+
+    //Uno a Uno Inversa
+    public function cita(){
+        return $this->belongsTo('App\Models\Cita', 'Cita');
+    }
+
+    // Uno a muchos inversa con NomEmpleado (Profesional)
+    public function profesional()
+    {
+        return $this->belongsTo(NomEmpleado::class, 'Profesional', 'Empleado');
+    }
 }

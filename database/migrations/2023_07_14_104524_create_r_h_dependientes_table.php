@@ -14,7 +14,7 @@ class CreateRHDependientesTable extends Migration
     public function up()
     {
         Schema::create('RHDependientes', function (Blueprint $table) {
-            $table->decimal('Dependiente')->primary();
+            $table->id('Dependiente');
 
             $table->unsignedBigInteger('Empleado')->nullable();
             $table->foreign('Empleado')->references('Empleado')->on('NomEmpleados')->onDelete('set null')->onUpdate('cascade');

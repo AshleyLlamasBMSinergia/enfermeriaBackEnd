@@ -13,7 +13,7 @@ class RHDependiente extends Model
 
     protected $primaryKey = 'Dependiente';
 
-    protected $guarded = ['id', 'created_at', 'updated'];
+    protected $guarded = ['Dependiente', 'created_at', 'updated'];
 
     protected $fillable = [
         'Empleado',
@@ -30,5 +30,16 @@ class RHDependiente extends Model
     //Uno a uno polimorfico
     public function historialMedico(){
         return $this->morphOne('App\Models\HistorialMedico', 'pacientable');
+    }
+
+    //Uno a uno polimorfico
+    public function consulta(){
+        return $this->morphOne('App\Models\Consulta', 'pacientable');
+    }
+
+    // Uno a muchos inversa
+    public function empleado()
+    {
+        return $this->belongsTo('App\Models\Empleado', 'Empleado');
     }
 }

@@ -28,11 +28,17 @@ class Externo extends Model
         'Colonia',
         'CP',
         'Localidad',
-        'Correo'
+        'Correo',
+        'Empleado'
     ];
 
     //Uno a uno polimorfico
     public function historialMedico(){
         return $this->morphOne('App\Models\HistorialMedico', 'pacientable');
+    }
+
+    //Uno a uno polimorfico
+    public function consulta(){
+        return $this->morphOne('App\Models\Consulta', 'pacientable');
     }
 }

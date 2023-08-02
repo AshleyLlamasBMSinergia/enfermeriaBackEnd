@@ -13,7 +13,7 @@ class NomEmpleado extends Model
 
     protected $primaryKey = 'Empleado';
 
-    protected $guarded = ['id', 'created_at', 'updated'];
+    protected $guarded = ['created_at', 'updated'];
 
     protected $fillable = [
         'Paterno',
@@ -91,5 +91,35 @@ class NomEmpleado extends Model
     //Uno a uno polimorfico
     public function historialMedico(){
         return $this->morphOne('App\Models\HistorialMedico', 'pacientable');
+    }
+
+    //Uno a uno polimorfico
+    public function consulta(){
+        return $this->morphOne('App\Models\Consulta', 'pacientable');
+    }
+
+     //Uno a Uno Inversa
+     public function puesto(){
+        return $this->belongsTo('App\Models\NomPuesto', 'Puesto');
+    }
+
+    //Uno a Uno Inversa
+     public function user(){
+        return $this->belongsTo('App\Models\User');
+    }
+
+    //Uno a Muchos
+    public function citas(){
+        return $this->hasMany('App\Models\Cita', 'Cita');
+    }
+
+    //Uno a Muchos
+    public function consultas(){
+        return $this->hasMany('App\Models\Consultas', 'Consultas');
+    }
+
+    //Uno a Muchos
+    public function dependientes(){
+        return $this->hasMany('App\Models\Externo', 'Dependientes');
     }
 }

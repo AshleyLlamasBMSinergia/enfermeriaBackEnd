@@ -13,13 +13,33 @@ class Cita extends Model
 
     protected $primaryKey = 'Cita';
 
-    protected $guarded = ['id', 'created_at', 'updated'];
+    protected $guarded = ['created_at', 'updated'];
+
+    protected $dates = ['Fecha'];
 
     protected $fillable = [
         'Fecha',
         'Tipo',
+        'Color',
         'Motivo',
         'Paciente',
         'Profesional'
     ];
+
+    // Uno a muchos inversa con HistorialMedico (Paciente)
+    public function paciente()
+    {
+        return $this->belongsTo(HistorialMedico::class, 'Paciente', 'HistorialMedico');
+    }
+
+    // Uno a muchos inversa con NomEmpleado (Profesional)
+    public function profesional()
+    {
+        return $this->belongsTo(NomEmpleado::class, 'Profesional', 'Empleado');
+    }
+
+    //Uno a Uno
+    public function consulta(){
+        return $this->hasOne('App\Models\Consulta', 'Consulta');
+    }
 }

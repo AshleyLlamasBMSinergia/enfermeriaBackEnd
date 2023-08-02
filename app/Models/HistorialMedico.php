@@ -13,7 +13,7 @@ class HistorialMedico extends Model
 
     protected $primaryKey = 'HistorialMedico';
 
-    protected $guarded = ['id', 'created_at', 'updated'];
+    protected $guarded = ['created_at', 'updated'];
 
     protected $fillable = [
         'pacientable_id',
@@ -28,5 +28,10 @@ class HistorialMedico extends Model
     //Uno a Uno Inversa
     public function usuario(){
         return $this->belongsTo('App\Models\Usuario', 'Usuario');
+    }
+
+    //Uno a Muchos
+    public function citas(){
+        return $this->hasMany('App\Models\Cita', 'Cita');
     }
 }

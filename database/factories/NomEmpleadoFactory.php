@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Models\NomPuesto;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 class NomEmpleadoFactory extends Factory
@@ -34,8 +35,8 @@ class NomEmpleadoFactory extends Factory
             'Nombres' => $nombre,
             'Nombre' => "$nombre $paterno $materno",
             'Sexo' => $genero,
-            // 'FechaNacimiento',
-            // 'EstadoCivil',
+            'FechaNacimiento' => $this->faker->date('Y-m-d'),
+            'EstadoCivil' => 'Soltero',
             'Telefono' => $this->faker->phoneNumber(),
             'Calle' => $this->faker->streetName(),
             'Exterior' => $this->faker->buildingNumber(),
@@ -45,6 +46,9 @@ class NomEmpleadoFactory extends Factory
             'Localidad' => $this->faker->state(),
             'Correo' => $this->faker->email(),
             'Usuario' => $usuarioId ++,
+            'Puesto' => NomPuesto::all()->random(),
+            'FechaIngreso' => $this->faker->date('Y-m-d'),
+            'Escolaridad' => 'Nivel superior'
         ];
     }
 }
