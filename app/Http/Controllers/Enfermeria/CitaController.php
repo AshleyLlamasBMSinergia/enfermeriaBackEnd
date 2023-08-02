@@ -8,7 +8,7 @@ use Illuminate\Http\Request;
 
 class CitaController extends Controller
 {
-    public function create(Request $request)
+    public function store(Request $request)
     {
     
         // Crear una nueva instancia del modelo Cita con los datos recibidos
@@ -41,6 +41,36 @@ class CitaController extends Controller
         return response()->json([
             'message' => 'Cita guardada exitosamente',
             // 'cita' => $cita
+        ]);
+    }
+
+    public function update(Request $request, $Cita){
+        $cita = Cita::find($Cita);
+
+        $cita->tipo = $request->input('Tipo');
+        $cita->motivo = $request->input('Motivo');
+        $cita->fecha = $request->input('Fecha');
+
+        switch($request->input('Tipo')){
+            case 'Consulta':
+                $cita->color = '#13D52A';
+            break;
+            case 'Psicólogo':
+                $cita->color = '#EE3DF0';
+            break;
+            case 'Nutriólogo':
+                $cita->color = '#0080FF';
+            break;
+            default:
+                $cita->color = '#FFFFFF';
+            break;
+        }
+
+        // Guardar los cambios
+        $cita->save();
+
+        return response()->json([
+            'message' => "Cita actualizada exitosamente",
         ]);
     }
 
