@@ -23,6 +23,7 @@ class HistorialMedicoFactory extends Factory
             'pacientable_id' => $id++,
             'pacientable_type' => NomEmpleado::class,
             'Usuario' => Usuarios::all()->random()->Usuario,
+            //'APPatologicos' => $id++
         ];
     }
 }

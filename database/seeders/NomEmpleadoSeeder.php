@@ -14,6 +14,6 @@ class NomEmpleadoSeeder extends Seeder
      */
     public function run()
     {
-        NomEmpleado::factory(50)->create();
+        NomEmpleado::factory(10)->create();
     }
 }

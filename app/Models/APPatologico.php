@@ -61,11 +61,16 @@ class APPatologico extends Model
         'EnfDentales',
         'EspEnfDentales',
 
-        'EnfOticas',
-        'EspEnfOticas',
+        'EnfOpticas',
+        'EspEnfOpticas',
 
         //Alt de alteraciones
         'AltPsicologicas',
         'EspAltPsicologicas',
     ];
+
+    //Uno a Uno
+    public function historialMedico(){
+        return $this->hasOne('App\Models\HistorialMedico', 'HistorialMedico');
+    }
 }

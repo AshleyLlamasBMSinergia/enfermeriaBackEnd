@@ -18,7 +18,10 @@ class HistorialMedico extends Model
     protected $fillable = [
         'pacientable_id',
         'pacientable_type',
-        'Usuario'
+        'Usuario',
+        'APPatologicos',
+        'APNPpatologicos',
+        'AHeredofamiliares'
     ];
 
     public function pacientable(){
@@ -28,6 +31,21 @@ class HistorialMedico extends Model
     //Uno a Uno Inversa
     public function usuario(){
         return $this->belongsTo('App\Models\Usuario', 'Usuario');
+    }
+
+    //Uno a Uno Inversa
+    public function antecedentesPersonalesPatologicos(){
+        return $this->belongsTo('App\Models\APPatologico', 'APPatologicos');
+    }
+
+    //Uno a Uno Inversa
+    public function antecedentesPersonalesNoPatologicos(){
+        return $this->belongsTo('App\Models\APNPatologico', 'APNPatologicos');
+    }
+
+    //Uno a Uno Inversa
+    public function antecedentesHeredofamiliares(){
+        return $this->belongsTo('App\Models\AHeredofamiliar');
     }
 
     //Uno a Muchos

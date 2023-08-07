@@ -9,5 +9,12 @@ class AHeredofamiliar extends Model
 {
     use HasFactory;
 
+    protected $table = 'AHeredofamiliares';
+
     protected $guarded = ['id', 'created_at', 'updated'];
+
+    //Uno a Uno
+    public function historialMedico(){
+        return $this->hasOne('App\Models\HistorialMedico', 'HistorialMedico');
+    }
 }

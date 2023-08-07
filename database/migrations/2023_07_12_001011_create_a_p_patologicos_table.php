@@ -63,8 +63,8 @@ class CreateAPPatologicosTable extends Migration
             $table->enum('EnfDentales', ['No', 'Si'])->nullable();
             $table->string('EspEnfDentales')->nullable();
 
-            $table->enum('EnfOticas', ['No', 'Si'])->nullable();
-            $table->string('EspEnfOticas')->nullable();
+            $table->enum('EnfOpticas', ['No', 'Si'])->nullable();
+            $table->string('EspEnfOpticas')->nullable();
 
             //Alt de alteraciones
             $table->enum('AltPsicologicas', ['No', 'Si'])->nullable();

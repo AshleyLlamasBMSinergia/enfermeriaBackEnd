@@ -17,6 +17,7 @@ class DatabaseSeeder extends Seeder
             UsuariosSeeder::class,
             NomPuestoSeeder::class,
             NomEmpleadoSeeder::class,
+            //APPatologicoSeeder::class,
             HistorialMedicoSeeder::class,
             CitaSeeder::class,
             ConsultaSeeder::class,

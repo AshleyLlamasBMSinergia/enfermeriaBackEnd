@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\APPatologico;
 use Illuminate\Database\Seeder;
 
 class APPatologicoSeeder extends Seeder
@@ -13,6 +14,6 @@ class APPatologicoSeeder extends Seeder
      */
     public function run()
     {
-        //
+        APPatologico::factory(10)->create();
     }
 }

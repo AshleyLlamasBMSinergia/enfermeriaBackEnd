@@ -13,8 +13,6 @@ class APNPatologico extends Model
 
     protected $guarded = ['id', 'created_at', 'updated'];
 
-    protected $guarded = ['id', 'created_at', 'updated'];
-
     protected $fillable = [
         'Anticonceptivos',
         //Esp de especificar
@@ -44,4 +42,9 @@ class APNPatologico extends Model
         'Hacinamiento',
         'Promiscuidad',
     ];
+
+    //Uno a Uno
+    public function historialMedico(){
+        return $this->hasOne('App\Models\HistorialMedico', 'HistorialMedico');
+    }
 }

@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\enfermeria\APPatologicoController;
 use App\Http\Controllers\Enfermeria\CitaController;
 use App\Http\Controllers\enfermeria\CalendarioController;
 use App\Http\Controllers\Enfermeria\ConsultaController;
@@ -33,6 +34,8 @@ Route::get('/externos', [ExternoController::class, 'index']);
 //HISTORIALES MEDICOS
 Route::get('/historiales-medicos', [HistorialMedicoController::class, 'index']);
 Route::get('/historiales-medicos/{HistorialMedico}', [HistorialMedicoController::class, 'show']);
+
+Route::post('/antecendentes-personales-patologicos', [APPatologicoController::class, 'store']);
 
 //INSUMOS MEDICOS
 Route::get('/insumos-medicos', [InsumoMedicoController::class, 'index']);
