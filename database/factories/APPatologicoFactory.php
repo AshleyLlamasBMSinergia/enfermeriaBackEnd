@@ -14,59 +14,59 @@ class APPatologicoFactory extends Factory
     public function definition()
     {
         return [
-            'Cirujias' => 'Si',
+            'cirujias' => 'Si',
             //Esp de especificar
-            'EspCirujias' => $this->faker->text($maxNbChars = (rand(5, 8))),
+            'espCirujias' => $this->faker->text($maxNbChars = (rand(5, 8))),
 
-            'Contusiones' => 'Si',
-            'EspContusiones' => $this->faker->text($maxNbChars = (rand(5, 8))),
+            'contusiones' => 'Si',
+            'espContusiones' => $this->faker->text($maxNbChars = (rand(5, 8))),
 
-            'Lumbalgias' => 'Si',
-            'EspLumbalgias' => $this->faker->text($maxNbChars = (rand(5, 8))),
+            'lumbalgias' => 'Si',
+            'espLumbalgias' => $this->faker->text($maxNbChars = (rand(5, 8))),
 
-            'Hernias' => 'Si',
-            'EspHernias' => $this->faker->text($maxNbChars = (rand(5, 8))),
+            'hernias' => 'Si',
+            'espHernias' => $this->faker->text($maxNbChars = (rand(5, 8))),
 
-            'Fracturas' => 'Si',
-            'EspFracturas' => $this->faker->text($maxNbChars = (rand(5, 8))),
+            'fracturas' => 'Si',
+            'espFracturas' => $this->faker->text($maxNbChars = (rand(5, 8))),
 
-            'Dorsalgias' => 'Si',
-            'EspDorsalgias' => $this->faker->text($maxNbChars = (rand(5, 8))),
+            'dorsalgias' => 'Si',
+            'espDorsalgias' => $this->faker->text($maxNbChars = (rand(5, 8))),
 
-            'Hospitalizaciones' => 'Si',
-            'EspHospitalizaciones' => $this->faker->text($maxNbChars = (rand(5, 8))),
+            'hospitalizaciones' => 'Si',
+            'espHospitalizaciones' => $this->faker->text($maxNbChars = (rand(5, 8))),
 
-            'Esguinces' => 'Si',
-            'EspEsguinces' => $this->faker->text($maxNbChars = (rand(5, 8))),
+            'esguinces' => 'Si',
+            'espEsguinces' => $this->faker->text($maxNbChars = (rand(5, 8))),
 
-            'LesionesArteriales' => 'Si',
-            'EspLesionesArteriales' => $this->faker->text($maxNbChars = (rand(5, 8))),
+            'lesionesArteriales' => 'Si',
+            'espLesionesArteriales' => $this->faker->text($maxNbChars = (rand(5, 8))),
 
-            'Transfusiones' => 'Si',
-            'EspTransfusiones' => $this->faker->text($maxNbChars = (rand(5, 8))),
+            'transfusiones' => 'Si',
+            'espTransfusiones' => $this->faker->text($maxNbChars = (rand(5, 8))),
 
-            'Luxaciones' => 'Si',
-            'EspLuxaciones' => $this->faker->text($maxNbChars = (rand(5, 8))),
+            'luxaciones' => 'Si',
+            'espLuxaciones' => $this->faker->text($maxNbChars = (rand(5, 8))),
 
-            'Tetanias' => 'Si',
-            'EspTetanias' => $this->faker->text($maxNbChars = (rand(5, 8))),
+            'tetanias' => 'Si',
+            'espTetanias' => $this->faker->text($maxNbChars = (rand(5, 8))),
 
-            'Alergias' => 'Si',
-            'EspAlergias' => $this->faker->text($maxNbChars = (rand(5, 8))),
+            'alergias' => 'Si',
+            'espAlergias' => $this->faker->text($maxNbChars = (rand(5, 8))),
 
-            'Asma' => 'No',
-            'Epilepsia' => 'No',
+            'asma' => 'No',
+            'epilepsia' => 'No',
 
             //Enf de enfermedades
-            'EnfDentales' => 'Si',
-            'EspEnfDentales' => $this->faker->text($maxNbChars = (rand(5, 8))),
+            'enfDentales' => 'Si',
+            'espEnfDentales' => $this->faker->text($maxNbChars = (rand(5, 8))),
 
-            'EnfOpticas' => 'Si',
-            'EspEnfOpticas' => $this->faker->text($maxNbChars = (rand(5, 8))),
+            'enfOpticas' => 'Si',
+            'espEnfOpticas' => $this->faker->text($maxNbChars = (rand(5, 8))),
 
             //Alt de alteraciones
-            'AltPsicologicas' => 'Si',
-            'EspAltPsicologicas' => $this->faker->text($maxNbChars = (rand(5, 8))),
+            'altPsicologicas' => 'Si',
+            'espAltPsicologicas' => $this->faker->text($maxNbChars = (rand(5, 8))),
         ];
     }
 }

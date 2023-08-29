@@ -11,9 +11,7 @@ class RHDependiente extends Model
 
     protected $table = 'RHDependientes';
 
-    protected $primaryKey = 'Dependiente';
-
-    protected $guarded = ['Dependiente', 'created_at', 'updated'];
+    protected $guarded = ['id', 'created_at', 'updated'];
 
     protected $fillable = [
         'Empleado',
@@ -40,6 +38,6 @@ class RHDependiente extends Model
     // Uno a muchos inversa
     public function empleado()
     {
-        return $this->belongsTo('App\Models\Empleado', 'Empleado');
+        return $this->belongsTo('App\Models\Empleado');
     }
 }

@@ -14,7 +14,7 @@ class NomEmpleadoFactory extends Factory
      */
     public function definition()
     {
-        static $usuarioId = 1;
+        static $n = 1;
 
         $paterno = $this->faker->lastName();
         $materno = $this->faker->lastName();
@@ -30,25 +30,17 @@ class NomEmpleadoFactory extends Factory
         }
 
         return [
-            'Paterno' => $paterno,
-            'Materno' => $materno,
-            'Nombres' => $nombre,
-            'Nombre' => "$nombre $paterno $materno",
-            'Sexo' => $genero,
-            'FechaNacimiento' => $this->faker->date('Y-m-d'),
-            'EstadoCivil' => 'Soltero',
-            'Telefono' => $this->faker->phoneNumber(),
-            'Calle' => $this->faker->streetName(),
-            'Exterior' => $this->faker->buildingNumber(),
-            'Interior' => null,
-            'Colonia' => $this->faker->name(),
-            'CP' => $this->faker->postcode(),
-            'Localidad' => $this->faker->state(),
-            'Correo' => $this->faker->email(),
-            'Usuario' => $usuarioId ++,
-            'Puesto' => NomPuesto::all()->random(),
-            'FechaIngreso' => $this->faker->date('Y-m-d'),
-            'Escolaridad' => 'Nivel superior'
+            'paterno' => $paterno,
+            'materno' => $materno,
+            'nombre' => "$nombre $paterno $materno",
+            'sexo' => $genero,
+            'fechaNacimiento' => $this->faker->date('Y-m-d'),
+            'estadoCivil' => 'Soltero',
+            'telefono' => $this->faker->phoneNumber(),
+            'direccion_id' => $n,
+            'correo' => $this->faker->email(),
+            'user_id' => $n ++,
+            'puesto_id' => NomPuesto::all()->random(),
         ];
     }
 }

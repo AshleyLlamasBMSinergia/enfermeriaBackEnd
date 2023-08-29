@@ -14,8 +14,8 @@ class CreateRHParentescosTable extends Migration
     public function up()
     {
         Schema::create('RHParentescos', function (Blueprint $table) {
-            $table->string('Parentesco')->primary();
-            $table->string('Nombre')->nullable();
+            $table->string('parentesco')->primary();
+            $table->string('nombre')->nullable();
             $table->timestamps();
         });
     }

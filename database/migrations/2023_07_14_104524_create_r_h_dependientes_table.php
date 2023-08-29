@@ -14,19 +14,23 @@ class CreateRHDependientesTable extends Migration
     public function up()
     {
         Schema::create('RHDependientes', function (Blueprint $table) {
-            $table->id('Dependiente');
+            $table->id();
 
-            $table->unsignedBigInteger('Empleado')->nullable();
-            $table->foreign('Empleado')->references('Empleado')->on('NomEmpleados')->onDelete('set null')->onUpdate('cascade');
+            $table->unsignedBigInteger('empleado_id')->nullable();
+            $table->foreign('empleado_id')->references('id')->on('NomEmpleados');
 
-            $table->string('Paterno')->nullable();
-            $table->string('Materno')->nullable();
-            $table->string('Nombres')->nullable();
-            $table->dateTime('Nacimiento')->nullable();
-            $table->string('Sexo')->nullable();
-            $table->string('Parentesco')->nullable();
-            $table->string('Status')->nullable();
-            $table->boolean('Beneficiario')->nullable();
+            $table->string('paterno')->nullable();
+            $table->string('materno')->nullable();
+            $table->string('nombres')->nullable();
+            $table->dateTime('nacimiento')->nullable();
+            $table->string('sexo')->nullable();
+            $table->string('parentesco')->nullable();
+
+            $table->unsignedBigInteger('direccion_id')->nullable();
+            $table->foreign('direccion_id')->references('id')->on('Direcciones')->onDelete('set null')->onUpdate('cascade');
+            
+            $table->string('estatus')->nullable();
+            $table->boolean('beneficiario')->nullable();
 
             $table->timestamps();
         });

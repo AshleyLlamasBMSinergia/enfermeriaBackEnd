@@ -15,7 +15,7 @@ class CreateHistorialesMedicosTable extends Migration
     {
         Schema::create('HistorialesMedicos', function (Blueprint $table) {
 
-            $table->id('HistorialMedico');
+            $table->id();
 
             // $table->unsignedBigInteger('Usuario')->nullable();
             // $table->foreign('Usuario')->references('id')->on('users')->onDelete('set null')->onUpdate('cascade');
@@ -24,17 +24,17 @@ class CreateHistorialesMedicosTable extends Migration
             $table->string('pacientable_id')->nullable(); // PACIENTE - ID TIPO
             $table->string('pacientable_type')->nullable(); // PACIENTE - TIPO
 
-            $table->string('Usuario')->nullable();
-            $table->foreign('Usuario')->references('Usuario')->on('Usuarios')->onDelete('set null')->onUpdate('cascade');
+            $table->unsignedBigInteger('user_id')->nullable();
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('set null')->onUpdate('cascade');
             
-            $table->unsignedBigInteger('APPatologicos')->nullable();
-            $table->foreign('APPatologicos')->references('id')->on('APPatologicos');
+            $table->unsignedBigInteger('APPatologicos_id')->nullable();
+            $table->foreign('APPatologicos_id')->references('id')->on('APPatologicos');
 
-            $table->unsignedBigInteger('APNPpatologicos')->nullable();
-            $table->foreign('APNPpatologicos')->references('id')->on('APNPpatologicos');
+            $table->unsignedBigInteger('APNPpatologicos_id')->nullable();
+            $table->foreign('APNPpatologicos_id')->references('id')->on('APNPpatologicos');
 
-            $table->unsignedBigInteger('AHeredofamiliares')->nullable();
-            $table->foreign('AHeredofamiliares')->references('id')->on('AHeredofamiliares');
+            $table->unsignedBigInteger('AHeredofamiliares_id')->nullable();
+            $table->foreign('AHeredofamiliares_id')->references('id')->on('AHeredofamiliares');
 
             $table->timestamps();
         });

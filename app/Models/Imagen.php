@@ -14,8 +14,8 @@ class Imagen extends Model
     protected $guarded = ['id', 'created_at', 'updated'];
 
     protected $fillable = [
-        'Foto',
-        'Categoria',
+        'url',
+        'categoria',
         'imageable_id',
         'imageable_type'
     ];

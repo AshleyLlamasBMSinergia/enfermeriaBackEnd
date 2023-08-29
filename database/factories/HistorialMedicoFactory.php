@@ -3,6 +3,7 @@
 namespace Database\Factories;
 
 use App\Models\NomEmpleado;
+use App\Models\User;
 use App\Models\Usuarios;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
@@ -22,8 +23,8 @@ class HistorialMedicoFactory extends Factory
         return [
             'pacientable_id' => $id++,
             'pacientable_type' => NomEmpleado::class,
-            'Usuario' => Usuarios::all()->random()->Usuario,
-            //'APPatologicos' => $id++
+            'user_id' => User::all()->random()->id,
+            //'APPatologicos_id' => $id++
         ];
     }
 }

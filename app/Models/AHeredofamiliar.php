@@ -15,6 +15,6 @@ class AHeredofamiliar extends Model
 
     //Uno a Uno
     public function historialMedico(){
-        return $this->hasOne('App\Models\HistorialMedico', 'HistorialMedico');
+        return $this->hasOne('App\Models\HistorialMedico');
     }
 }

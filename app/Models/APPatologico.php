@@ -14,63 +14,63 @@ class APPatologico extends Model
     protected $guarded = ['id', 'created_at', 'updated'];
 
     protected $fillable = [
-        'Cirujias',
+        'cirujias',
         //Esp de especificar
-        'EspCirujias',
+        'espCirujias',
 
-        'Contusiones',
-        'EspContusiones',
+        'contusiones',
+        'espContusiones',
 
-        'Lumbalgias',
-        'EspLumbalgias',
+        'lumbalgias',
+        'espLumbalgias',
 
-        'Hernias',
-        'EspHernias',
+        'hernias',
+        'espHernias',
 
-        'Fracturas',
-        'EspFracturas',
+        'fracturas',
+        'espFracturas',
 
-        'Dorsalgias',
-        'EspDorsalgias',
+        'dorsalgias',
+        'espDorsalgias',
 
-        'Hospitalizaciones',
-        'EspHospitalizaciones',
+        'hospitalizaciones',
+        'espHospitalizaciones',
 
-        'Esguinces',
-        'EspEsguinces',
+        'esguinces',
+        'espEsguinces',
 
-        'LesionesArteriales',
-        'EspLesionesArteriales',
+        'lesionesArteriales',
+        'espLesionesArteriales',
 
-        'Transfusiones',
-        'EspTransfusiones',
+        'transfusiones',
+        'espTransfusiones',
 
-        'Luxaciones',
-        'EspLuxaciones',
+        'luxaciones',
+        'espLuxaciones',
 
-        'Tetanias',
-        'EspTetanias',
+        'tetanias',
+        'espTetanias',
 
-        'Alergias',
-        'EspAlergias',
+        'alergias',
+        'espAlergias',
 
-        'Asma',
-        'Epilepsia',
+        'asma',
+        'epilepsia',
 
         //Enf de enfermedades
-        'EnfDentales',
-        'EspEnfDentales',
+        'enfDentales',
+        'espEnfDentales',
 
-        'EnfOpticas',
-        'EspEnfOpticas',
+        'enfOpticas',
+        'espEnfOpticas',
 
         //Alt de alteraciones
-        'AltPsicologicas',
-        'EspAltPsicologicas',
+        'altPsicologicas',
+        'espAltPsicologicas',
     ];
 
     //Uno a Uno
     public function historialMedico(){
-        return $this->hasOne('App\Models\HistorialMedico', 'HistorialMedico');
+        return $this->hasOne('App\Models\HistorialMedico');
     }
 }

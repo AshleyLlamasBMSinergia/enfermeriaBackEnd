@@ -11,17 +11,15 @@ class HistorialMedico extends Model
 
     protected $table = 'HistorialesMedicos';
 
-    protected $primaryKey = 'HistorialMedico';
-
-    protected $guarded = ['created_at', 'updated'];
+    protected $guarded = ['id', 'created_at', 'updated'];
 
     protected $fillable = [
         'pacientable_id',
         'pacientable_type',
-        'Usuario',
-        'APPatologicos',
-        'APNPpatologicos',
-        'AHeredofamiliares'
+        'user',
+        'APPatologicos_id',
+        'APNPpatologicos_id',
+        'AHeredofamiliares_id'
     ];
 
     public function pacientable(){
@@ -29,18 +27,18 @@ class HistorialMedico extends Model
     }
 
     //Uno a Uno Inversa
-    public function usuario(){
-        return $this->belongsTo('App\Models\Usuario', 'Usuario');
+    public function user(){
+        return $this->belongsTo('App\Models\User');
     }
 
     //Uno a Uno Inversa
     public function antecedentesPersonalesPatologicos(){
-        return $this->belongsTo('App\Models\APPatologico', 'APPatologicos');
+        return $this->belongsTo('App\Models\APPatologico');
     }
 
     //Uno a Uno Inversa
     public function antecedentesPersonalesNoPatologicos(){
-        return $this->belongsTo('App\Models\APNPatologico', 'APNPatologicos');
+        return $this->belongsTo('App\Models\APNPatologico');
     }
 
     //Uno a Uno Inversa
@@ -50,6 +48,6 @@ class HistorialMedico extends Model
 
     //Uno a Muchos
     public function citas(){
-        return $this->hasMany('App\Models\Cita', 'Cita');
+        return $this->hasMany('App\Models\Cita');
     }
 }

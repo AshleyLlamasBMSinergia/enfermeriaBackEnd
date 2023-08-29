@@ -16,59 +16,59 @@ class CreateAPPatologicosTable extends Migration
         Schema::create('APPatologicos', function (Blueprint $table) {
             $table->id();
 
-            $table->enum('Cirujias', ['No', 'Si'])->nullable();
+            $table->enum('cirujias', ['No', 'Si'])->nullable();
             //Esp de especificar
-            $table->string('EspCirujias')->nullable();
+            $table->string('espCirujias')->nullable();
 
-            $table->enum('Contusiones', ['No', 'Si'])->nullable();
-            $table->string('EspContusiones')->nullable();
+            $table->enum('contusiones', ['No', 'Si'])->nullable();
+            $table->string('espContusiones')->nullable();
 
-            $table->enum('Lumbalgias', ['No', 'Si'])->nullable();
-            $table->string('EspLumbalgias')->nullable();
+            $table->enum('lumbalgias', ['No', 'Si'])->nullable();
+            $table->string('espLumbalgias')->nullable();
 
-            $table->enum('Hernias', ['No', 'Si'])->nullable();
-            $table->string('EspHernias')->nullable();
+            $table->enum('hernias', ['No', 'Si'])->nullable();
+            $table->string('espHernias')->nullable();
 
-            $table->enum('Fracturas', ['No', 'Si'])->nullable();
-            $table->string('EspFracturas')->nullable();
+            $table->enum('fracturas', ['No', 'Si'])->nullable();
+            $table->string('espFracturas')->nullable();
 
-            $table->enum('Dorsalgias', ['No', 'Si'])->nullable();
-            $table->string('EspDorsalgias')->nullable();
+            $table->enum('dorsalgias', ['No', 'Si'])->nullable();
+            $table->string('espDorsalgias')->nullable();
 
-            $table->enum('Hospitalizaciones', ['No', 'Si'])->nullable();
-            $table->string('EspHospitalizaciones')->nullable();
+            $table->enum('hospitalizaciones', ['No', 'Si'])->nullable();
+            $table->string('espHospitalizaciones')->nullable();
 
-            $table->enum('Esguinces', ['No', 'Si'])->nullable();
-            $table->string('EspEsguinces')->nullable();
+            $table->enum('esguinces', ['No', 'Si'])->nullable();
+            $table->string('espEsguinces')->nullable();
 
-            $table->enum('LesionesArteriales', ['No', 'Si'])->nullable();
-            $table->string('EspLesionesArteriales')->nullable();
+            $table->enum('lesionesArteriales', ['No', 'Si'])->nullable();
+            $table->string('espLesionesArteriales')->nullable();
 
-            $table->enum('Transfusiones', ['No', 'Si'])->nullable();
-            $table->string('EspTransfusiones')->nullable();
+            $table->enum('transfusiones', ['No', 'Si'])->nullable();
+            $table->string('espTransfusiones')->nullable();
 
-            $table->enum('Luxaciones', ['No', 'Si'])->nullable();
-            $table->string('EspLuxaciones')->nullable();
+            $table->enum('luxaciones', ['No', 'Si'])->nullable();
+            $table->string('espLuxaciones')->nullable();
 
-            $table->enum('Tetanias', ['No', 'Si'])->nullable();
-            $table->string('EspTetanias')->nullable();
+            $table->enum('tetanias', ['No', 'Si'])->nullable();
+            $table->string('espTetanias')->nullable();
 
-            $table->enum('Alergias', ['No', 'Si'])->nullable();
-            $table->string('EspAlergias')->nullable();
+            $table->enum('alergias', ['No', 'Si'])->nullable();
+            $table->string('espAlergias')->nullable();
 
-            $table->enum('Asma', ['No', 'Si'])->nullable();
-            $table->enum('Epilepsia', ['No', 'Si'])->nullable();
+            $table->enum('asma', ['No', 'Si'])->nullable();
+            $table->enum('epilepsia', ['No', 'Si'])->nullable();
 
             //Enf de enfermedades
-            $table->enum('EnfDentales', ['No', 'Si'])->nullable();
-            $table->string('EspEnfDentales')->nullable();
+            $table->enum('enfDentales', ['No', 'Si'])->nullable();
+            $table->string('espEnfDentales')->nullable();
 
-            $table->enum('EnfOpticas', ['No', 'Si'])->nullable();
-            $table->string('EspEnfOpticas')->nullable();
+            $table->enum('enfOpticas', ['No', 'Si'])->nullable();
+            $table->string('espEnfOpticas')->nullable();
 
             //Alt de alteraciones
-            $table->enum('AltPsicologicas', ['No', 'Si'])->nullable();
-            $table->string('EspAltPsicologicas')->nullable();
+            $table->enum('altPsicologicas', ['No', 'Si'])->nullable();
+            $table->string('espAltPsicologicas')->nullable();
 
             $table->timestamps();
         });

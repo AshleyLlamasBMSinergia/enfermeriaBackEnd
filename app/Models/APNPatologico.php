@@ -14,37 +14,41 @@ class APNPatologico extends Model
     protected $guarded = ['id', 'created_at', 'updated'];
 
     protected $fillable = [
-        'Anticonceptivos',
+        'anticonceptivos',
         //Esp de especificar
-        'EspAnticonceptivos',
+        'espAnticonceptivos',
 
-        'Obstetrico',
-        'Menarca',
-        'Alcoholismo',
-        'Tabaquismo',
-        'Toxicomanias',
-        'Religion',
-        'Pasatiempos',
-        'TipoYRH', //Tipo y RH
+        'obstetrico',
+        'espObstetrico',
 
-        'Inmunizaciones',
-        'EspInmunizaciones',
+        'menarca',
+        'espMenarca',
 
-        'Alimentacion',
-        'EspAlimentacion',
+        'alcoholismo',
+        'tabaquismo',
+        'toxicomanias',
+        'religion',
+        'pasatiempos',
+        'tipoYRH', //Tipo y RH
 
-        'AseoPersonal',
-        'Deportes',
-        'EspDeportes',
+        'inmunizaciones',
+        'espInmunizaciones',
 
-        'Bajo',
-        'SobrePeso',
-        'Hacinamiento',
-        'Promiscuidad',
+        'alimentacion',
+        'espAlimentacion',
+
+        'aseoPersonal',
+        'deportes',
+        'espDeportes',
+
+        'bajo',
+        'sobrePeso',
+        'hacinamiento',
+        'promiscuidad',
     ];
 
     //Uno a Uno
     public function historialMedico(){
-        return $this->hasOne('App\Models\HistorialMedico', 'HistorialMedico');
+        return $this->hasOne('App\Models\HistorialMedico');
     }
 }

@@ -11,25 +11,23 @@ class Externo extends Model
 
     protected $table = 'Externos';
 
-    protected $primaryKey = 'Externo';
-
     protected $guarded = ['id', 'created_at', 'updated'];
 
     protected $fillable = [
-        'Paterno',
-        'Materno',
-        'Nombres',
-        'Sexo',
-        'FechaNacimiento',
-        'Telefono',
-        'Calle',
-        'Exterior',
-        'Interior',
-        'Colonia',
+        'paterno',
+        'materno',
+        'nombre',
+        'sexo',
+        'fechaNacimiento',
+        'telefono',
+        'calle',
+        'exterior',
+        'interior',
+        'colonia',
         'CP',
-        'Localidad',
-        'Correo',
-        'Empleado'
+        'localidad',
+        'correo',
+        'empleado'
     ];
 
     //Uno a uno polimorfico

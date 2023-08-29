@@ -28,19 +28,14 @@ class ExternoFactory extends Factory
         }
 
         return [
-            'Paterno' => $paterno,
-            'Materno' => $materno,
-            'Nombres' => $nombre,
-            'Sexo' => $genero,
-            'FechaNacimiento' => $this->faker->date('Y-m-d'),
-            'Telefono' => $this->faker->phoneNumber(),
-            'Calle' => $this->faker->streetName(),
-            'Exterior' => $this->faker->buildingNumber(),
-            'Interior' => null,
-            'Colonia' => $this->faker->name(),
-            'CP' => $this->faker->postcode(),
-            'Localidad' => $this->faker->state(),
-            'Correo' => $this->faker->email(),
+            'paterno' => $paterno,
+            'materno' => $materno,
+            'Nombre' => $nombre,
+            'sexo' => $genero,
+            'fechaNacimiento' => $this->faker->date('Y-m-d'),
+            'telefono' => $this->faker->phoneNumber(),
+            'direccion_id' => null,
+            'correo' => $this->faker->email(),
         ];
     }
 }

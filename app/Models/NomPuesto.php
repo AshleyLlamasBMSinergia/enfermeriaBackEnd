@@ -11,9 +11,7 @@ class NomPuesto extends Model
 
     protected $table = 'NomPuestos';
 
-    protected $primaryKey = 'Puesto';
-
-    protected $guarded = ['Puesto', 'created_at', 'updated'];
+    protected $guarded = ['id', 'created_at', 'updated'];
 
     protected $fillable = [
         'Nombre',
@@ -21,6 +19,6 @@ class NomPuesto extends Model
 
     //Uno a Uno
     public function nomEmpleado(){
-        return $this->hasOne('App\Models\NomEmpleado', 'Empleado');
+        return $this->hasOne('App\Models\NomEmpleado');
     }
 }

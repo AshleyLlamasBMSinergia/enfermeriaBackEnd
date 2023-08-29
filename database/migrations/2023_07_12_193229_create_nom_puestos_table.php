@@ -14,8 +14,8 @@ class CreateNomPuestosTable extends Migration
     public function up()
     {
         Schema::create('NomPuestos', function (Blueprint $table) {
-            $table->id('Puesto');
-            $table->string('Nombre');
+            $table->id();
+            $table->string('nombre');
             $table->timestamps();
         });
     }

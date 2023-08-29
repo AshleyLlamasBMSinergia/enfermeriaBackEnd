@@ -11,9 +11,7 @@ class NomEmpleado extends Model
 
     protected $table = 'NomEmpleados';
 
-    protected $primaryKey = 'Empleado';
-
-    protected $guarded = ['created_at', 'updated'];
+    protected $guarded = ['id', 'created_at', 'updated'];
 
     protected $fillable = [
         'Paterno',
@@ -100,7 +98,7 @@ class NomEmpleado extends Model
 
      //Uno a Uno Inversa
      public function puesto(){
-        return $this->belongsTo('App\Models\NomPuesto', 'Puesto');
+        return $this->belongsTo('App\Models\NomPuesto');
     }
 
     //Uno a Uno Inversa
@@ -110,16 +108,21 @@ class NomEmpleado extends Model
 
     //Uno a Muchos
     public function citas(){
-        return $this->hasMany('App\Models\Cita', 'Cita');
+        return $this->hasMany('App\Models\Cita');
     }
 
     //Uno a Muchos
     public function consultas(){
-        return $this->hasMany('App\Models\Consultas', 'Consultas');
+        return $this->hasMany('App\Models\Consultas');
     }
 
     //Uno a Muchos
     public function dependientes(){
-        return $this->hasMany('App\Models\Externo', 'Dependientes');
+        return $this->hasMany('App\Models\Externo');
+    }
+
+    //Uno a uno polimorficab
+    public function image(){
+        return $this->morphOne('App\Models\Image', 'imageable');
     }
 }

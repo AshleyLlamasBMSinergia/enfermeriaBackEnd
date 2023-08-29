@@ -2,11 +2,10 @@
 
 namespace Database\Seeders;
 
-use App\Models\User;
-use App\Models\Usuarios;
+use App\Models\Direccion;
 use Illuminate\Database\Seeder;
 
-class UsuariosSeeder extends Seeder
+class DireccionSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -15,6 +14,6 @@ class UsuariosSeeder extends Seeder
      */
     public function run()
     {
-        Usuarios::factory(10)->create();
+        Direccion::factory(10)->create();
     }
 }

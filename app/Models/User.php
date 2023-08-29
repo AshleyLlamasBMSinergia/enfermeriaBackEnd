@@ -2,14 +2,14 @@
 
 namespace App\Models;
 
-use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Laravel\Sanctum\HasApiTokens;
 
 class User extends Authenticatable
 {
-    use HasFactory, Notifiable;
+    use HasApiTokens, HasFactory, Notifiable;
 
     /**
      * The attributes that are mass assignable.
@@ -17,7 +17,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password',
+        'name', 'email', 'password', 'nickname',
     ];
 
     /**
@@ -40,6 +40,21 @@ class User extends Authenticatable
 
     //Uno a Uno
     public function nomEmpleado(){
-        return $this->hasOne('App\Models\NomEmpleado', 'Empleado');
+        return $this->hasOne('App\Models\NomEmpleado');
+    }
+
+    //Uno a Muchos
+    public function citas(){
+        return $this->hasMany('App\Models\Horario');
+    }
+
+    //Uno a Uno
+    public function area(){
+        return $this->hasOne('App\Models\HistorialMedico');
+    }
+
+    //Uno a uno polimorficab
+    public function image(){
+        return $this->morphOne('App\Models\Imagen', 'imageable');
     }
 }

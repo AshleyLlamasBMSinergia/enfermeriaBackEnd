@@ -19,12 +19,12 @@ class CitaFactory extends Factory
         $color = $this->getColorByTipoCita($tipo);
 
         return [
-            'Fecha' => $this->faker->dateTimeBetween('2023-08-01', '2023-08-31')->format('Y-m-d H:i:s'),
-            'Tipo' => $tipo,
-            'Color' => $color,
-            'Motivo' => $this->faker->text($maxNbChars = 100),
-            'Paciente' => HistorialMedico::all()->random(),
-            'Profesional' => NomEmpleado::all()->random()
+            'fecha' => $this->faker->dateTimeBetween('2023-08-01', '2023-08-31')->format('Y-m-d H:i:s'),
+            'tipo' => $tipo,
+            'color' => $color,
+            'motivo' => $this->faker->text($maxNbChars = 100),
+            'paciente_id' => HistorialMedico::all()->random(),
+            'profesional_id' => NomEmpleado::all()->random()
         ];
     }
 

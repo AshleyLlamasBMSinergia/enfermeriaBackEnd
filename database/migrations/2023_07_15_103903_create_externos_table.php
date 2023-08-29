@@ -14,22 +14,21 @@ class CreateExternosTable extends Migration
     public function up()
     {
         Schema::create('Externos', function (Blueprint $table) {
-            $table->id('Externo');
+            $table->id();
 
-            $table->string('Paterno')->nullable();
-            $table->string('Materno')->nullable();
-            $table->string('Nombres')->nullable();
+            $table->string('paterno')->nullable();
+            $table->string('materno')->nullable();
+            $table->string('nombre')->nullable();
 
-            $table->string('Sexo')->nullable();
-            $table->date('FechaNacimiento')->nullable();
-            $table->string('Telefono')->nullable();
-            $table->string('Calle')->nullable();
-            $table->string('Exterior')->nullable();
-            $table->string('Interior')->nullable();
-            $table->string('Colonia')->nullable();
-            $table->string('CP')->nullable();
-            $table->string('Localidad')->nullable();
-            $table->string('Correo')->nullable();
+            $table->string('sexo')->nullable();
+            $table->date('fechaNacimiento')->nullable();
+            $table->string('telefono')->nullable();
+            $table->string('correo')->nullable();
+
+            $table->unsignedBigInteger('direccion_id')->nullable();
+            $table->foreign('direccion_id')->references('id')->on('Direcciones')->onDelete('set null')->onUpdate('cascade');
+            
+            $table->string('estatus')->nullable();
 
             $table->timestamps();
         });
