@@ -12,85 +12,95 @@ class APPatologicoController extends Controller
     public function show(APPatologico $antecedentesPersonalesPatologicos){
         $data = APPatologico::find($antecedentesPersonalesPatologicos);
         if (!$data) {
-            return response()->json(['error' => 'Historial médico no encontrado'], 404);
+            return response()->json(['error' => 'Antecedentes personales patológicos no encontrado'], 404);
         }
         return response()->json($data, 200);
     }
 
     public function store(Request $request)
     {
-        $antecedentesPersonalesPatologicos = new APPatologico();
+        try{
+            $antecedentesPersonalesPatologicos = new APPatologico();
 
-        $antecedentesPersonalesPatologicos->Cirujias = $request->input('Cirujias');
-        $antecedentesPersonalesPatologicos->EspCirujias = $request->input('EspCirujias');
+            $antecedentesPersonalesPatologicos->cirujias = $request->input('cirujias');
+            $antecedentesPersonalesPatologicos->espCirujias = $request->input('espCirujias');
 
-        $antecedentesPersonalesPatologicos->Contusiones = $request->input('Contusiones');
-        $antecedentesPersonalesPatologicos->EspContusiones = $request->input('EspContusiones');
+            $antecedentesPersonalesPatologicos->contusiones = $request->input('contusiones');
+            $antecedentesPersonalesPatologicos->espContusiones = $request->input('espContusiones');
 
-        $antecedentesPersonalesPatologicos->Lumbalgias = $request->input('Lumbalgias');
-        $antecedentesPersonalesPatologicos->EspLumbalgias = $request->input('EspLumbalgias');
+            $antecedentesPersonalesPatologicos->lumbalgias = $request->input('lumbalgias');
+            $antecedentesPersonalesPatologicos->espLumbalgias = $request->input('espLumbalgias');
 
-        $antecedentesPersonalesPatologicos->Hernias = $request->input('Hernias');
-        $antecedentesPersonalesPatologicos->EspHernias = $request->input('EspHernias');
+            $antecedentesPersonalesPatologicos->hernias = $request->input('hernias');
+            $antecedentesPersonalesPatologicos->espHernias = $request->input('espHernias');
 
-        $antecedentesPersonalesPatologicos->Fracturas = $request->input('Fracturas');
-        $antecedentesPersonalesPatologicos->EspFracturas = $request->input('EspFracturas');
+            $antecedentesPersonalesPatologicos->fracturas = $request->input('fracturas');
+            $antecedentesPersonalesPatologicos->espFracturas = $request->input('espFracturas');
 
-        $antecedentesPersonalesPatologicos->Dorsalgias = $request->input('Dorsalgias');
-        $antecedentesPersonalesPatologicos->EspDorsalgias = $request->input('EspDorsalgias');
+            $antecedentesPersonalesPatologicos->dorsalgias = $request->input('dorsalgias');
+            $antecedentesPersonalesPatologicos->espDorsalgias = $request->input('espDorsalgias');
 
-        $antecedentesPersonalesPatologicos->Hospitalizaciones = $request->input('Hospitalizaciones');
-        $antecedentesPersonalesPatologicos->EspHospitalizaciones = $request->input('EspHospitalizaciones');
+            $antecedentesPersonalesPatologicos->hospitalizaciones = $request->input('hospitalizaciones');
+            $antecedentesPersonalesPatologicos->espHospitalizaciones = $request->input('espHospitalizaciones');
 
-        $antecedentesPersonalesPatologicos->Esguinces = $request->input('Esguinces');
-        $antecedentesPersonalesPatologicos->EspEsguinces = $request->input('EspEsguinces');
+            $antecedentesPersonalesPatologicos->esguinces = $request->input('esguinces');
+            $antecedentesPersonalesPatologicos->espEsguinces = $request->input('espEsguinces');
 
-        $antecedentesPersonalesPatologicos->LesionesArteriales = $request->input('LesionesArteriales');
-        $antecedentesPersonalesPatologicos->EspLesionesArteriales = $request->input('EspLesionesArteriales');
+            $antecedentesPersonalesPatologicos->lesionesArteriales = $request->input('lesionesArteriales');
+            $antecedentesPersonalesPatologicos->espLesionesArteriales = $request->input('espLesionesArteriales');
 
-        $antecedentesPersonalesPatologicos->Transfusiones = $request->input('Transfusiones');
-        $antecedentesPersonalesPatologicos->EspTransfusiones = $request->input('EspTransfusiones');
+            $antecedentesPersonalesPatologicos->transfusiones = $request->input('transfusiones');
+            $antecedentesPersonalesPatologicos->espTransfusiones = $request->input('espTransfusiones');
 
-        $antecedentesPersonalesPatologicos->Luxaciones = $request->input('Luxaciones');
-        $antecedentesPersonalesPatologicos->EspLuxaciones = $request->input('EspLuxaciones');
+            $antecedentesPersonalesPatologicos->luxaciones = $request->input('luxaciones');
+            $antecedentesPersonalesPatologicos->espLuxaciones = $request->input('espLuxaciones');
 
-        $antecedentesPersonalesPatologicos->Tetanias = $request->input('Tetanias');
-        $antecedentesPersonalesPatologicos->EspTetanias = $request->input('EspTetanias');
+            $antecedentesPersonalesPatologicos->tetanias = $request->input('tetanias');
+            $antecedentesPersonalesPatologicos->espTetanias = $request->input('espTetanias');
 
-        $antecedentesPersonalesPatologicos->Alergias = $request->input('Alergias');
-        $antecedentesPersonalesPatologicos->EspAlergias = $request->input('EspAlergias');
+            $antecedentesPersonalesPatologicos->alergias = $request->input('alergias');
+            $antecedentesPersonalesPatologicos->espAlergias = $request->input('espAlergias');
 
-        $antecedentesPersonalesPatologicos->Asma = $request->input('Asma');
-        $antecedentesPersonalesPatologicos->Epilepsia = $request->input('Epilepsia');
+            $antecedentesPersonalesPatologicos->asma = $request->input('asma');
+            $antecedentesPersonalesPatologicos->epilepsia = $request->input('epilepsia');
 
-        $antecedentesPersonalesPatologicos->EnfDentales = $request->input('EnfDentales');
-        $antecedentesPersonalesPatologicos->EspEnfDentales = $request->input('EspEnfDentales');
+            $antecedentesPersonalesPatologicos->enfDentales = $request->input('enfDentales');
+            $antecedentesPersonalesPatologicos->espEnfDentales = $request->input('espEnfDentales');
 
-        $antecedentesPersonalesPatologicos->EnfOpticas = $request->input('EnfOpticas');
-        $antecedentesPersonalesPatologicos->EspEnfOpticas = $request->input('EspEnfOpticas');
+            $antecedentesPersonalesPatologicos->enfOpticas = $request->input('enfOpticas');
+            $antecedentesPersonalesPatologicos->espEnfOpticas = $request->input('espEnfOpticas');
 
-        $antecedentesPersonalesPatologicos->AltPsicologicas = $request->input('AltPsicologicas');
-        $antecedentesPersonalesPatologicos->EspAltPsicologicas = $request->input('EspAltPsicologicas');
+            $antecedentesPersonalesPatologicos->altPsicologicas = $request->input('altPsicologicas');
+            $antecedentesPersonalesPatologicos->espAltPsicologicas = $request->input('espAltPsicologicas');
+            $antecedentesPersonalesPatologicos->save();
 
-        $antecedentesPersonalesPatologicos->save();
+            // Obtener la ID del HistorialesMedicos desde el request
+            $historialMedicoId = $request->input('historialMedico_id');
 
-         // Obtener la ID del HistorialesMedicos desde el request
-         $historialMedicoId = $request->input('HistorialMedico');
+            // Buscar el registro de HistorialesMedicos
+            $historialMedico = HistorialMedico::find($historialMedicoId);
+    
+            // Asignar la relación con el APPatologicos
+            if ($historialMedico) {
+                $historialMedico->APPatologicos_id = $antecedentesPersonalesPatologicos->id;
 
-         // Buscar el registro de HistorialesMedicos
-         $historialMedico = HistorialMedico::find($historialMedicoId);
- 
-         // Asignar la relación con el APPatologicos
-        if ($historialMedico) {
-            $historialMedico->antecedentesPersonalesPatologicos()->associate($antecedentesPersonalesPatologicos);
-            $historialMedico->save();
+                $historialMedico->save();
+            }else{
+                return response()->json([
+                    'error' => 'Historial médico no encontrado'
+                ], 500);
+            }
+
+            // Responder
+            return response()->json([
+                'message' => 'Antecedentes personales patologicos guardados exitosamente',
+                // 'antecedentesPersonalesPatologicos' => $antecedentesPersonalesPatologicos
+            ]);
+        }catch (\Exception $e) {
+            return response()->json([
+                'error' => 'Ocurrió un error al guardar los antecedentes personales patológicos del paciente'
+            ], 500);
         }
-
-        // Responder
-        return response()->json([
-            'message' => 'Antecedentes personales patologicos guardados exitosamente',
-            // 'antecedentesPersonalesPatologicos' => $antecedentesPersonalesPatologicos
-        ]);
     }
 
     public function update(Request $request, $id)
@@ -102,57 +112,56 @@ class APPatologicoController extends Controller
                 return response()->json(['error' => 'Antecedentes personales patológicos no encontrados'], 404);
             }
 
-            $antecedentesPersonalesPatologicos->Cirujias = $request->input('Cirujias');
-            $antecedentesPersonalesPatologicos->EspCirujias = $request->input('EspCirujias');
+            $antecedentesPersonalesPatologicos->cirujias = $request->input('cirujias');
+            $antecedentesPersonalesPatologicos->espCirujias = $request->input('espCirujias');
 
-            $antecedentesPersonalesPatologicos->Contusiones = $request->input('Contusiones');
-            $antecedentesPersonalesPatologicos->EspContusiones = $request->input('EspContusiones');
+            $antecedentesPersonalesPatologicos->contusiones = $request->input('contusiones');
+            $antecedentesPersonalesPatologicos->espContusiones = $request->input('espContusiones');
 
-            $antecedentesPersonalesPatologicos->Lumbalgias = $request->input('Lumbalgias');
-            $antecedentesPersonalesPatologicos->EspLumbalgias = $request->input('EspLumbalgias');
+            $antecedentesPersonalesPatologicos->lumbalgias = $request->input('lumbalgias');
+            $antecedentesPersonalesPatologicos->espLumbalgias = $request->input('espLumbalgias');
 
-            $antecedentesPersonalesPatologicos->Hernias = $request->input('Hernias');
-            $antecedentesPersonalesPatologicos->EspHernias = $request->input('EspHernias');
+            $antecedentesPersonalesPatologicos->hernias = $request->input('hernias');
+            $antecedentesPersonalesPatologicos->espHernias = $request->input('espHernias');
 
-            $antecedentesPersonalesPatologicos->Fracturas = $request->input('Fracturas');
-            $antecedentesPersonalesPatologicos->EspFracturas = $request->input('EspFracturas');
+            $antecedentesPersonalesPatologicos->fracturas = $request->input('fracturas');
+            $antecedentesPersonalesPatologicos->espFracturas = $request->input('espFracturas');
 
-            $antecedentesPersonalesPatologicos->Dorsalgias = $request->input('Dorsalgias');
-            $antecedentesPersonalesPatologicos->EspDorsalgias = $request->input('EspDorsalgias');
+            $antecedentesPersonalesPatologicos->dorsalgias = $request->input('dorsalgias');
+            $antecedentesPersonalesPatologicos->espDorsalgias = $request->input('espDorsalgias');
 
-            $antecedentesPersonalesPatologicos->Hospitalizaciones = $request->input('Hospitalizaciones');
-            $antecedentesPersonalesPatologicos->EspHospitalizaciones = $request->input('EspHospitalizaciones');
+            $antecedentesPersonalesPatologicos->hospitalizaciones = $request->input('hospitalizaciones');
+            $antecedentesPersonalesPatologicos->espHospitalizaciones = $request->input('espHospitalizaciones');
 
-            $antecedentesPersonalesPatologicos->Esguinces = $request->input('Esguinces');
-            $antecedentesPersonalesPatologicos->EspEsguinces = $request->input('EspEsguinces');
+            $antecedentesPersonalesPatologicos->esguinces = $request->input('esguinces');
+            $antecedentesPersonalesPatologicos->espEsguinces = $request->input('espEsguinces');
 
-            $antecedentesPersonalesPatologicos->LesionesArteriales = $request->input('LesionesArteriales');
-            $antecedentesPersonalesPatologicos->EspLesionesArteriales = $request->input('EspLesionesArteriales');
+            $antecedentesPersonalesPatologicos->lesionesArteriales = $request->input('lesionesArteriales');
+            $antecedentesPersonalesPatologicos->espLesionesArteriales = $request->input('espLesionesArteriales');
 
-            $antecedentesPersonalesPatologicos->Transfusiones = $request->input('Transfusiones');
-            $antecedentesPersonalesPatologicos->EspTransfusiones = $request->input('EspTransfusiones');
+            $antecedentesPersonalesPatologicos->transfusiones = $request->input('transfusiones');
+            $antecedentesPersonalesPatologicos->espTransfusiones = $request->input('espTransfusiones');
 
-            $antecedentesPersonalesPatologicos->Luxaciones = $request->input('Luxaciones');
-            $antecedentesPersonalesPatologicos->EspLuxaciones = $request->input('EspLuxaciones');
+            $antecedentesPersonalesPatologicos->luxaciones = $request->input('luxaciones');
+            $antecedentesPersonalesPatologicos->espLuxaciones = $request->input('espLuxaciones');
 
-            $antecedentesPersonalesPatologicos->Tetanias = $request->input('Tetanias');
-            $antecedentesPersonalesPatologicos->EspTetanias = $request->input('EspTetanias');
+            $antecedentesPersonalesPatologicos->tetanias = $request->input('tetanias');
+            $antecedentesPersonalesPatologicos->espTetanias = $request->input('espTetanias');
 
-            $antecedentesPersonalesPatologicos->Alergias = $request->input('Alergias');
-            $antecedentesPersonalesPatologicos->EspAlergias = $request->input('EspAlergias');
+            $antecedentesPersonalesPatologicos->alergias = $request->input('alergias');
+            $antecedentesPersonalesPatologicos->espAlergias = $request->input('espAlergias');
 
-            $antecedentesPersonalesPatologicos->Asma = $request->input('Asma');
-            $antecedentesPersonalesPatologicos->Epilepsia = $request->input('Epilepsia');
+            $antecedentesPersonalesPatologicos->asma = $request->input('asma');
+            $antecedentesPersonalesPatologicos->epilepsia = $request->input('epilepsia');
 
-            $antecedentesPersonalesPatologicos->EnfDentales = $request->input('EnfDentales');
-            $antecedentesPersonalesPatologicos->EspEnfDentales = $request->input('EspEnfDentales');
+            $antecedentesPersonalesPatologicos->enfDentales = $request->input('enfDentales');
+            $antecedentesPersonalesPatologicos->espEnfDentales = $request->input('espEnfDentales');
 
-            $antecedentesPersonalesPatologicos->EnfOpticas = $request->input('EnfOpticas');
-            $antecedentesPersonalesPatologicos->EspEnfOpticas = $request->input('EspEnfOpticas');
+            $antecedentesPersonalesPatologicos->enfOpticas = $request->input('enfOpticas');
+            $antecedentesPersonalesPatologicos->espEnfOpticas = $request->input('espEnfOpticas');
 
-            $antecedentesPersonalesPatologicos->AltPsicologicas = $request->input('AltPsicologicas');
-            $antecedentesPersonalesPatologicos->EspAltPsicologicas = $request->input('EspAltPsicologicas');
-
+            $antecedentesPersonalesPatologicos->altPsicologicas = $request->input('altPsicologicas');
+            $antecedentesPersonalesPatologicos->espAltPsicologicas = $request->input('espAltPsicologicas');
 
             $antecedentesPersonalesPatologicos->save();
     

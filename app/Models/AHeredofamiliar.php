@@ -13,6 +13,53 @@ class AHeredofamiliar extends Model
 
     protected $guarded = ['id', 'created_at', 'updated'];
 
+    protected $fillable = [
+        'padresViven',
+        'hermanosViven',
+        'hermanasViven',
+
+        'diabetes',
+        'espDiabetes',
+
+        'obecidad',
+        'espObecidad',
+
+        'hipertensionArterial',
+        'espHipertensionArterial',
+
+        'psoriasisVitiligo',
+        'espPsoriasisVitiligo',
+
+        'cardiopatias',
+        'espCardiopatias',
+
+        'lepra',
+        'espLepra',
+
+        'neoplasicos',
+        'espNeoplasicos',
+
+        'fimicos',
+        'espFimicos',
+        
+        'tiroideos',
+        'espTiroideos',
+
+        'psiquiatricos',
+        'espPsiquiatricos',
+
+        'alergias',
+        'espAlergias',
+
+        'colagenopatias',
+        'espColagenopatias',
+
+        'probMentales',
+        'espProbMentales',
+
+        'otros',
+    ];
+
     //Uno a Uno
     public function historialMedico(){
         return $this->hasOne('App\Models\HistorialMedico');

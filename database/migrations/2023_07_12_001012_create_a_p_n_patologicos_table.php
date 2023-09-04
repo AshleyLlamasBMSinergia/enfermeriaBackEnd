@@ -13,27 +13,36 @@ class CreateAPNPatologicosTable extends Migration
      */
     public function up()
     {
-        Schema::create('APNPpatologicos', function (Blueprint $table) {
+        Schema::create('APNPatologicos', function (Blueprint $table) {
             $table->id();
 
-            $table->enum('Anticonceptivos', ['No', 'Si'])->nullable();
+            $table->enum('anticonceptivos', ['No', 'Si'])->nullable();
             //Esp de especificar
-            $table->string('EspAnticonceptivos')->nullable();
+            $table->string('espAnticonceptivos')->nullable();
 
             $table->enum('obstetrico', ['No', 'Si'])->nullable();
+            $table->string('espObstetrico')->nullable();
+
             $table->enum('menarca', ['No', 'Si'])->nullable();
+            $table->string('espMenarca')->nullable();
+
             $table->enum('alcoholismo', ['No', 'Si'])->nullable();
             $table->enum('tabaquismo', ['No', 'Si'])->nullable();
+
             $table->enum('toxicomanias', ['No', 'Si'])->nullable();
+            $table->string('espToxicomanias')->nullable();
+
             $table->enum('religion', ['No', 'Si'])->nullable();
+            $table->string('espReligion')->nullable();
+
             $table->string('pasatiempos')->nullable();
+
             $table->string('tipoYRH')->nullable(); //Tipo y RH
 
             $table->enum('inmunizaciones', ['No', 'Si'])->nullable();
             $table->string('espInmunizaciones')->nullable();
 
-            $table->enum('alimentacion', ['No', 'Si'])->nullable();
-            $table->string('espAlimentacion')->nullable();
+            $table->string('alimentacion')->nullable();
 
             $table->enum('aseoPersonal', ['Buena', 'Regular', 'Mala'])->nullable();
 

@@ -1,6 +1,8 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\Enfermeria\AHeredofamiliarController;
+use App\Http\Controllers\Enfermeria\APNPatologicoController;
 use App\Http\Controllers\enfermeria\APPatologicoController;
 use App\Http\Controllers\Enfermeria\CitaController;
 use App\Http\Controllers\enfermeria\CalendarioController;
@@ -24,35 +26,49 @@ Route::middleware('auth:sanctum')->group(function () {
 
     //ENFERMERIA - INICIO
     Route::get('/inicio/citas-de-hoy', [EnfermeriaController::class, 'getCitasHoy']);
-    
-    
-    //CALENDARIO
-    Route::get('/pendientes', [PendienteController::class, 'index']);
+
+        //PENDIENTES
+        Route::get('/pendientes', [PendienteController::class, 'index']);
+        Route::put('/pendientes/update-estatus/{id}', [PendienteController::class, 'updateEstatus']);
+        Route::put('/pendientes/update-titulo/{id}', [PendienteController::class, 'updateTitulo']);
+        Route::post('/pendientes', [PendienteController::class, 'store']);
+        Route::delete('/pendientes/{id}',[ PendienteController::class, 'destroy']);
+        
 
     //CALENDARIO
     Route::get('/calendario', [CalendarioController::class, 'index']);
     Route::post('/citas', [CitaController::class, 'store']);
-    Route::put('/citas/edit/{Cita}', [CitaController::class, 'update']);
-    Route::delete('/citas/{Cita}',[ CitaController::class, 'destroy']);
+    Route::put('/citas/edit/{id}', [CitaController::class, 'update']);
+    Route::delete('/citas/{id}',[ CitaController::class, 'destroy']);
 
     //CONSULTAS
     Route::get('/consultas', [ConsultaController::class, 'index']);
+    Route::post('/consultas', [ConsultaController::class, 'store']);
+    Route::get('/consultas/{id}', [ConsultaController::class, 'show']);
 
     //EMPLEADOS
     Route::get('/empleados', [EmpleadoController::class, 'index']);
+    Route::get('/empleados/{id}', [EmpleadoController::class, 'show']);
 
     //ESTADISTICAS
     Route::get('/estadisticas', [EstadisticaController::class, 'index']);
 
     //EXTERNOS
     Route::get('/externos', [ExternoController::class, 'index']);
+    Route::get('/externos/{id}', [ExternoController::class, 'show']);
 
     //HISTORIALES MEDICOS
     Route::get('/historiales-medicos', [HistorialMedicoController::class, 'index']);
-    Route::get('/historiales-medicos/{HistorialMedico}', [HistorialMedicoController::class, 'show']);
+    Route::get('/historiales-medicos/{id}', [HistorialMedicoController::class, 'show']);
 
     Route::post('/antecendentes-personales-patologicos', [APPatologicoController::class, 'store']);
-    Route::put('/antecendentes-personales-patologicos/edit/{APPatologico}', [APPatologicoController::class, 'update']);
+    Route::put('/antecendentes-personales-patologicos/edit/{id}', [APPatologicoController::class, 'update']);
+
+    Route::post('/antecendentes-personales-no-patologicos', [APNPatologicoController::class, 'store']);
+    Route::put('/antecendentes-personales-no-patologicos/edit/{id}', [APNPatologicoController::class, 'update']);
+
+    Route::post('/antecendentes-heredofamiliares', [AHeredofamiliarController::class, 'store']);
+    Route::put('/antecendentes-heredofamiliares/edit/{id}', [AHeredofamiliarController::class, 'update']);
 
     //INSUMOS MEDICOS
     Route::get('/insumos-medicos', [InsumoMedicoController::class, 'index']);

@@ -12,4 +12,9 @@ class EmpleadoController extends Controller
         $data = NomEmpleado::all();
         return response()->json($data, 200);
     }
+
+    public function show($id){
+        $data = NomEmpleado::find($id);
+        return response()->json($data, 200);
+    }
 }

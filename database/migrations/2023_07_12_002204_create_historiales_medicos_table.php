@@ -30,8 +30,8 @@ class CreateHistorialesMedicosTable extends Migration
             $table->unsignedBigInteger('APPatologicos_id')->nullable();
             $table->foreign('APPatologicos_id')->references('id')->on('APPatologicos');
 
-            $table->unsignedBigInteger('APNPpatologicos_id')->nullable();
-            $table->foreign('APNPpatologicos_id')->references('id')->on('APNPpatologicos');
+            $table->unsignedBigInteger('APNPatologicos_id')->nullable();
+            $table->foreign('APNPatologicos_id')->references('id')->on('APNPatologicos');
 
             $table->unsignedBigInteger('AHeredofamiliares_id')->nullable();
             $table->foreign('AHeredofamiliares_id')->references('id')->on('AHeredofamiliares');

@@ -9,7 +9,7 @@ class APNPatologico extends Model
 {
     use HasFactory;
 
-    protected $table = 'APNPpatologicos';
+    protected $table = 'APNPatologicos';
 
     protected $guarded = ['id', 'created_at', 'updated'];
 
@@ -26,8 +26,14 @@ class APNPatologico extends Model
 
         'alcoholismo',
         'tabaquismo',
+
         'toxicomanias',
+        'espToxicomanias',
+
         'religion',
+        'espReligion',
+
+
         'pasatiempos',
         'tipoYRH', //Tipo y RH
 
@@ -35,9 +41,9 @@ class APNPatologico extends Model
         'espInmunizaciones',
 
         'alimentacion',
-        'espAlimentacion',
-
+        
         'aseoPersonal',
+        
         'deportes',
         'espDeportes',
 

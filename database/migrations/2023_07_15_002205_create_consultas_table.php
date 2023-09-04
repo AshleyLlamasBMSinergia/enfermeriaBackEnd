@@ -20,7 +20,7 @@ class CreateConsultasTable extends Migration
             $table->unsignedBigInteger('cita_id')->nullable(); 
             $table->foreign('cita_id')->references('id')->on('Citas')->onDelete('set null')->onUpdate('cascade');
 
-            $table->dateTime('Fecha');
+            $table->dateTime('fecha');
             
             //ENFERMERO - DOCTOR
             $table->unsignedBigInteger('profesional_id')->nullable();
@@ -36,6 +36,7 @@ class CreateConsultasTable extends Migration
             $table->smallInteger('frecuenciaRespiratoria')->nullable();
             $table->smallInteger('frecuenciaCardiaca')->nullable();
             $table->smallInteger('temperatura')->nullable();
+            $table->integer('edad')->nullable();
             $table->decimal('peso')->nullable();
             $table->decimal('talla')->nullable();
             $table->decimal('grucemiaCapilar')->nullable();

@@ -14,15 +14,16 @@ class Consulta extends Model
     protected $guarded = ['id', 'created_at', 'updated'];
 
     protected $fillable = [
-        'cita',
+        'cita_id',
         'fecha',
-        'profesional',
+        'profesional_id',
         'pacientable_id',
         'pacientable_type',
         'triajeClasificacion',
         'precionDiastolica',
         'frecuenciaRespiratoria',
         'frecuenciaCardiaca',
+        'edad',
         'temperatura',
         'peso',
         'talla',

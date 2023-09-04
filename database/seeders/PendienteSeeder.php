@@ -14,6 +14,6 @@ class PendienteSeeder extends Seeder
      */
     public function run()
     {
-        Pendiente::factory(10)->create();
+        Pendiente::factory(5)->create();
     }
 }

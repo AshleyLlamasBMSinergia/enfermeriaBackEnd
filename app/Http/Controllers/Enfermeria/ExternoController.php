@@ -12,4 +12,9 @@ class ExternoController extends Controller
         $data = Externo::all();
         return response()->json($data, 200);
     }
+
+    public function show($id){
+        $data = Externo::find($id);
+        return response()->json($data, 200);
+    }
 }
