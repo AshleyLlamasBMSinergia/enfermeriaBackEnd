@@ -20,7 +20,16 @@ use Illuminate\Support\Facades\Route;
 
 Route::post('/login', [AuthController::class, 'login'])->name('login');
 
+Route::post('/historiales-medicos', [HistorialMedicoController::class, 'store']);
+
+
+Route::get('/historiales-medicos/buscador', [HistorialMedicoController::class, 'buscador']);
+
+//IMAGENES
+Route::get('/storage/private/{url}', [ImagenController::class, 'image']);
+
 Route::middleware('auth:sanctum')->group(function () {
+
     //LOGOUNT
     Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
@@ -35,16 +44,18 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::delete('/pendientes/{id}',[ PendienteController::class, 'destroy']);
         
 
-    //CALENDARIO
+    //CALENDARIO - CITAS
     Route::get('/calendario', [CalendarioController::class, 'index']);
     Route::post('/citas', [CitaController::class, 'store']);
     Route::put('/citas/edit/{id}', [CitaController::class, 'update']);
     Route::delete('/citas/{id}',[ CitaController::class, 'destroy']);
+    Route::get('/citas/{id}', [CitaController::class, 'show']);
 
     //CONSULTAS
     Route::get('/consultas', [ConsultaController::class, 'index']);
     Route::post('/consultas', [ConsultaController::class, 'store']);
     Route::get('/consultas/{id}', [ConsultaController::class, 'show']);
+    Route::delete('/consultas/{id}',[ ConsultaController::class, 'destroy']);
 
     //EMPLEADOS
     Route::get('/empleados', [EmpleadoController::class, 'index']);
@@ -60,6 +71,7 @@ Route::middleware('auth:sanctum')->group(function () {
     //HISTORIALES MEDICOS
     Route::get('/historiales-medicos', [HistorialMedicoController::class, 'index']);
     Route::get('/historiales-medicos/{id}', [HistorialMedicoController::class, 'show']);
+ 
 
     Route::post('/antecendentes-personales-patologicos', [APPatologicoController::class, 'store']);
     Route::put('/antecendentes-personales-patologicos/edit/{id}', [APPatologicoController::class, 'update']);
@@ -75,7 +87,4 @@ Route::middleware('auth:sanctum')->group(function () {
 
     //REQUISICIONES
     Route::get('/requisiciones', [RequisicionController::class, 'index']);
-
-    //IMAGENES
-    Route::get('storage/private/{url}', [ImagenController::class, 'image']);
 });

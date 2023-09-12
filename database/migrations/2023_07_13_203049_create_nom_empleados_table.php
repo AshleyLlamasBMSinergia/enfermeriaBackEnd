@@ -22,7 +22,7 @@ class CreateNomEmpleadosTable extends Migration
             $table->string('nombre')->nullable();
             $table->string('RFC')->nullable();
             $table->string('curp')->nullable();
-            $table->string('IMMSS')->nullable();
+            $table->string('IMSS')->nullable();
             $table->string('sexo')->nullable();
             $table->date('fechaNacimiento')->nullable();
             $table->string('estadoCivil')->nullable();

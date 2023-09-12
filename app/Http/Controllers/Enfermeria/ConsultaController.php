@@ -70,4 +70,12 @@ class ConsultaController extends Controller
         }
         return response()->json($data, 200);
     }
+
+    public function destroy($id){
+        Consulta::find($id)->delete();
+
+        return response()->json([
+            'message' => "Consulta eleminado exitosamente",
+        ]);
+    }
 }

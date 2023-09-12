@@ -8,6 +8,11 @@ use Illuminate\Http\Request;
 
 class CitaController extends Controller
 {
+    public function show($id){
+        $data = Cita::with(['paciente', 'profesional', 'paciente.pacientable'])->find($id);
+        return response()->json($data, 200);
+    }
+
     public function store(Request $request)
     {
        try{

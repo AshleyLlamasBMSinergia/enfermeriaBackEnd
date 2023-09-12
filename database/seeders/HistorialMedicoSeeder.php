@@ -14,6 +14,6 @@ class HistorialMedicoSeeder extends Seeder
      */
     public function run()
     {
-        HistorialMedico::factory(10)->create();
+        HistorialMedico::factory(8)->create();
     }
 }
