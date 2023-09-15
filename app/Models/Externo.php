@@ -39,4 +39,9 @@ class Externo extends Model
     public function consulta(){
         return $this->morphOne('App\Models\Consulta', 'pacientable');
     }
+
+    //Uno a uno polimorficab
+    public function image(){
+        return $this->morphOne('App\Models\Imagen', 'imageable');
+    }
 }

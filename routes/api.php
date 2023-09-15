@@ -12,26 +12,30 @@ use App\Http\Controllers\Enfermeria\EnfermeriaController;
 use App\Http\Controllers\Enfermeria\EstadisticaController;
 use App\Http\Controllers\enfermeria\ExternoController;
 use App\Http\Controllers\Enfermeria\HistorialMedicoController;
+use App\Http\Controllers\Enfermeria\HorarioController;
 use App\Http\Controllers\Enfermeria\ImagenController;
+use App\Http\Controllers\Enfermeria\InsumoController;
 use App\Http\Controllers\Enfermeria\InsumoMedicoController;
+use App\Http\Controllers\Enfermeria\LoteController;
 use App\Http\Controllers\Enfermeria\PendienteController;
 use App\Http\Controllers\Enfermeria\RequisicionController;
 use Illuminate\Support\Facades\Route;
 
 Route::post('/login', [AuthController::class, 'login'])->name('login');
 
-Route::post('/historiales-medicos', [HistorialMedicoController::class, 'store']);
-
-
 Route::get('/historiales-medicos/buscador', [HistorialMedicoController::class, 'buscador']);
+Route::get('/insumos-medicos/buscador', [InsumoController::class, 'buscador']);
 
-//IMAGENES
-Route::get('/storage/private/{url}', [ImagenController::class, 'image']);
+Route::get('/historiales-medicos/{id}', [HistorialMedicoController::class, 'show']);
+
 
 Route::middleware('auth:sanctum')->group(function () {
 
     //LOGOUNT
     Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
+
+    //IMAGENES
+    Route::get('/storage/private/{url}', [ImagenController::class, 'image']);
 
     //ENFERMERIA - INICIO
     Route::get('/inicio/citas-de-hoy', [EnfermeriaController::class, 'getCitasHoy']);
@@ -45,6 +49,8 @@ Route::middleware('auth:sanctum')->group(function () {
         
 
     //CALENDARIO - CITAS
+    Route::get('/horarios/{profesional_id}/{fecha}/horas-disponibles', [HorarioController::class, 'horasDisponibles']);
+
     Route::get('/calendario', [CalendarioController::class, 'index']);
     Route::post('/citas', [CitaController::class, 'store']);
     Route::put('/citas/edit/{id}', [CitaController::class, 'update']);
@@ -70,8 +76,7 @@ Route::middleware('auth:sanctum')->group(function () {
 
     //HISTORIALES MEDICOS
     Route::get('/historiales-medicos', [HistorialMedicoController::class, 'index']);
-    Route::get('/historiales-medicos/{id}', [HistorialMedicoController::class, 'show']);
- 
+    Route::post('/historiales-medicos', [HistorialMedicoController::class, 'store']);
 
     Route::post('/antecendentes-personales-patologicos', [APPatologicoController::class, 'store']);
     Route::put('/antecendentes-personales-patologicos/edit/{id}', [APPatologicoController::class, 'update']);
@@ -87,4 +92,13 @@ Route::middleware('auth:sanctum')->group(function () {
 
     //REQUISICIONES
     Route::get('/requisiciones', [RequisicionController::class, 'index']);
+
+    //INSUMOS
+    Route::get('/insumos-medicos', [InsumoController::class, 'index']);
+    Route::get('/insumos-medicos/{id}', [InsumoController::class, 'show']);
+
+    // Route::get('/insumos-medicos/{id}', [InsumoController::class, 'show']);
+
+    //LOTES
+    // Route::get('/lotes', [LoteController::class, 'index']);
 });

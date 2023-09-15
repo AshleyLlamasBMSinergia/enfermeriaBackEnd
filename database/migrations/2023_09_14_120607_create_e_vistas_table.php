@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateRequisicionTable extends Migration
+class CreateEVistasTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,7 +13,7 @@ class CreateRequisicionTable extends Migration
      */
     public function up()
     {
-        Schema::create('Requisiciones', function (Blueprint $table) {
+        Schema::create('e_vistas', function (Blueprint $table) {
             $table->id();
             $table->timestamps();
         });
@@ -26,6 +26,6 @@ class CreateRequisicionTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('Requisiciones');
+        Schema::dropIfExists('e_vistas');
     }
 }

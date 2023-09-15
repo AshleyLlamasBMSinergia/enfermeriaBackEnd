@@ -25,11 +25,14 @@ class DatabaseSeeder extends Seeder
             NomEmpleadoSeeder::class,
             //APPatologicoSeeder::class,
             HistorialMedicoSeeder::class,
-            CitaSeeder::class,
-            ConsultaSeeder::class,
+            EFisicoSeeder::class,
+            // CitaSeeder::class,
+            // ConsultaSeeder::class,
             ExternoSeeder::class,
             PendienteSeeder::class,
-            HorarioSeeder::class
+            HorarioSeeder::class,
+            InsumoSeeder::class,
+            LoteSeeder::class
         ]);
     }
 }

@@ -67,8 +67,17 @@ class NomEmpleado extends Model
         return $this->hasMany('App\Models\Externo');
     }
 
+    //Uno a Muchos
+    public function aprobaciones(){
+        return $this->hasMany('App\Models\Aprobacion');
+    }
+
+    public function requisiciones(){
+        return $this->hasMany('App\Models\Requisicion');
+    }
+
     //Uno a uno polimorficab
     public function image(){
-        return $this->morphOne('App\Models\Image', 'imageable');
+        return $this->morphOne('App\Models\Imagen', 'imageable');
     }
 }

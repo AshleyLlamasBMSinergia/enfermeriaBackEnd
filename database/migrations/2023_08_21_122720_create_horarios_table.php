@@ -16,7 +16,7 @@ class CreateHorariosTable extends Migration
         Schema::create('Horarios', function (Blueprint $table) {
             $table->id();
 
-            $table->string('día');
+            $table->enum('dia', [0, 1, 2, 3, 4, 5, 6]);
             $table->time('entrada');
             $table->time('inicioBreak');
             $table->time('finBreak');

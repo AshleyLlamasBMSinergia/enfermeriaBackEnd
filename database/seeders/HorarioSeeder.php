@@ -15,7 +15,7 @@ class HorarioSeeder extends Seeder
     public function run()
     {
         Horario::create([
-            'día' => 'Lunes',
+            'dia' => 1,
             'entrada' => '8:00',
             'inicioBreak' => '13:00',
             'finBreak' => '14:00',
@@ -24,7 +24,7 @@ class HorarioSeeder extends Seeder
         ]);
 
         Horario::create([
-            'día' => 'Martes',
+            'dia' => 2,
             'entrada' => '8:00',
             'inicioBreak' => '13:00',
             'finBreak' => '14:00',

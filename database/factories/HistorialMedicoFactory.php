@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Models\EFisico;
 use App\Models\NomEmpleado;
 use App\Models\User;
 use App\Models\Usuarios;

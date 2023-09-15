@@ -1,12 +1,11 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Enfermeria;
 
-use App\Models\Direccion;
-use App\Http\Requests\StoreDireccionRequest;
-use App\Http\Requests\UpdateDireccionRequest;
+use App\Http\Controllers\Controller;
+use Illuminate\Http\Request;
 
-class DireccionController extends Controller
+class EFisicoController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -31,10 +30,10 @@ class DireccionController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \App\Http\Requests\StoreDireccionRequest  $request
+     * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(StoreDireccionRequest $request)
+    public function store(Request $request)
     {
         //
     }
@@ -42,10 +41,10 @@ class DireccionController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\Direccion  $direccion
+     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show(Direccion $direccion)
+    public function show($id)
     {
         //
     }
@@ -53,10 +52,10 @@ class DireccionController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Models\Direccion  $direccion
+     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit(Direccion $direccion)
+    public function edit($id)
     {
         //
     }
@@ -64,11 +63,11 @@ class DireccionController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \App\Http\Requests\UpdateDireccionRequest  $request
-     * @param  \App\Models\Direccion  $direccion
+     * @param  \Illuminate\Http\Request  $request
+     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(UpdateDireccionRequest $request, Direccion $direccion)
+    public function update(Request $request, $id)
     {
         //
     }
@@ -76,10 +75,10 @@ class DireccionController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\Direccion  $direccion
+     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Direccion $direccion)
+    public function destroy($id)
     {
         //
     }

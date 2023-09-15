@@ -13,12 +13,12 @@ class Horario extends Model
     protected $guarded = ['id', 'created_at', 'updated'];
 
     protected $fillable = [
-        'Día',
-        'Entrada',
-        'InicioBreak',
-        'FinBreak',
-        'Salida',
-        'Profesional'
+        'dia',
+        'entrada',
+        'inicioBreak',
+        'finBreak',
+        'salida',
+        'profesional_id'
     ];
 
     // Uno a muchos inversa

@@ -27,6 +27,13 @@ class UserSeeder extends Seeder
             'url' => '352509003_6049771758454029_8179069290620608597_n.jpg',
             'categoria'  => 'fotografías',
             'imageable_id' => 1,
+            'imageable_type' => 'App\Models\NomEmpleado'
+        ]);
+
+        Imagen::create([
+            'url' => '352509003_6049771758454029_8179069290620608597_n.jpg',
+            'categoria'  => 'fotografías',
+            'imageable_id' => 1,
             'imageable_type' => 'App\Models\User'
         ]);
 
@@ -43,7 +50,7 @@ class UserSeeder extends Seeder
             'url' => '2.jpeg',
             'categoria'  => 'fotografías',
             'imageable_id' => 2,
-            'imageable_type' => 'App\Models\User'
+            'imageable_type' => 'App\Models\NomEmpleado'
         ]);
 
         User::create([
@@ -57,7 +64,7 @@ class UserSeeder extends Seeder
             'url' => '3.jpeg',
             'categoria'  => 'fotografías',
             'imageable_id' => 3,
-            'imageable_type' => 'App\Models\User'
+            'imageable_type' => 'App\Models\NomEmpleado'
         ]);
 
         User::create([
@@ -71,7 +78,7 @@ class UserSeeder extends Seeder
             'url' => '4.jpeg',
             'categoria'  => 'fotografías',
             'imageable_id' => 4,
-            'imageable_type' => 'App\Models\User'
+            'imageable_type' => 'App\Models\NomEmpleado'
         ]);
 
         User::create([
@@ -85,7 +92,7 @@ class UserSeeder extends Seeder
             'url' => '5.jpeg',
             'categoria'  => 'fotografías',
             'imageable_id' => 5,
-            'imageable_type' => 'App\Models\User'
+            'imageable_type' => 'App\Models\NomEmpleado'
         ]);
 
         User::create([
@@ -99,7 +106,7 @@ class UserSeeder extends Seeder
             'url' => '6.jpeg',
             'categoria'  => 'fotografías',
             'imageable_id' => 6,
-            'imageable_type' => 'App\Models\User'
+            'imageable_type' => 'App\Models\NomEmpleado'
         ]);
 
         User::create([
@@ -113,7 +120,7 @@ class UserSeeder extends Seeder
             'url' => '7.jpeg',
             'categoria'  => 'fotografías',
             'imageable_id' => 7,
-            'imageable_type' => 'App\Models\User'
+            'imageable_type' => 'App\Models\NomEmpleado'
         ]);
 
         User::create([
@@ -127,7 +134,7 @@ class UserSeeder extends Seeder
             'url' => '8.jpeg',
             'categoria'  => 'fotografías',
             'imageable_id' => 8,
-            'imageable_type' => 'App\Models\User'
+            'imageable_type' => 'App\Models\NomEmpleado'
         ]);
     }
 }

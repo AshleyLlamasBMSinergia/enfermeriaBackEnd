@@ -24,7 +24,7 @@ class HistorialMedicoController extends Controller
 
     public function show($id){
         
-        $data = HistorialMedico::with(['pacientable', 'pacientable.puesto', 'antecedentesPersonalesPatologicos', 'antecedentesPersonalesNoPatologicos', 'antecedentesHeredofamiliares'])->find($id);
+        $data = HistorialMedico::with(['pacientable', 'pacientable.puesto', 'pacientable.image', 'antecedentesPersonalesPatologicos', 'antecedentesPersonalesNoPatologicos', 'antecedentesHeredofamiliares', 'examenesFisicos'])->find($id);
 
         if (!$data) {
             return response()->json(['error' => 'Historial médico no encontrado'], 404);
@@ -53,33 +53,17 @@ class HistorialMedicoController extends Controller
         // Log::error($request);
         try{
             //Crear cuenta de usuario
-            $user = User::create([
-                'name' => $request['nombre'].' '.$request['paterno'].' '.$request['materno'],
-                'email' => $request['email'],
-                'password' => Hash::make(Str::random(8)),
-                'nickname' => $request['nickname']
-            ]);
-
-            $imagenBase64 = $request['imagen'];
-            $imagen = base64_decode($imagenBase64);
-
-            $ruta = storage_path('app/private/fotografías/1.png'); // Define la ruta donde deseas guardar la imagen
-            file_put_contents($ruta, $imagen);
-
-
-            // Guardar la imagen
-            Imagen::create([
-                'url' => '1.png',
-                // 'url' => Storage::disk('private')->put('fotografías/' . $imagenNombre, $imagenDecode),
-                'categoria' => 'fotografías',
-                'imageable_id' => $user->id,
-                'imageable_type' => User::class
-            ]);
-
-
             switch($request['paciente'])
             {
                 case 'Empleado':
+
+                    $user = User::create([
+                        'name' => $request['nombre'].' '.$request['paterno'].' '.$request['materno'],
+                        'email' => $request['email'],
+                        'password' => Hash::make(Str::random(8)),
+                        'nickname' => $request['nickname']
+                    ]);
+
                     $nomEmpleado = NomEmpleado::create([
                         'paterno' => $request['paterno'],
                         'materno' => $request['materno'],
@@ -113,25 +97,41 @@ class HistorialMedicoController extends Controller
                         // 'telefono' => $request['prefijo'].$request['telefono'],
                         'telefono' => '13321',
                         'correo' => $request['email'],
-                        'user_id' => $user->id
+                        //'user_id' => $user->id
                     ]);
 
                     $pacientable_id = $externo->id;
                     $pacientable_type = Externo::class;
                 break;
                 default:
-                    $user->delete();
-                    $imagen->delete();
+                    //$user->delete();
                     return response()->json([
                         'error' => 'No se encontro el tipo de paciente'
                     ], 500);
             }
 
+            $imagenBase64 = explode(";base64,",$request['imagen']);
+            $imagenExplode = explode("image/", $imagenBase64[0]);
+            $imagenFormato = $imagenExplode[1];
+            $imagen = base64_decode($imagenBase64[1]);
+            $imagenNombre = Str::random(12);
+            $ruta = storage_path('app/private/fotografías/'.$imagenNombre.'.'.$imagenFormato);
+
+            file_put_contents($ruta, $imagen);
+           
+            // Guardar la imagen
+            $imagen = Imagen::create([
+                'url' => $imagenNombre.'.'.$imagenFormato,
+                'categoria' => 'fotografías',
+                'imageable_id' => $pacientable_id,
+                'imageable_type' => $pacientable_type
+            ]);
+
             //Crear historial medico
             $historialMedico = HistorialMedico::create([
                 'pacientable_id' => $pacientable_id,
                 'pacientable_type' => $pacientable_type,
-                'user_id' => $user->id
+                //'user_id' => $user->id
             ]);
 
             return response()->json([
@@ -141,8 +141,8 @@ class HistorialMedicoController extends Controller
         }catch(\Exception $e){
             Log::error($e);
             return response()->json([
-                // 'error' => $e->getMessage()
-                'error' => $request,
+                 'error' => $e->getMessage()
+                //'error' => $request,
             ], 500);
         }
 

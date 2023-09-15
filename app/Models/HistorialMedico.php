@@ -50,4 +50,9 @@ class HistorialMedico extends Model
     public function citas(){
         return $this->hasMany('App\Models\Cita');
     }
+
+    //Uno a Muchos
+    public function examenesFisicos(){
+        return $this->hasMany('App\Models\EFisico', 'historialMedico_id');
+    }
 }

@@ -38,7 +38,7 @@ class CitaController extends Controller
             }
 
             $cita->paciente_id = 1;
-            $cita->profesional_id = 2;
+            $cita->profesional_id = 1;
 
             $cita->save();
 
