@@ -48,31 +48,31 @@ class EFisico extends Model
 
     //Uno a Uno Inversa
     public function organoSentido(){
-        return $this->belongsTo('App\Models\EOrganoSentido');
+        return $this->belongsTo('App\Models\EOrganoSentido', 'EOrganoSentido_id');
     }
 
     //Uno a Uno Inversa
     public function cabeza(){
-        return $this->belongsTo('App\Models\ECabeza');
+        return $this->belongsTo('App\Models\ECabeza', 'ECabeza_id');
     }
 
     //Uno a Uno Inversa
     public function torax(){
-        return $this->belongsTo('App\Models\ETorax');
+        return $this->belongsTo('App\Models\ETorax', 'ETorax_id');
     }
 
     //Uno a Uno Inversa
     public function abdomen(){
-        return $this->belongsTo('App\Models\EAbdomen');
+        return $this->belongsTo('App\Models\EAbdomen', 'EAbdomen_id');
     }
 
     //Uno a Uno Inversa
     public function extremidad(){
-        return $this->belongsTo('App\Models\EExtremidad');
+        return $this->belongsTo('App\Models\EExtremidad', 'EExtremidad_id');
     }
 
     //Uno a Uno Inversa
     public function columnaVertebral(){
-        return $this->belongsTo('App\Models\EColumnaVertebral');
+        return $this->belongsTo('App\Models\EColumnaVertebral', 'EColumnaVertebral_id');
     }
 }

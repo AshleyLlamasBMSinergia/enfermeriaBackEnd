@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\EOrganoSentido;
 use Illuminate\Database\Seeder;
 
 class EOrganoSentidoSeeder extends Seeder
@@ -13,6 +14,6 @@ class EOrganoSentidoSeeder extends Seeder
      */
     public function run()
     {
-        //
+        EOrganoSentido::factory(20)->create();
     }
 }

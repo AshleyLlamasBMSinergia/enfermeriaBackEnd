@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\ETorax;
 use Illuminate\Database\Seeder;
 
 class EToraxSeeder extends Seeder
@@ -13,6 +14,6 @@ class EToraxSeeder extends Seeder
      */
     public function run()
     {
-        //
+        ETorax::factory(20)->create();
     }
 }

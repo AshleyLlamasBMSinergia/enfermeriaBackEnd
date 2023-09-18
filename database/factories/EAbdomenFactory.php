@@ -14,7 +14,11 @@ class EAbdomenFactory extends Factory
     public function definition()
     {
         return [
-            //
+            'pared' => $this->faker->text(8),
+            'peristalsis' => $this->faker->text(8),
+            'visceromegalias' => $this->faker->text(8),
+            'hernias' => $this->faker->text(8),
+            'observaciones' => $this->faker->text(8),
         ];
     }
 }

@@ -7,6 +7,7 @@ use App\Http\Controllers\enfermeria\APPatologicoController;
 use App\Http\Controllers\Enfermeria\CitaController;
 use App\Http\Controllers\enfermeria\CalendarioController;
 use App\Http\Controllers\Enfermeria\ConsultaController;
+use App\Http\Controllers\Enfermeria\EFisicoController;
 use App\Http\Controllers\enfermeria\EmpleadoController;
 use App\Http\Controllers\Enfermeria\EnfermeriaController;
 use App\Http\Controllers\Enfermeria\EstadisticaController;
@@ -86,6 +87,9 @@ Route::middleware('auth:sanctum')->group(function () {
 
     Route::post('/antecendentes-heredofamiliares', [AHeredofamiliarController::class, 'store']);
     Route::put('/antecendentes-heredofamiliares/edit/{id}', [AHeredofamiliarController::class, 'update']);
+
+    Route::post('/examenes-fisicos', [EFisicoController::class, 'store']);
+    Route::delete('/examenes-fisicos/{id}',[ EFisicoController::class, 'destroy']);
 
     //INSUMOS MEDICOS
     Route::get('/insumos-medicos', [InsumoMedicoController::class, 'index']);

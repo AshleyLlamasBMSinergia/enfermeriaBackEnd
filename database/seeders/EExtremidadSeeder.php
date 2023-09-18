@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\EExtremidad;
 use Illuminate\Database\Seeder;
 
 class EExtremidadSeeder extends Seeder
@@ -13,6 +14,6 @@ class EExtremidadSeeder extends Seeder
      */
     public function run()
     {
-        //
+        EExtremidad::factory(20)->create();
     }
 }

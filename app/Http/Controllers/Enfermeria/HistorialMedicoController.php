@@ -24,7 +24,21 @@ class HistorialMedicoController extends Controller
 
     public function show($id){
         
-        $data = HistorialMedico::with(['pacientable', 'pacientable.puesto', 'pacientable.image', 'antecedentesPersonalesPatologicos', 'antecedentesPersonalesNoPatologicos', 'antecedentesHeredofamiliares', 'examenesFisicos'])->find($id);
+        $data = HistorialMedico::with(
+            ['pacientable',
+            'pacientable.puesto',
+            'pacientable.image',
+            'antecedentesPersonalesPatologicos',
+            'antecedentesPersonalesNoPatologicos',
+            'antecedentesHeredofamiliares',
+            'examenesFisicos',
+            'examenesFisicos.cabeza',
+            'examenesFisicos.organoSentido',
+            'examenesFisicos.torax',
+            'examenesFisicos.abdomen',
+            'examenesFisicos.extremidad',
+            'examenesFisicos.columnaVertebral'
+            ])->find($id);
 
         if (!$data) {
             return response()->json(['error' => 'Historial médico no encontrado'], 404);

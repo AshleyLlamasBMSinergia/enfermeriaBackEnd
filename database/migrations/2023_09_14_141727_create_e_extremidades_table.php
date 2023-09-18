@@ -19,7 +19,7 @@ class CreateEExtremidadesTable extends Migration
             $table->string('toraxicas')->nullable();
             $table->string('hombro')->nullable();
             $table->string('codo')->nullable();
-            $table->string('muñeca')->nullable();
+            $table->string('muneca')->nullable();
             $table->string('pie')->nullable();
             $table->string('movilidad')->nullable();
             $table->string('pelvicas')->nullable();

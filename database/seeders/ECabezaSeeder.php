@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\ECabeza;
 use Illuminate\Database\Seeder;
 
 class ECabezaSeeder extends Seeder
@@ -13,6 +14,6 @@ class ECabezaSeeder extends Seeder
      */
     public function run()
     {
-        //
+        ECabeza::factory(20)->create();
     }
 }

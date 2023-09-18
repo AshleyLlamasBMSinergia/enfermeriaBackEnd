@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\EAbdomen;
 use Illuminate\Database\Seeder;
 
 class EAbdomenSeeder extends Seeder
@@ -13,6 +14,6 @@ class EAbdomenSeeder extends Seeder
      */
     public function run()
     {
-        //
+        EAbdomen::factory(20)->create();
     }
 }

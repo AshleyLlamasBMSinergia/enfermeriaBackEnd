@@ -17,7 +17,7 @@ class EExtremidad extends Model
         'toraxicas',
         'hombro',
         'codo',
-        'muñeca',
+        'muneca',
         'pie',
         'movilidad',
         'pelvicas',

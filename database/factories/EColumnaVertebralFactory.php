@@ -14,7 +14,15 @@ class EColumnaVertebralFactory extends Factory
     public function definition()
     {
         return [
-            //
+            'lordosis' => $this->faker->text(8),
+            'flexion' => $this->faker->text(8),
+            'lateralizacion' => $this->faker->text(8),
+            'puntosDolor' => $this->faker->text(8),
+            'xifosis' => $this->faker->text(8),
+            'extension' => $this->faker->text(8),
+            'rotacion' => $this->faker->text(8),
+            'otros' => $this->faker->text(8),
+            'observaciones' => $this->faker->text(12),
         ];
     }
 }
