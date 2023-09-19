@@ -2,10 +2,10 @@
 
 namespace Database\Seeders;
 
-use App\Models\EEmbarazo;
+use App\Models\EASustancia;
 use Illuminate\Database\Seeder;
 
-class EEmbarazoSeeder extends Seeder
+class EASustanciaSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -14,6 +14,6 @@ class EEmbarazoSeeder extends Seeder
      */
     public function run()
     {
-        EEmbarazo::factory(10)->create();
+        EASustancia::factory(50)->create();
     }
 }

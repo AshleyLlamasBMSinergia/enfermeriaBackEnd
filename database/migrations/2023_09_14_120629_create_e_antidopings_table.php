@@ -13,8 +13,17 @@ class CreateEAntidopingsTable extends Migration
      */
     public function up()
     {
-        Schema::create('e_antidopings', function (Blueprint $table) {
+        Schema::create('EAntidopings', function (Blueprint $table) {
             $table->id();
+
+            $table->date('fecha');
+
+            $table->string('tipo')->nullable();
+            $table->string('examen')->nullable();
+
+            $table->unsignedBigInteger('historialMedico_id')->nullable();
+            $table->foreign('historialMedico_id')->references('id')->on('HistorialesMedicos')->onDelete('set null')->onUpdate('cascade');
+
             $table->timestamps();
         });
     }
@@ -26,6 +35,6 @@ class CreateEAntidopingsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('e_antidopings');
+        Schema::dropIfExists('EAntidopings');
     }
 }

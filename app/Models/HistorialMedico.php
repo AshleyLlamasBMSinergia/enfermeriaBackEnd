@@ -55,4 +55,19 @@ class HistorialMedico extends Model
     public function examenesFisicos(){
         return $this->hasMany('App\Models\EFisico', 'historialMedico_id');
     }
+
+    //Uno a Muchos
+    public function examenesAntidoping(){
+        return $this->hasMany('App\Models\EAntidoping', 'historialMedico_id');
+    }
+    
+    //Uno a Muchos
+    public function examenesEmbarazo(){
+        return $this->hasMany('App\Models\EEmbarazo', 'historialMedico_id');
+    }
+
+    //Uno a Muchos
+    public function examenesVista(){
+        return $this->hasMany('App\Models\EVista', 'historialMedico_id');
+    }
 }

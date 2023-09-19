@@ -13,8 +13,21 @@ class CreateEVistasTable extends Migration
      */
     public function up()
     {
-        Schema::create('e_vistas', function (Blueprint $table) {
+        Schema::create('Evistas', function (Blueprint $table) {
             $table->id();
+
+            $table->date('fecha');
+
+            $table->string('tipo')->nullable();
+            $table->string('necesitaLentes')->nullable();
+            $table->string('usaLentes')->nullable();
+
+            $table->longText('comentarios')->nullable();
+
+            $table->unsignedBigInteger('historialMedico_id')->nullable();
+            $table->foreign('historialMedico_id')->references('id')->on('HistorialesMedicos')->onDelete('set null')->onUpdate('cascade');
+
+
             $table->timestamps();
         });
     }
@@ -26,6 +39,6 @@ class CreateEVistasTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('e_vistas');
+        Schema::dropIfExists('Evistas');
     }
 }

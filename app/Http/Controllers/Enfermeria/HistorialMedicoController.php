@@ -37,7 +37,11 @@ class HistorialMedicoController extends Controller
             'examenesFisicos.torax',
             'examenesFisicos.abdomen',
             'examenesFisicos.extremidad',
-            'examenesFisicos.columnaVertebral'
+            'examenesFisicos.columnaVertebral',
+            'examenesAntidoping',
+            'examenesAntidoping.sustancias',
+            'examenesEmbarazo',
+            'examenesVista'
             ])->find($id);
 
         if (!$data) {

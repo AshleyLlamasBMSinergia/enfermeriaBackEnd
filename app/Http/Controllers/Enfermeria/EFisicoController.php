@@ -154,7 +154,7 @@ class EFisicoController extends Controller
         $EFisico->delete();
 
         return response()->json([
-            'message' => "Exámenes físicos eleminados exitosamente",
+            'message' => "Exámenes físicos eliminados  exitosamente",
         ]);
     }
 }

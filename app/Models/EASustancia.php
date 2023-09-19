@@ -5,24 +5,22 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class EEmbarazo extends Model
+class EASustancia extends Model
 {
     use HasFactory;
-    protected $table = 'EEmbarazos';
+    protected $table = 'EASustancias';
 
     protected $guarded = ['id', 'created_at', 'updated'];
 
     protected $fillable = [
-        'fecha',
-        'tipo',
+        'sustancia',
         'resultado',
-        'comentarios',
-        'historialMedico_id',
+        'EAntidoping_id',
     ];
 
     // Uno a muchos inversa
-    public function historialMedico()
+    public function examenAntidoping()
     {
-        return $this->belongsTo('App\Models\HistorialMedico', 'historialMedico_id');
+        return $this->belongsTo('App\Models\EAntidoping', 'EAntidoping_id');
     }
 }

@@ -7,10 +7,13 @@ use App\Http\Controllers\enfermeria\APPatologicoController;
 use App\Http\Controllers\Enfermeria\CitaController;
 use App\Http\Controllers\enfermeria\CalendarioController;
 use App\Http\Controllers\Enfermeria\ConsultaController;
+use App\Http\Controllers\Enfermeria\EAntidopingController;
+use App\Http\Controllers\Enfermeria\EEmbarazoController;
 use App\Http\Controllers\Enfermeria\EFisicoController;
 use App\Http\Controllers\enfermeria\EmpleadoController;
 use App\Http\Controllers\Enfermeria\EnfermeriaController;
 use App\Http\Controllers\Enfermeria\EstadisticaController;
+use App\Http\Controllers\Enfermeria\EVistaController;
 use App\Http\Controllers\enfermeria\ExternoController;
 use App\Http\Controllers\Enfermeria\HistorialMedicoController;
 use App\Http\Controllers\Enfermeria\HorarioController;
@@ -90,6 +93,15 @@ Route::middleware('auth:sanctum')->group(function () {
 
     Route::post('/examenes-fisicos', [EFisicoController::class, 'store']);
     Route::delete('/examenes-fisicos/{id}',[ EFisicoController::class, 'destroy']);
+
+    Route::post('/examen-antidoping', [EAntidopingController::class, 'store']);
+    Route::delete('/examen-antidoping/{id}',[ EAntidopingController::class, 'destroy']);
+
+    Route::post('/examen-embarazo', [EEmbarazoController::class, 'store']);
+    Route::delete('/examen-embarazo/{id}',[ EEmbarazoController::class, 'destroy']);
+
+    Route::post('/examen-vista', [EVistaController::class, 'store']);
+    Route::delete('/examen-vista/{id}',[ EVistaController::class, 'destroy']);
 
     //INSUMOS MEDICOS
     Route::get('/insumos-medicos', [InsumoMedicoController::class, 'index']);

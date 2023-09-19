@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\EAntidoping;
 use Illuminate\Database\Seeder;
 
 class EAntidopingSeeder extends Seeder
@@ -13,6 +14,6 @@ class EAntidopingSeeder extends Seeder
      */
     public function run()
     {
-        //
+        EAntidoping::factory(20)->create();
     }
 }

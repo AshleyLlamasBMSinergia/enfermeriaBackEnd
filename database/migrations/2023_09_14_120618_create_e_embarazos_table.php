@@ -13,8 +13,19 @@ class CreateEEmbarazosTable extends Migration
      */
     public function up()
     {
-        Schema::create('e_embarazos', function (Blueprint $table) {
+        Schema::create('EEmbarazos', function (Blueprint $table) {
             $table->id();
+
+            $table->date('fecha');
+
+            $table->string('tipo')->nullable();
+            $table->string('resultado')->nullable();
+            $table->longText('comentarios')->nullable();
+
+            $table->unsignedBigInteger('historialMedico_id')->nullable();
+            $table->foreign('historialMedico_id')->references('id')->on('HistorialesMedicos')->onDelete('set null')->onUpdate('cascade');
+
+
             $table->timestamps();
         });
     }
@@ -26,6 +37,6 @@ class CreateEEmbarazosTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('e_embarazos');
+        Schema::dropIfExists('EEmbarazos');
     }
 }

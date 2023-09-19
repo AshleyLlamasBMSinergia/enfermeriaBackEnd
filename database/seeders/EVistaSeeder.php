@@ -2,17 +2,13 @@
 
 namespace Database\Seeders;
 
+use App\Models\EVista;
 use Illuminate\Database\Seeder;
 
 class EVistaSeeder extends Seeder
 {
-    /**
-     * Run the database seeds.
-     *
-     * @return void
-     */
     public function run()
     {
-        //
+        EVista::factory(15)->create();
     }
 }
