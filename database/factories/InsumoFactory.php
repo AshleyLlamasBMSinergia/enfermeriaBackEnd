@@ -15,6 +15,7 @@ class InsumoFactory extends Factory
     {
         return [
             'nombre' => $this->faker->name,
+            'precio' => $this->faker->randomDigitNotNull,
             'piezasPorLote' => $this->faker->randomDigitNotNull,
             'descripcion' => $this->faker->text($maxNbChars = 100),
         ];

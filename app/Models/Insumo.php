@@ -17,6 +17,7 @@ class Insumo extends Model
         'nombre',
         'piezasPorLote',
         'descripcion',
+        'precio',
         'requisicion_id'
     ];
 

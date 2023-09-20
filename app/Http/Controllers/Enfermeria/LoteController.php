@@ -12,7 +12,7 @@ class LoteController extends Controller
         try{
             $lote = $request['lote'];
     
-            $lotes = Lote::where('LOTE', 'like', '%' . $lote . '%')->get();
+            $lotes = Lote::where('lote', 'like', '%' . $lote . '%')->get();
     
             return response()->json($lotes);
     
@@ -30,7 +30,7 @@ class LoteController extends Controller
             return response()->json($data, 200);
         }catch(\Exception $e){
             return response()->json([
-                // 'error' => 'Ocurrió un error al buscar todos los lotes del insumo'
+                // 'error' => 'Ocurrió un error al buscar todos los lotes del lote'
                 'error' => $e
             ], 500);
         }
@@ -41,59 +41,70 @@ class LoteController extends Controller
         //
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
     public function store(Request $request)
     {
-        //
+        try{
+            Lote::create([
+                'lote' => $request['lote'],
+                'fechaCaducidad' => $request['fechaCaducidad'],
+                'fechaIngreso' => $request['fechaIngreso'],
+                'piezasDisponibles' => $request['piezasDisponibles'],
+                'insumos_id' => $request['insumos_id'],
+            ]);
+
+            // Responder
+            return response()->json([
+                'message' => 'Lote guardado exitosamente',
+            ]);
+
+        }catch (\Exception $e) {
+            return response()->json([
+                'error' => 'Error al guardar el lote',
+            ], 500);
+        }
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function show($id)
     {
-        //
+        $data = Lote::with(
+            ['insumo'])->find($id);
+
+        if (!$data) {
+            return response()->json(['error' => 'Lote no encontrado'], 404);
+        }
+        return response()->json($data, 200);
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function edit($id)
     {
         //
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function update(Request $request, $id)
     {
         //
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function destroy($id)
     {
-        //
+        try{
+            $lote = Lote::find($id);
+
+            if (!$lote) {
+                return response()->json([
+                    'message' => "El lote con ID $id no existe",
+                ], 404);
+            }else{
+                $lote->delete();
+            }
+    
+            return response()->json([
+                'message' => "Lote eliminado exitosamente",
+            ]);
+        }catch(\Exception $e){
+            return response()->json([
+                'error' => 'Ocurrió un error: '.$e->getMessage()
+            ], 500);
+        }
     }
 }

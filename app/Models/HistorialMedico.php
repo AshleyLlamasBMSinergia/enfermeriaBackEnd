@@ -70,4 +70,14 @@ class HistorialMedico extends Model
     public function examenesVista(){
         return $this->hasMany('App\Models\EVista', 'historialMedico_id');
     }
+
+     //Uno a Muchos
+     public function examenes(){
+        return $this->hasMany('App\Models\Examen', 'historialMedico_id');
+    }
+
+    //Uno a uno polimorfico
+    public function archivos(){
+        return $this->morphMany('App\Models\Archivo', 'archivable');
+    }
 }

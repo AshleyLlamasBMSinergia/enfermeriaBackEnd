@@ -19,7 +19,6 @@ class Lote extends Model
         'fechaIngreso',
         'piezasDisponibles',
         'insumos_id',
-        'piezasDisponibles'
     ];
 
     //Uno a Muchos Inversa

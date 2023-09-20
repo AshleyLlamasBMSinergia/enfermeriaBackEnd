@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateInsumosTable extends Migration
+class CreateArchivosTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,13 +13,14 @@ class CreateInsumosTable extends Migration
      */
     public function up()
     {
-        Schema::create('Insumos', function (Blueprint $table) {
+        Schema::create('Archivos', function (Blueprint $table) {
             $table->id();
 
-            $table->string('nombre')->nullable();
-            $table->decimal('precio')->nullable();
-            $table->integer('piezasPorLote')->nullable();
-            $table->longText('descripcion')->nullable();
+            $table->string('url');
+            $table->string('categoria')->nullable();
+
+            $table->unsignedBigInteger('archivable_id');
+            $table->string('archivable_type');
 
             $table->timestamps();
         });
@@ -32,6 +33,6 @@ class CreateInsumosTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('insumos');
+        Schema::dropIfExists('Archivos');
     }
 }

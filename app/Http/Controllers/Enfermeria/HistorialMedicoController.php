@@ -41,7 +41,8 @@ class HistorialMedicoController extends Controller
             'examenesAntidoping',
             'examenesAntidoping.sustancias',
             'examenesEmbarazo',
-            'examenesVista'
+            'examenesVista',
+            'examenes'
             ])->find($id);
 
         if (!$data) {

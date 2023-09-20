@@ -40,7 +40,24 @@ class InsumoController extends Controller
 
     public function store(Request $request)
     {
-        //
+        try{
+            Insumo::create([
+                'nombre' => $request['nombre'],
+                'piezasPorLote' => $request['piezasPorLote'],
+                'descripcion' => $request['descripcion'],
+                'requisicion_id' => $request['requisicion_id']
+            ]);
+
+            // Responder
+            return response()->json([
+                'message' => 'Insumo guardado exitosamente',
+            ]);
+
+        }catch (\Exception $e) {
+            return response()->json([
+                'error' => 'Error al guardar el insumo',
+            ], 500);
+        }
     }
 
     public function show($id){
@@ -60,6 +77,29 @@ class InsumoController extends Controller
 
     public function destroy($id)
     {
-        //
+        try{
+            $insumo = Insumo::find($id);
+
+            if (!$insumo) {
+                return response()->json([
+                    'message' => "El insumo con ID $id no existe",
+                ], 404);
+            }else{
+
+                foreach($insumo->lotes as $lote){
+                    $lote->delete();
+                }
+
+                $insumo->delete();
+            }
+    
+            return response()->json([
+                'message' => "Insumo eliminado exitosamente",
+            ]);
+        }catch(\Exception $e){
+            return response()->json([
+                'error' => 'Ocurrió un error: '.$e->getMessage()
+            ], 500);
+        }
     }
 }

@@ -3,21 +3,21 @@
 namespace App\Http\Controllers\Enfermeria;
 
 use App\Http\Controllers\Controller;
-use App\Models\Imagen;
+use App\Models\Archivo;
 use Illuminate\Http\Request;
 
-class ImagenController extends Controller
+class ArchivoController extends Controller
 {
     public function image($url){
 
         try{
-            $imagen = Imagen::where('url', $url)->first();
+            $archivo = Archivo::where('url', $url)->first();
     
-            if (!$imagen) {
-                return response()->json(['error' => 'Imagen no encontrada'], 404);
+            if (!$archivo) {
+                return response()->json(['error' => 'archivo no encontrado'], 404);
             }
         
-            $path = storage_path('app/private/' . $imagen->categoria . '/' . $imagen->url);
+            $path = storage_path('app/private/archivo/' . $archivo->categoria . '/' . $archivo->url);
 
             return response()->file($path);
 
