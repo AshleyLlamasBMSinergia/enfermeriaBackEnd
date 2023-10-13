@@ -13,6 +13,8 @@ class Consulta extends Model
 
     protected $guarded = ['id', 'created_at', 'updated'];
 
+    protected $dates = ['fecha'];
+    
     protected $fillable = [
         'cita_id',
         'fecha',
@@ -50,7 +52,7 @@ class Consulta extends Model
     // Uno a muchos inversa con NomEmpleado (profesional)
     public function profesional()
     {
-        return $this->belongsTo(NomEmpleado::class, 'profesional_id');
+        return $this->belongsTo(Profesional::class, 'profesional_id');
     }
 
     public function imagenes(){

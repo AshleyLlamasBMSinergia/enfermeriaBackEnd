@@ -3,10 +3,12 @@
 namespace App\Http\Controllers\Enfermeria;
 
 use App\Http\Controllers\Controller;
+use App\Models\Cita;
 use App\Models\Externo;
 use App\Models\HistorialMedico;
 use App\Models\Imagen;
 use App\Models\NomEmpleado;
+use App\Models\RHDependiente;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
@@ -25,8 +27,8 @@ class HistorialMedicoController extends Controller
     public function show($id){
         
         $data = HistorialMedico::with(
-            ['pacientable',
-            'pacientable.puesto',
+            [
+            'pacientable',
             'pacientable.image',
             'antecedentesPersonalesPatologicos',
             'antecedentesPersonalesNoPatologicos',
@@ -42,8 +44,20 @@ class HistorialMedicoController extends Controller
             'examenesAntidoping.sustancias',
             'examenesEmbarazo',
             'examenesVista',
-            'examenes'
+            'examenes.archivos',
             ])->find($id);
+
+        if ($data) {
+            if ($data->pacientable_type === 'App\\Models\\NomEmpleado') {
+                $data->load(
+                    'pacientable.puesto',
+                    'pacientable.dependientes',
+                    'pacientable.dependientes.empleado',
+                    'pacientable.dependientes.empleado.historialMedico',
+                    'pacientable.dependientes.image',
+                    'pacientable.dependientes.historialMedico');
+            }
+        }
 
         if (!$data) {
             return response()->json(['error' => 'Historial médico no encontrado'], 404);
@@ -52,15 +66,14 @@ class HistorialMedicoController extends Controller
     }
 
     public function buscador(Request $request){
-        try{
-            $nombre = $request['nombre'];
+        try{    
+            $nombre = $request->input('nombre');
     
             $historialesMedicos = HistorialMedico::whereHas('pacientable', function($query) use ($nombre) {
-                $query->where('nombre', 'like', '%' . $nombre . '%')->orWhere('paterno', 'like', '%' . $nombre . '%')->orWhere('materno', 'like', '%' . $nombre . '%');
+                $query->where('nombre', 'like', '%' . $nombre . '%');
             })->with(['pacientable'])->get();
-    
-            return response()->json($historialesMedicos);
-    
+
+            return response()->json($historialesMedicos);    
          }catch(\Exception $e){
             return response()->json([
                 'error' => 'Ocurrió un error: '.$e->getMessage()
@@ -69,23 +82,12 @@ class HistorialMedicoController extends Controller
     }
 
     public function store(Request $request){
-        // Log::error($request);
         try{
             //Crear cuenta de usuario
             switch($request['paciente'])
             {
                 case 'Empleado':
-
-                    $user = User::create([
-                        'name' => $request['nombre'].' '.$request['paterno'].' '.$request['materno'],
-                        'email' => $request['email'],
-                        'password' => Hash::make(Str::random(8)),
-                        'nickname' => $request['nickname']
-                    ]);
-
                     $nomEmpleado = NomEmpleado::create([
-                        'paterno' => $request['paterno'],
-                        'materno' => $request['materno'],
                         'nombre' => $request['nombre'],
                         'RFC' => $request['RFC'],
                         'CURP' => $request['CURP'],
@@ -93,37 +95,40 @@ class HistorialMedicoController extends Controller
                         'sexo' => $request['sexo'],
                         'fechaNacimiento' => $request['fechaNacimiento'],
                         'estadoCivil' => $request['estadoCivil'],
-                        // 'telefono' => $request['prefijo'].$request['telefono'],
-                        'telefono' => '23242',
+                        'telefono' => $request['prefijoInternacional'].$request['telefono'],
                         'correo' => $request['email'],
                         // 'direccion_id',
                         // 'estatus',
                         // 'puesto_id',
                         // 'clinica',
-                        'user_id' => $user->id
                     ]);
 
                     $pacientable_id = $nomEmpleado->id;
                     $pacientable_type = NomEmpleado::class;
+
+                    $user = User::create([
+                        'name' => $request['nombre'],
+                        'email' => $request['email'],
+                        // 'password' => Hash::make(Str::random(8)),
+                        'password' => Hash::make(1),
+                        'nickname' => $request['nickname'],
+                        'useable_id' => $pacientable_id,
+                        'useable_type' => $pacientable_type,
+                    ]);
                 break;
                 case 'Externo':
                     $externo = Externo::create([
-                        'paterno' => $request['paterno'],
-                        'materno' => $request['materno'],
                         'nombre' => $request['nombre'],
                         'sexo' => $request['sexo'],
                         'fechaNacimiento' => $request['fechaNacimiento'],
-                        // 'telefono' => $request['prefijo'].$request['telefono'],
-                        'telefono' => '13321',
+                        'telefono' => $request['prefijoInternacional'].$request['telefono'],
                         'correo' => $request['email'],
-                        //'user_id' => $user->id
                     ]);
 
                     $pacientable_id = $externo->id;
                     $pacientable_type = Externo::class;
                 break;
                 default:
-                    //$user->delete();
                     return response()->json([
                         'error' => 'No se encontro el tipo de paciente'
                     ], 500);
@@ -164,6 +169,142 @@ class HistorialMedicoController extends Controller
                 //'error' => $request,
             ], 500);
         }
+    }
 
+    public function update($id, Request $request){
+        try{
+            $historialMedico = HistorialMedico::find($id);
+
+            if (!$historialMedico) {
+                return response()->json(['error' => 'Historial médico no encontrado'], 404);
+            }
+
+            switch($request['paciente'])
+            {
+                case 'Empleado':
+                    
+                    switch($historialMedico->pacientable_type == NomEmpleado::class){
+                        case NomEmpleado::class:
+
+                            $historialMedico->pacientable->update([
+                                'nombre' => $request['nombre'],
+                                'RFC' => $request['RFC'],
+                                'CURP' => $request['CURP'],
+                                'IMSS' => $request['IMSS'],
+                                'sexo' => $request['sexo'],
+                                'fechaNacimiento' => $request['fechaNacimiento'],
+                                'estadoCivil' => $request['estadoCivil'],
+                                'telefono' => $request['prefijoInternacional'].$request['telefono'],
+                                'correo' => $request['email'],
+                                // 'direccion_id',
+                                // 'estatus',
+                                // 'puesto_id',
+                            ]);
+        
+                            if ($historialMedico->pacientable->user) {
+                                $historialMedico->pacientable->user->update([
+                                    'name' => $request['nombre'],
+                                    'email' => $request['email'],
+                                    'nickname' => $request['nickname'],
+                                ]);
+                            } else {
+                                return response()->json(['error' => 'No se pudo actualizar el usuario asociado'], 500);
+                            }
+                        break;
+                        case Externo::class:
+
+                        break;
+                    }
+
+                break;
+                case 'Externo':
+                    $historialMedico->pacientable->update([
+                        'nombre' => $request['nombre'],
+                        'sexo' => $request['sexo'],
+                        'fechaNacimiento' => $request['fechaNacimiento'],
+                        'telefono' => $request['prefijoInternacional'].$request['telefono'],
+                        'correo' => $request['email'],
+                    ]);
+                break;
+                default:
+                    return response()->json([
+                        'error' => 'No se encontro el tipo de paciente'
+                    ], 400);
+            }
+
+            if($request['imagen']){
+                if($historialMedico->pacientable->image){
+                    Storage::delete($historialMedico->pacientable->image->url);
+                    $historialMedico->pacientable->image->delete();
+                }
+
+                $imagenBase64 = explode(";base64,",$request['imagen']);
+                $imagenExplode = explode("image/", $imagenBase64[0]);
+                $imagenFormato = $imagenExplode[1];
+                $imagen = base64_decode($imagenBase64[1]);
+                $imagenNombre = Str::random(12);
+                $ruta = storage_path('app/private/fotografías/'.$imagenNombre.'.'.$imagenFormato);
+
+                file_put_contents($ruta, $imagen);
+            
+                // Guardar la imagen
+                $imagen = Imagen::create([
+                    'url' => $imagenNombre.'.'.$imagenFormato,
+                    'categoria' => 'fotografías',
+                    'imageable_id' => $historialMedico->pacientable_id,
+                    'imageable_type' => $historialMedico->pacientable_type,
+                ]);
+            }
+
+            return response()->json([
+                'message' => 'Historial médico guardado exitosamente',
+            ]);
+
+        }catch(\Exception $e){
+            // Log::error($e);
+            return response()->json([
+                 'error' => $e->getMessage()
+                //'error' => $request,
+            ], 500);
+        }
+
+    }
+
+    public function destroy($id)
+    {
+        try{
+            $historialMedico = HistorialMedico::find($id);
+
+            if (!$historialMedico) {
+                return response()->json([
+                    'message' => "El historial médico con ID $id no existe",
+                ], 404);
+            }
+
+            if ($historialMedico->image) {
+                Storage::delete($historialMedico->image->url);
+                $historialMedico->image->delete();
+            }
+
+            if ($historialMedico->pacientable) {
+                $historialMedico->pacientable->delete();
+            }
+
+            foreach(Cita::where('paciente_id', $historialMedico->id)->get() as $cita) {
+                $cita->delete();
+            }
+
+            $historialMedico->delete();
+
+            return response()->json([
+                'message' => "Historial médico eliminado exitosamente",
+            ]);
+
+        }catch(\Exception $e){
+            Log::error($e);
+            return response()->json([
+                'error' => 'Ocurrió un error al eliminar el historial médico'
+            ], 500);
+        }
     }
 }

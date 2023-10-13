@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 use App\Models\Horario;
 use App\Models\Imagen;
+use App\Models\Profesional;
 use App\Models\User;
 use Illuminate\Database\Seeder;
 
@@ -21,17 +22,19 @@ class UserSeeder extends Seeder
             'nickname' => 'Ashley Llamas',
             'email' => 'ashleyllamasg@gmail.com',
             'password' => bcrypt('123456'),
+            'useable_id' => 1,
+            'useable_type' => Profesional::class,
         ]);
 
         Imagen::create([
-            'url' => '352509003_6049771758454029_8179069290620608597_n.jpg',
+            'url' => '1.jpg',
             'categoria'  => 'fotografías',
             'imageable_id' => 1,
-            'imageable_type' => 'App\Models\NomEmpleado'
+            'imageable_type' => Profesional::class,
         ]);
 
         Imagen::create([
-            'url' => '352509003_6049771758454029_8179069290620608597_n.jpg',
+            'url' => '1.jpg',
             'categoria'  => 'fotografías',
             'imageable_id' => 1,
             'imageable_type' => 'App\Models\User'
@@ -44,6 +47,8 @@ class UserSeeder extends Seeder
             'nickname' => 'Jose Bravo',
             'email' => 'jbravo@bmsinergia.com',
             'password' => bcrypt('123456'),
+            'useable_id' => 1,
+            'useable_type' => NomEmpleado::class,
         ]);
 
         Imagen::create([
@@ -58,6 +63,8 @@ class UserSeeder extends Seeder
             'nickname' => 'Jose Barreras',
             'email' => 'jbarreras@bmsinergia.com',
             'password' => bcrypt('123456'),
+            'useable_id' => 2,
+            'useable_type' => NomEmpleado::class,
         ]);
 
         Imagen::create([
@@ -72,6 +79,8 @@ class UserSeeder extends Seeder
             'nickname' => 'Raul Leon',
             'email' => 'rleon@bmsinergia.com',
             'password' => bcrypt('123456'),
+            'useable_id' => 3,
+            'useable_type' => NomEmpleado::class,
         ]);
 
         Imagen::create([
@@ -86,6 +95,8 @@ class UserSeeder extends Seeder
             'nickname' => 'Salvador Yescas',
             'email' => 'syescas@bmsinergia.com',
             'password' => bcrypt('123456'),
+            'useable_id' => 4,
+            'useable_type' => NomEmpleado::class,
         ]);
 
         Imagen::create([
@@ -100,6 +111,8 @@ class UserSeeder extends Seeder
             'nickname' => 'Delsy Galvez',
             'email' => 'dgalvez@bmsinergia.com',
             'password' => bcrypt('123456'),
+            'useable_id' => 5,
+            'useable_type' => NomEmpleado::class,
         ]);
 
         Imagen::create([
@@ -114,6 +127,8 @@ class UserSeeder extends Seeder
             'nickname' => 'Andres Sanchez',
             'email' => 'asanchez@bmsinergia.com',
             'password' => bcrypt('123456'),
+            'useable_id' => 6,
+            'useable_type' => NomEmpleado::class,
         ]);
 
         Imagen::create([
@@ -128,6 +143,8 @@ class UserSeeder extends Seeder
             'nickname' => 'Claudia Garcia',
             'email' => 'cgarciaz@bmsinergia.com',
             'password' => bcrypt('123456'),
+            'useable_id' => 7,
+            'useable_type' => NomEmpleado::class,
         ]);
 
         Imagen::create([

@@ -17,8 +17,13 @@ class NomPuesto extends Model
         'Nombre',
     ];
 
-    //Uno a Uno
-    public function nomEmpleado(){
-        return $this->hasOne('App\Models\NomEmpleado');
+    //Uno a muchos
+    public function empleados(){
+        return $this->hasMany('App\Models\NomEmpleado');
+    }
+
+    //Uno a muchos
+    public function profesionales(){
+        return $this->hasMany('App\Models\Profesionales');
     }
 }

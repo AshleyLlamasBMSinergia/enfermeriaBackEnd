@@ -19,19 +19,12 @@ class CreateRHDependientesTable extends Migration
             $table->unsignedBigInteger('empleado_id')->nullable();
             $table->foreign('empleado_id')->references('id')->on('NomEmpleados');
 
-            $table->string('paterno')->nullable();
-            $table->string('materno')->nullable();
-            $table->string('nombres')->nullable();
-            $table->dateTime('nacimiento')->nullable();
+            $table->string('nombre')->nullable();
+            $table->dateTime('fechaNacimiento')->nullable();
             $table->string('sexo')->nullable();
             $table->string('parentesco')->nullable();
 
-            $table->unsignedBigInteger('direccion_id')->nullable();
-            $table->foreign('direccion_id')->references('id')->on('Direcciones')->onDelete('set null')->onUpdate('cascade');
-            
             $table->string('estatus')->nullable();
-            $table->boolean('beneficiario')->nullable();
-
             $table->timestamps();
         });
     }

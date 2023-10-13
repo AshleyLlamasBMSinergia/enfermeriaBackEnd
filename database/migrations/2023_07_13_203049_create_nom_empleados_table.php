@@ -17,8 +17,6 @@ class CreateNomEmpleadosTable extends Migration
         Schema::create('NomEmpleados', function (Blueprint $table) {
             $table->id();
 
-            $table->string('paterno')->nullable();
-            $table->string('materno')->nullable();
             $table->string('nombre')->nullable();
             $table->string('RFC')->nullable();
             $table->string('curp')->nullable();
@@ -37,11 +35,9 @@ class CreateNomEmpleadosTable extends Migration
             
             $table->unsignedBigInteger('puesto_id')->nullable();
             $table->foreign('puesto_id')->references('id')->on('NomPuestos')->onDelete('set null')->onUpdate('cascade');
-            
-            $table->smallInteger('clinica')->nullable();
-            
-            $table->unsignedBigInteger('user_id')->nullable();
-            $table->foreign('user_id')->references('id')->on('users')->onDelete('set null')->onUpdate('cascade');
+
+            $table->unsignedBigInteger('empresa_id')->nullable();
+            $table->foreign('empresa_id')->references('id')->on('Empresas')->onDelete('set null')->onUpdate('cascade');
             
             $table->timestamps();
             

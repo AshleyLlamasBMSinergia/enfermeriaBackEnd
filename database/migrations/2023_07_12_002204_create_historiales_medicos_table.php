@@ -20,6 +20,9 @@ class CreateHistorialesMedicosTable extends Migration
             // $table->unsignedBigInteger('Usuario')->nullable();
             // $table->foreign('Usuario')->references('id')->on('users')->onDelete('set null')->onUpdate('cascade');
 
+            $table->decimal('talla')->nullable();
+            $table->decimal('peso')->nullable();
+
             //PACIENTE: EMPLEADO - DEPENDIENTE
             $table->string('pacientable_id')->nullable(); // PACIENTE - ID TIPO
             $table->string('pacientable_type')->nullable(); // PACIENTE - TIPO

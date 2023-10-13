@@ -16,10 +16,6 @@ class NomEmpleadoFactory extends Factory
     {
         static $n = 1;
 
-        $paterno = $this->faker->lastName();
-        $materno = $this->faker->lastName();
-        $nombre = $this->faker->firstName();
-
         switch(rand(1,2)){
             case 1: $genero = 'F';
             break;
@@ -30,16 +26,13 @@ class NomEmpleadoFactory extends Factory
         }
 
         return [
-            'paterno' => $paterno,
-            'materno' => $materno,
-            'nombre' => "$nombre $paterno $materno",
+            'nombre' => $this->faker->firstName(),
             'sexo' => $genero,
             'fechaNacimiento' => $this->faker->date('Y-m-d'),
             'estadoCivil' => 'Soltero',
             'telefono' => $this->faker->phoneNumber(),
             'direccion_id' => $n,
             'correo' => $this->faker->email(),
-            'user_id' => $n ++,
             'puesto_id' => NomPuesto::all()->random(),
         ];
     }

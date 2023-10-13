@@ -20,7 +20,7 @@ class Cita extends Model
         'tipo',
         'color',
         'motivo',
-        'paciente_id',
+        'paciente_id', //Historial medico
         'profesional_id'
     ];
 
@@ -30,10 +30,10 @@ class Cita extends Model
         return $this->belongsTo(HistorialMedico::class, 'paciente_id');
     }
 
-    // Uno a muchos inversa con NomEmpleado (Profesional)
+    // Uno a muchos inversa con Profesional (Profesional)
     public function profesional()
     {
-        return $this->belongsTo(NomEmpleado::class, 'profesional_id');
+        return $this->belongsTo(Profesional::class, 'profesional_id');
     }
 
     //Uno a Uno

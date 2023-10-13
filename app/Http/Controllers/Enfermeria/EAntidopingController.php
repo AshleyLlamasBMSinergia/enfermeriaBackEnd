@@ -60,28 +60,35 @@ class EAntidopingController extends Controller
 
     public function destroy($id)
     {
-        $EAntidoping = EAntidoping::find($id);
+        try{
+            $EAntidoping = EAntidoping::find($id);
 
-        if (!$EAntidoping) {
+            if (!$EAntidoping) {
+                return response()->json([
+                    'message' => "El Examen antidoping con ID $id no existe",
+                ], 404);
+            }
+
+            // Obtener todas las sustancias asociadas al examen antidoping
+            $sustancias = $EAntidoping->sustancias;
+
+            // Iterar sobre las sustancias y eliminarlas
+            foreach ($sustancias as $sustancia) {
+                $sustancia->delete();
+            }
+
+            // Eliminar el examen antidoping
+            $EAntidoping->delete();
+
             return response()->json([
-                'message' => "El Examen antidoping con ID $id no existe",
-            ], 404);
+                'message' => "Examen de antidoping eliminado exitosamente",
+            ]);
+        }catch(\Exception $e){
+            Log::error($e);
+            return response()->json([
+                'error' => 'Ocurrió un error al eliminar el examen de antidoping'
+            ], 500);
         }
-
-        // Obtener todas las sustancias asociadas al examen antidoping
-        $sustancias = $EAntidoping->sustancias;
-
-        // Iterar sobre las sustancias y eliminarlas
-        foreach ($sustancias as $sustancia) {
-            $sustancia->delete();
-        }
-
-        // Eliminar el examen antidoping
-        $EAntidoping->delete();
-
-        return response()->json([
-            'message' => "Examen de antidoping eliminado exitosamente",
-        ]);
     }
 
 }

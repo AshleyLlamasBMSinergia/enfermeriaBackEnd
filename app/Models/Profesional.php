@@ -5,29 +5,23 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class NomEmpleado extends Model
+class Profesional extends Model
 {
     use HasFactory;
 
-    protected $table = 'NomEmpleados';
+    protected $table = 'Profesionales';
 
     protected $guarded = ['id', 'created_at', 'updated'];
 
     protected $fillable = [
         'nombre',
-        'RFC',
-        'CURP',
-        'IMSS',
-        'sexo',
-        'fechaNacimiento',
-        'estadoCivil',
         'telefono',
         'correo',
+        'cedula',
         'empresa_id',
         'direccion_id',
         'estatus',
         'puesto_id',
-        'user_id'
     ];
 
     //Uno a uno polimorfico
@@ -45,7 +39,7 @@ class NomEmpleado extends Model
         return $this->belongsTo('App\Models\NomPuesto');
     }
 
-    //Uno a uno polimorfica
+    //Uno a uno polimorficab
     public function user(){
         return $this->morphOne('App\Models\User', 'useable');
     }

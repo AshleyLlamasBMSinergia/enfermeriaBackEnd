@@ -14,6 +14,7 @@ class Examen extends Model
     protected $guarded = ['id', 'created_at', 'updated'];
 
     protected $fillable = [
+        'fecha',
         'tipo',
         'categoria',
         'descripcion',

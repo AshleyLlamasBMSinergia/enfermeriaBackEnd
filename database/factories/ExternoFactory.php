@@ -14,8 +14,6 @@ class ExternoFactory extends Factory
      */
     public function definition()
     {
-        $paterno = $this->faker->lastName();
-        $materno = $this->faker->lastName();
         $nombre = $this->faker->firstName();
 
         switch(rand(1,2)){
@@ -28,9 +26,7 @@ class ExternoFactory extends Factory
         }
 
         return [
-            'paterno' => $paterno,
-            'materno' => $materno,
-            'Nombre' => $nombre,
+            'nombre' => $nombre,
             'sexo' => $genero,
             'fechaNacimiento' => $this->faker->date('Y-m-d'),
             'telefono' => $this->faker->phoneNumber(),

@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\APNPatologico;
 use App\Models\HistorialMedico;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 
 class APNPatologicoController extends Controller
 {
@@ -118,7 +119,6 @@ class APNPatologicoController extends Controller
             $antecedentesPersonalesNoPatologicos->espInmunizaciones = $request['espInmunizaciones'];
 
             $antecedentesPersonalesNoPatologicos->alimentacion = $request['alimentacion'];
-            $antecedentesPersonalesNoPatologicos->espAlimentacion = $request['espAlimentacion'];
 
             $antecedentesPersonalesNoPatologicos->aseoPersonal = $request['aseoPersonal'];
 
@@ -137,6 +137,7 @@ class APNPatologicoController extends Controller
                 'message' => 'Antecedentes personales no patológicos actualizados exitosamente'
             ]);
         } catch (\Exception $e) {
+            Log::error($e);
             return response()->json([
                 'error' => 'Ocurrió un error al actualizar los antecedentes personales no patológicos'
             ], 500);

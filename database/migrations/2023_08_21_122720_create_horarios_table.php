@@ -24,7 +24,7 @@ class CreateHorariosTable extends Migration
             
             //ENFERMERO - DOCTOR
             $table->unsignedBigInteger('profesional_id')->nullable();
-            $table->foreign('profesional_id')->references('id')->on('NomEmpleados');
+            $table->foreign('profesional_id')->references('id')->on('Profesionales');
 
             $table->timestamps();
         });

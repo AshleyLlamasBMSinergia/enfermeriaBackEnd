@@ -24,7 +24,7 @@ class CreateConsultasTable extends Migration
             
             //ENFERMERO - DOCTOR
             $table->unsignedBigInteger('profesional_id')->nullable();
-            $table->foreign('profesional_id')->references('id')->on('NomEmpleados');
+            $table->foreign('profesional_id')->references('id')->on('Profesionales');
 
             //PACIENTE
             $table->unsignedBigInteger('pacientable_id')->nullable();// PACIENTE - ID TIPO
@@ -39,7 +39,7 @@ class CreateConsultasTable extends Migration
             $table->integer('edad')->nullable();
             $table->decimal('peso')->nullable();
             $table->decimal('talla')->nullable();
-            $table->decimal('grucemiaCapilar')->nullable();
+            $table->string('grucemiaCapilar')->nullable();
 
             //SOAP
             $table->longText('subjetivo')->nullable();

@@ -3,7 +3,7 @@
 namespace Database\Factories;
 
 use App\Models\HistorialMedico;
-use App\Models\NomEmpleado;
+use App\Models\Profesional;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 class CitaFactory extends Factory
@@ -19,12 +19,12 @@ class CitaFactory extends Factory
         $color = $this->getColorByTipoCita($tipo);
 
         return [
-            'fecha' => $this->faker->dateTimeBetween('2023-08-01', '2023-08-31')->format('Y-m-d H:i:s'),
+            'fecha' => $this->faker->dateTimeBetween('2023-10-01', '2023-10-30')->format('Y-m-d H:i:s'),
             'tipo' => $tipo,
             'color' => $color,
             'motivo' => $this->faker->text($maxNbChars = 100),
             'paciente_id' => HistorialMedico::all()->random(),
-            'profesional_id' => NomEmpleado::all()->random()
+            'profesional_id' => Profesional::all()->random()
         ];
     }
 

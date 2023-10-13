@@ -14,20 +14,11 @@ class Externo extends Model
     protected $guarded = ['id', 'created_at', 'updated'];
 
     protected $fillable = [
-        'paterno',
-        'materno',
         'nombre',
         'sexo',
         'fechaNacimiento',
         'telefono',
-        'calle',
-        'exterior',
-        'interior',
-        'colonia',
-        'CP',
-        'localidad',
         'correo',
-        'empleado'
     ];
 
     //Uno a uno polimorfico

@@ -14,15 +14,12 @@ class RHDependiente extends Model
     protected $guarded = ['id', 'created_at', 'updated'];
 
     protected $fillable = [
-        'Empleado',
-        'Paterno',
-        'Materno',
-        'Nombres',
-        'Nacimiento',
-        'Sexo',
-        'Parentesco',
-        'Status',
-        'Beneficiario',
+        'empleado_id',
+        'nombre',
+        'sexo',
+        'fechaNacimiento',
+        'parentesco',
+        'estatus',
     ];
 
     //Uno a uno polimorfico
@@ -38,6 +35,11 @@ class RHDependiente extends Model
     // Uno a muchos inversa
     public function empleado()
     {
-        return $this->belongsTo('App\Models\Empleado');
+        return $this->belongsTo('App\Models\NomEmpleado', 'empleado_id');
+    }
+
+    //Uno a uno polimorficab
+    public function image(){
+        return $this->morphOne('App\Models\Imagen', 'imageable');
     }
 }

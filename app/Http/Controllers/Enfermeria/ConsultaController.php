@@ -7,6 +7,7 @@ use App\Models\Consulta;
 use App\Models\Externo;
 use App\Models\NomEmpleado;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 
 class ConsultaController extends Controller
 {
@@ -18,12 +19,14 @@ class ConsultaController extends Controller
     public function store(Request $request)
     {
         try{
+            // Log::error($request);
+
             $consulta = new Consulta();
 
-            // $consulta->cita_id = $request['cita_id'];
+            $consulta->cita_id = $request['cita_id'];
             $consulta->fecha = $request['fecha'];
             $consulta->profesional_id = $request['profesional_id'];
-            $consulta->pacientable_id = $request['pacientable_id'];
+            $consulta->pacientable_id = $request['paciente'];
             
             switch($request['tipoPaciente']){
                 case 'Empleado':
@@ -55,6 +58,7 @@ class ConsultaController extends Controller
             return response()->json(['message' => 'Consulta guardada con éxito'], 201);
 
         }catch(\Exception $e){
+            Log::error($e);
             return response()->json([
                 // 'error' => 'Ocurrió un error al guardar la consulta'
                 'error' => $e
@@ -63,7 +67,7 @@ class ConsultaController extends Controller
     }
 
     public function show($id){
-        $data = Consulta::with(['pacientable', 'cita', 'profesional'])->find($id);
+        $data = Consulta::with(['pacientable', 'pacientable.historialMedico', 'pacientable.image', 'cita', 'profesional', 'profesional.image'])->find($id);
 
         if (!$data) {
             return response()->json(['error' => 'Consulta no encontrada'], 404);
