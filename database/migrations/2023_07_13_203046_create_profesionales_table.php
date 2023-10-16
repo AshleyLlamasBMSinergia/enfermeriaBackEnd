@@ -31,7 +31,7 @@ class CreateProfesionalesTable extends Migration
 
             $table->unsignedBigInteger('empresa_id')->nullable();
             $table->foreign('empresa_id')->references('id')->on('Empresas')->onDelete('set null')->onUpdate('cascade');
-            
+
             $table->timestamps();
         });
     }

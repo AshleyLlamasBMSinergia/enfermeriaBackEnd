@@ -18,12 +18,17 @@ class Lote extends Model
         'fechaCaducidad',
         'fechaIngreso',
         'piezasDisponibles',
-        'insumos_id',
+        'insumo_id',
     ];
 
     //Uno a Muchos Inversa
     public function insumo()
     {
-        return $this->belongsTo(NomEmpleado::class, 'insumo_id');
+        return $this->belongsTo(Insumo::class, 'insumo_id');
+    }
+
+    //Uno a Muchos
+    public function movimientos(){
+        return $this->hasMany('App\Models\Movimiento');
     }
 }

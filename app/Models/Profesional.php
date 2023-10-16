@@ -72,4 +72,14 @@ class Profesional extends Model
     public function image(){
         return $this->morphOne('App\Models\Imagen', 'imageable');
     }
+
+    //Muchos a Muchos
+    public function inventarios(){
+        return $this->belongsToMany('App\Models\Inventario', 'inventario_profesional', 'profesionales_id', 'inventario_id');
+    }
+
+    //Uno a muchos
+    public function movimientos(){
+        return $this->hasMany('App\Models\Movimiento');
+    }
 }

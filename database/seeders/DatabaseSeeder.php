@@ -45,6 +45,7 @@ class DatabaseSeeder extends Seeder
             ExternoSeeder::class,
             PendienteSeeder::class,
             HorarioSeeder::class,
+            InventarioSeeder::class,
             InsumoSeeder::class,
             LoteSeeder::class
         ]);

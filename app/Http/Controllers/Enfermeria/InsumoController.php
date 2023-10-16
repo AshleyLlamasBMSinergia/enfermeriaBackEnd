@@ -3,9 +3,11 @@
 namespace App\Http\Controllers\Enfermeria;
 
 use App\Http\Controllers\Controller;
+use App\Models\Imagen;
 use App\Models\Insumo;
 use App\Models\Lote;
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Log;
 
 class InsumoController extends Controller
@@ -41,11 +43,28 @@ class InsumoController extends Controller
     public function store(Request $request)
     {
         try{
-            Insumo::create([
+            $insumo = Insumo::create([
                 'nombre' => $request['nombre'],
                 'piezasPorLote' => $request['piezasPorLote'],
                 'descripcion' => $request['descripcion'],
-                'requisicion_id' => $request['requisicion_id']
+                'inventario_id' => $request['inventario_id'],
+            ]);
+
+            $imagenBase64 = explode(";base64,",$request['imagen']);
+            $imagenExplode = explode("image/", $imagenBase64[0]);
+            $imagenFormato = $imagenExplode[1];
+            $imagen = base64_decode($imagenBase64[1]);
+            $imagenNombre = Str::random(12);
+            $ruta = storage_path('app/private/insumos/'.$imagenNombre.'.'.$imagenFormato);
+
+            file_put_contents($ruta, $imagen);
+           
+            // Guardar la imagen
+            $imagen = Imagen::create([
+                'url' => $imagenNombre.'.'.$imagenFormato,
+                'categoria' => 'insumos',
+                'imageable_id' => $insumo->id,
+                'imageable_type' => Insumo::class
             ]);
 
             // Responder
@@ -54,6 +73,7 @@ class InsumoController extends Controller
             ]);
 
         }catch (\Exception $e) {
+            Log::error($e);
             return response()->json([
                 'error' => 'Error al guardar el insumo',
             ], 500);
@@ -62,7 +82,7 @@ class InsumoController extends Controller
 
     public function show($id){
         
-        $data = Insumo::with(['lotes'])->find($id);
+        $data = Insumo::with(['lotes', 'image'])->find($id);
 
         if (!$data) {
             return response()->json(['error' => 'El insumo y sus lotes no fueron encontrados'], 404);

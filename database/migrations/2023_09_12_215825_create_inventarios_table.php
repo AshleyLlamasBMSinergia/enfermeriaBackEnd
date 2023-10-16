@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateInsumosMedicosTable extends Migration
+class CreateInventariosTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,8 +13,9 @@ class CreateInsumosMedicosTable extends Migration
      */
     public function up()
     {
-        Schema::create('InsumosMedicos', function (Blueprint $table) {
+        Schema::create('Inventarios', function (Blueprint $table) {
             $table->id();
+            $table->string('nombre');
             $table->timestamps();
         });
     }
@@ -26,6 +27,6 @@ class CreateInsumosMedicosTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('InsumosMedicos');
+        Schema::dropIfExists('Inventarios');
     }
 }

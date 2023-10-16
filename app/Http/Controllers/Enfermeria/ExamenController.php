@@ -13,21 +13,33 @@ use Illuminate\Support\Str;
 
 class ExamenController extends Controller
 {
-    private function determinarTipoArchivo($bytes)
+    private function determinarTipoArchivo($base64)
     {
-        $encabezado = substr($bytes, 0, 4);
+        // $encabezado = base64($bytes, 0, 4);
 
-        switch(bin2hex($encabezado)){
-            case 'ffd8ffe0':
-                return 'jpg';
-            case '89504e47':
-                return 'png';
-            case '25504446':
-                return 'pdf';
-            default:
-                return null;
-        }
-        
+        // switch(bin2hex($encabezado)){
+        //     case 'ffd8ffe0':
+        //         return 'jpg';
+        //     case '89504e47':
+        //         return 'png';
+        //     case '25504446':
+        //         return 'pdf';
+        //     default:
+        //         return null;
+        // }
+
+        $data = base64_decode($base64);
+        $finfo = finfo_open();
+        $mime = finfo_buffer($finfo, $data, FILEINFO_MIME_TYPE);
+        finfo_close($finfo);
+
+        $extensions = [
+            'image/jpeg' => 'jpeg',
+            'image/png' => 'png',
+            'application/pdf' => 'pdf',
+        ];
+    
+        return $extensions[$mime] ?? null;
     }
 
     public function store(Request $request)
@@ -47,7 +59,7 @@ class ExamenController extends Controller
             foreach($request['archivos'] as $archivoBase64){
                 $archivoDecodificado = base64_decode($archivoBase64);
         
-                $tipoArchivo = $this->determinarTipoArchivo($archivoDecodificado);
+                $tipoArchivo = $this->determinarTipoArchivo($archivoBase64);
 
                 if(!$tipoArchivo){
                     return response()->json([

@@ -23,7 +23,7 @@ use App\Http\Controllers\Enfermeria\HistorialMedicoController;
 use App\Http\Controllers\Enfermeria\HorarioController;
 use App\Http\Controllers\Enfermeria\ImagenController;
 use App\Http\Controllers\Enfermeria\InsumoController;
-use App\Http\Controllers\Enfermeria\InsumoMedicoController;
+use App\Http\Controllers\enfermeria\InventarioController;
 use App\Http\Controllers\Enfermeria\LoteController;
 use App\Http\Controllers\Enfermeria\PendienteController;
 use App\Http\Controllers\enfermeria\RecetaController;
@@ -40,12 +40,20 @@ Route::get('/insumos-medicos/{id}', [InsumoController::class, 'show']);
 Route::get('/consultas/{id}', [ConsultaController::class, 'show']);
 Route::get('/historiales-medicos/{id}', [HistorialMedicoController::class, 'show']);
 
+//INVENTARIOS
+Route::get('/inventarios', [InventarioController::class, 'index']);
+
 Route::get('/storage/private/{url}', [ImagenController::class, 'image']);
 
 
     //RECETAS
     Route::get('/recetas/{id}', [RecetaController::class, 'generica']);
 
+    Route::get('/inventarios/profesional/{id}', [InventarioController::class, 'inventariosDelProfesional']);
+    Route::get('/inventarios/{id}', [InventarioController::class, 'show']);
+
+    Route::get('/lotes/{id}', [LoteController::class, 'show']);
+    
 Route::middleware('auth:sanctum')->group(function () {
 
     //LOGOUNT
@@ -141,7 +149,8 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::delete('/examen/{id}', [ExamenController::class, 'destroy']);
 
     //INSUMOS MEDICOS
-    Route::get('/insumos-medicos', [InsumoMedicoController::class, 'index']);
+    Route::get('/insumos-medicos', [InsumoController::class, 'index']);
+    Route::post('/insumos-medicos', [InsumoController::class, 'store']);
 
     //REQUISICIONES
     Route::get('/requisiciones', [RequisicionController::class, 'index']);
@@ -156,6 +165,5 @@ Route::middleware('auth:sanctum')->group(function () {
     //LOTES
     // Route::get('/lotes', [LoteController::class, 'index']);
     Route::delete('/lotes/{id}',[ LoteController::class, 'destroy']);
-
-    
+    Route::post('/lotes', [LoteController::class, 'store']);
 });
