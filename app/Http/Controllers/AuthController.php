@@ -12,7 +12,7 @@ class AuthController extends Controller
     public function login(Request $request)
     {
         try{
-            $user = User::where('email', $request->email)->with(['image'])
+            $user = User::where('email', $request->email)->with(['useable', 'useable.image'])
                     ->first();
 
             $remember = $request->remember;

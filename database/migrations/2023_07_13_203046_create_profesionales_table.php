@@ -21,6 +21,8 @@ class CreateProfesionalesTable extends Migration
             $table->string('correo')->nullable();
             $table->string('cedula')->nullable();
 
+            $table->integer('receta')->nullable();
+
             $table->unsignedBigInteger('direccion_id')->nullable();
             $table->foreign('direccion_id')->references('id')->on('Direcciones')->onDelete('set null')->onUpdate('cascade');
 

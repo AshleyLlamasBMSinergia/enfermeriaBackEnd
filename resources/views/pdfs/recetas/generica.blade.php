@@ -130,6 +130,27 @@
                 max-height: 500px;
                 overflow: hidden;
             }
+
+            .telefono{
+                position: absolute;
+
+                bottom: 45px;
+                left: 90px;
+            }
+
+            .correo{
+                position: absolute;
+
+                bottom: 45px;
+                left: 275px;
+            }
+
+            .direccion{
+                position: absolute;
+
+                bottom: 45px;
+                left: 576px;
+            }
         </style>
     </head>
     <body>
@@ -151,6 +172,31 @@
             <p class="frecuencia-cardiaca text-secondary">{{$consulta->frecuenciaCardiaca}}</p>
 
             <p class="receta text-secondary">{{$consulta->receta}}</p>
+            <p class="telefono text-secondary">{{$consulta->profesional->telefono}}</p>
+            <p class="correo text-secondary">{{$consulta->profesional->correo}}</p>
+            <p class="direccion text-secondary">
+                @if($consulta->profesional->direccion)
+                    @if($consulta->profesional->direccion->calle)
+                        {{ $consulta->profesional->direccion->calle }},
+                    @endif
+                    @if($consulta->profesional->direccion->exterior)
+                        {{ $consulta->profesional->direccion->exterior }},
+                    @endif
+                    @if($consulta->profesional->direccion->interior)
+                        {{ $consulta->profesional->direccion->interior }},
+                    @endif
+                    @if($consulta->profesional->direccion->colonia)
+                        {{ $consulta->profesional->direccion->colonia }},
+                    @endif
+                    @if($consulta->profesional->direccion->CP)
+                        {{ $consulta->profesional->direccion->CP }},
+                    @endif
+                    @if($consulta->profesional->direccion->localidad)
+                        {{ $consulta->profesional->direccion->localidad }}
+                    @endif
+                @endif
+            </p>
+
         </main>
         <footer>
 

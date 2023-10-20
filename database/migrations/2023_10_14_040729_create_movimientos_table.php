@@ -15,6 +15,7 @@ class CreateMovimientosTable extends Migration
     {
         Schema::create('Movimientos', function (Blueprint $table) {
             $table->id();
+            $table->string('tipo')->nullable();
             $table->string('folio')->nullable();
             $table->dateTime('fecha');
 

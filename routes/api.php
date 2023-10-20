@@ -25,6 +25,7 @@ use App\Http\Controllers\Enfermeria\ImagenController;
 use App\Http\Controllers\Enfermeria\InsumoController;
 use App\Http\Controllers\enfermeria\InventarioController;
 use App\Http\Controllers\Enfermeria\LoteController;
+use App\Http\Controllers\enfermeria\MovimientoController;
 use App\Http\Controllers\Enfermeria\PendienteController;
 use App\Http\Controllers\enfermeria\RecetaController;
 use App\Http\Controllers\Enfermeria\RequisicionController;
@@ -166,4 +167,7 @@ Route::middleware('auth:sanctum')->group(function () {
     // Route::get('/lotes', [LoteController::class, 'index']);
     Route::delete('/lotes/{id}',[ LoteController::class, 'destroy']);
     Route::post('/lotes', [LoteController::class, 'store']);
+
+    //MOVIMIENTOS
+    Route::post('/movimientos', [MovimientoController::class, 'store']);
 });

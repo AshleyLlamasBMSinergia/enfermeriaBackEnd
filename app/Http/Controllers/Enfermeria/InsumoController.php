@@ -47,6 +47,7 @@ class InsumoController extends Controller
                 'nombre' => $request['nombre'],
                 'piezasPorLote' => $request['piezasPorLote'],
                 'descripcion' => $request['descripcion'],
+                'precio' => $request['precio'],
                 'inventario_id' => $request['inventario_id'],
             ]);
 

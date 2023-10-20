@@ -7,6 +7,7 @@ use App\Models\Entrada;
 use App\Models\Insumo;
 use App\Models\Lote;
 use App\Models\Movimiento;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 
@@ -30,21 +31,19 @@ class LoteController extends Controller
     public function store(Request $request)
     {
         try{
-
-            Log::error($request);
-
             $lote = Lote::create([
                 'lote' => $request['lote'],
                 'fechaCaducidad' => $request['fechaCaducidad'],
-                'fechaIngreso' => $request['fechaIngreso'],
+                'fechaIngreso' => Carbon::now(),
                 'piezasDisponibles' => $request['piezasDisponibles'],
                 'insumo_id' => $request['insumo_id'],
             ]);
 
             $inventarioId = Insumo::find($request['insumo_id'])->inventario->id;
+
             if(!$inventarioId){
                 return response()->json([
-                    'message' => "Insumo con ID ".$request['insumo_id']." no encontrado",
+                    'message' => "Inventario no encontrado",
                 ], 404);
             }
 
@@ -55,8 +54,9 @@ class LoteController extends Controller
             ]);
 
             Movimiento::create([
+                'tipo' => 'Entrada al inventario',
                 'folio' => $request['folio'],
-                'fecha' => $request['fechaIngreso'],
+                'fecha' => Carbon::now(),
                 'profesional_id' => $request['profesional_id'],
                 'lote_id' => $lote->id,
                 'typable_id' => $entrada->id,
@@ -91,11 +91,6 @@ class LoteController extends Controller
         }
     }
 
-    public function create()
-    {
-        //
-    }
-
     public function show($id)
     {
         $data = Lote::with(
@@ -111,11 +106,6 @@ class LoteController extends Controller
             return response()->json(['error' => 'Lote no encontrado'], 404);
         }
         return response()->json($data, 200);
-    }
-
-    public function edit($id)
-    {
-        //
     }
 
     public function update(Request $request, $id)

@@ -16,8 +16,13 @@ class RecetaController extends Controller
     // } 
     
     public function generica($id){
-        $pdf = PDF::loadView('pdfs.recetas.generica', [
-            'consulta' => Consulta::find($id)]);
-        return $pdf->setPaper('a4', 'landscape')->stream('receta.pdf');
+        $consulta = Consulta::find($id);
+
+        switch($consulta->profesional->receta){
+            default:
+                $pdf = PDF::loadView('pdfs.recetas.generica', [
+                    'consulta' => $consulta]);
+                return $pdf->setPaper('a4', 'landscape')->stream('receta.pdf');
+        }
     }  
 }

@@ -22,6 +22,7 @@ class Profesional extends Model
         'direccion_id',
         'estatus',
         'puesto_id',
+        'receta'
     ];
 
     //Uno a uno polimorfico
@@ -81,5 +82,10 @@ class Profesional extends Model
     //Uno a muchos
     public function movimientos(){
         return $this->hasMany('App\Models\Movimiento');
+    }
+
+    //Uno a Uno
+    public function direccion(){
+        return $this->belongsTo('App\Models\Direccion', 'direccion_id');
     }
 }
