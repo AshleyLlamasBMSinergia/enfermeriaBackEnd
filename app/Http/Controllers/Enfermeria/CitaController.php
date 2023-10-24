@@ -84,6 +84,7 @@ class CitaController extends Controller
     }
 
     public function update(Request $request, $id){
+
         $cita = Cita::find($id);
 
         $cita->tipo = $request->input('tipo');

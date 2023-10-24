@@ -28,7 +28,7 @@ class HorarioController extends Controller
                 if ($entrada < $inicioBreak || $entrada >= $finBreak) {
                     $horas[] = $entrada->format('H:i');
                 }
-                $entrada->modify('+1 hour');
+                $entrada->modify('+30 minutes');
             }
 
             // Obtener citas programadas en esa fecha

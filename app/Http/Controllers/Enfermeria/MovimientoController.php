@@ -80,7 +80,13 @@ class MovimientoController extends Controller
                         ]);
                     }else{
 
-                        $inventarioInsumo = Insumo::create($lote->insumo);
+                        $inventarioInsumo = Insumo::create([
+                            'nombre' => $lote->insumo->nombre,
+                            'piezasPorLote' => $lote->insumo->piezasPorLote,
+                            'descripcion' => $lote->insumo->descripcion,
+                            'precio' => $lote->insumo->precio,
+                            'inventario_id' => $request['inventario_id']
+                        ]);
 
                         $salida = Salida::create([
                             'motivo' => $request['motivo'],
@@ -132,6 +138,10 @@ class MovimientoController extends Controller
                 'error' => 'Error al guardar movimiento',
             ], 500);
         }
+    }
+
+    public function retirarDesdeConsulta(Request $request){
+        
     }
 
     public function retirarPiezas($piezasDescontables, Lote $lote, Request $request){

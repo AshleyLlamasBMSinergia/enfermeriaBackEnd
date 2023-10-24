@@ -88,4 +88,9 @@ class Profesional extends Model
     public function direccion(){
         return $this->belongsTo('App\Models\Direccion', 'direccion_id');
     }
+
+    //Uno a Muchos
+    public function horarios(){
+        return $this->hasMany('App\Models\Horario');
+    }
 }

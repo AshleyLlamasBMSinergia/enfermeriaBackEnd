@@ -4,6 +4,10 @@ namespace App\Http\Controllers\Enfermeria;
 
 use App\Http\Controllers\Controller;
 use App\Models\Cita;
+use App\Models\EAntidoping;
+use App\Models\EEmbarazo;
+use App\Models\EFisico;
+use App\Models\EVista;
 use App\Models\Externo;
 use App\Models\HistorialMedico;
 use App\Models\Imagen;
@@ -15,10 +19,38 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
-use Illuminate\Support\Facades\File;
+use Barryvdh\DomPDF\Facade\Pdf;
+use Carbon\Carbon;
 
 class HistorialMedicoController extends Controller
 {
+    public function pdf($id, $fecha){
+
+        $historialMedico = HistorialMedico::find($id);
+
+        $fechaNacimiento = Carbon::parse($historialMedico->pacientable->fechaNacimiento);
+        $edad = $fechaNacimiento->age;
+
+        $fechaCreacion = Carbon::parse($fecha)->locale('es');
+        $fechaFormateada = $fechaCreacion->isoFormat('D [de] MMMM [del] YYYY');
+
+        $examenFisico = EFisico::where('historialMedico_id', $historialMedico->id)->whereDate('fecha', $fecha)->get();
+        $examenAntidoping = EAntidoping::where('historialMedico_id', $historialMedico->id)->whereDate('fecha', $fecha)->get();
+        $examenEmbarazo = EEmbarazo::where('historialMedico_id', $historialMedico->id)->whereDate('fecha', $fecha)->get();
+        $examenVista = EVista::where('historialMedico_id', $historialMedico->id)->whereDate('fecha', $fecha)->get();
+
+        $pdf = PDF::loadView('pdfs.formatoEnfermeria', [
+            'historialMedico' => $historialMedico,
+            'edad' => $edad,
+            'fecha' => $fechaFormateada,
+            'examenFisico' => $examenFisico,
+            'examenAntidoping'=> $examenAntidoping,
+            'examenEmbarazo' => $examenEmbarazo,
+            'examenVista'=> $examenVista,
+        ]);
+        return $pdf->stream('historial-medico.pdf');
+    }  
+
     public function index(){
         $data = HistorialMedico::with('pacientable')->get();
         return response()->json($data, 200);
@@ -51,11 +83,7 @@ class HistorialMedicoController extends Controller
             if ($data->pacientable_type === 'App\\Models\\NomEmpleado') {
                 $data->load(
                     'pacientable.puesto',
-                    'pacientable.dependientes',
-                    'pacientable.dependientes.empleado',
-                    'pacientable.dependientes.empleado.historialMedico',
-                    'pacientable.dependientes.image',
-                    'pacientable.dependientes.historialMedico');
+                    'pacientable.image');
             }
         }
 
@@ -306,5 +334,51 @@ class HistorialMedicoController extends Controller
                 'error' => 'Ocurrió un error al eliminar el historial médico'
             ], 500);
         }
+    }
+
+    public function historialMedicoEmpleado($id){
+        try{
+            $data = $data = $this->buscarHistorialMedicoPorTipo($id, NomEmpleado::class);
+
+            if (!$data) {
+                return response()->json(['error' => 'Historial médico no encontrado'], 404);
+            }
+            return response()->json($data, 200);
+        }catch(\Exception $e){
+
+        }
+    }
+    public function historialMedicoExterno($id){
+        try{
+            $data = $this->buscarHistorialMedicoPorTipo($id, Externo::class);
+
+            if (!$data) {
+                return response()->json(['error' => 'Historial médico no encontrado'], 404);
+            }
+            return response()->json($data, 200);
+        }catch(\Exception $e){
+
+        }
+    }
+
+    public function historialMedicoDependiente($id){
+        try{
+            $data = $data = $this->buscarHistorialMedicoPorTipo($id, RHDependiente::class);
+
+            if (!$data) {
+                return response()->json(['error' => 'Historial médico no encontrado'], 404);
+            }
+            return response()->json($data, 200);
+        }catch(\Exception $e){
+            Log::error($e);
+            return response()->json([
+                 'error' => $e->getMessage()
+            ], 500);
+        }
+    }
+
+    public function buscarHistorialMedicoPorTipo($id, $tipo){
+        return HistorialMedico::where('pacientable_id', $id)->where('pacientable_type', $tipo)->with('pacientable',
+            'pacientable.image')->first();
     }
 }

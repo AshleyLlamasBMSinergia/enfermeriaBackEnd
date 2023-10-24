@@ -5,6 +5,7 @@ namespace App\Http\Controllers\enfermeria;
 use App\Http\Controllers\Controller;
 use App\Models\HistorialMedico;
 use App\Models\Imagen;
+use App\Models\NomEmpleado;
 use Illuminate\Http\Request;
 
 use Illuminate\Support\Str;
@@ -19,11 +20,29 @@ class DependienteController extends Controller
         return response()->json($data, 200);
     }
 
+    public function dependientesDelEmpleado($empleado_id){
+        $empleado = NomEmpleado::find($empleado_id);
+    
+        if (!$empleado) {
+            return response()->json(['message' => 'Empleado no encontrado'], 404);
+        }
+    
+        $dependientes = $empleado->dependientes()->with([
+            'empleado',
+            'empleado.historialMedico',
+            'image',
+            'historialMedico'
+        ])->get();
+    
+        return response()->json($dependientes, 200);
+    }
+    
+
     public function store(Request $request){
         // Log::error($request);
         try{
             $dependiente = RHDependiente::create([
-                'empleado_id' => $request['historialMedico_id'],
+                'empleado_id' => $request['empleado_id'],
                 'nombre' => $request['nombre'],
                 'sexo' => $request['sexo'],
                 'fechaNacimiento' => $request['fechaNacimiento'],

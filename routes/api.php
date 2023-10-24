@@ -40,20 +40,27 @@ Route::get('/lotes/buscador', [LoteController::class, 'buscador']);
 Route::get('/insumos-medicos/{id}', [InsumoController::class, 'show']);
 Route::get('/consultas/{id}', [ConsultaController::class, 'show']);
 Route::get('/historiales-medicos/{id}', [HistorialMedicoController::class, 'show']);
+Route::get('/historiales-medicos/empleado/{id}', [HistorialMedicoController::class, 'historialMedicoEmpleado']);
+Route::get('/historiales-medicos/externo/{id}', [HistorialMedicoController::class, 'historialMedicoExterno']);
+Route::get('/historiales-medicos/dependiente/{id}', [HistorialMedicoController::class, 'historialMedicoDependiente']);
 
 //INVENTARIOS
 Route::get('/inventarios', [InventarioController::class, 'index']);
 
 Route::get('/storage/private/{url}', [ImagenController::class, 'image']);
 
+    //PDF HISTORIAL MEDICO
+    Route::get('/historial-medico/pdf/{id}/{fecha}', [HistorialMedicoController::class, 'pdf']);
 
     //RECETAS
-    Route::get('/recetas/{id}', [RecetaController::class, 'generica']);
+    Route::get('/recetas/{id}', [RecetaController::class, 'receta']);
 
     Route::get('/inventarios/profesional/{id}', [InventarioController::class, 'inventariosDelProfesional']);
     Route::get('/inventarios/{id}', [InventarioController::class, 'show']);
 
     Route::get('/lotes/{id}', [LoteController::class, 'show']);
+    
+    Route::get('/dependientes/{empleado_id}', [DependienteController::class, 'dependientesDelEmpleado']);
     
 Route::middleware('auth:sanctum')->group(function () {
 
@@ -85,6 +92,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/horarios/{profesional_id}/{fecha}/horas-disponibles', [HorarioController::class, 'horasDisponibles']);
 
     Route::get('/calendario', [CalendarioController::class, 'index']);
+    Route::get('/calendario/profesional/{profesional_id}', [CalendarioController::class, 'citasPorProfesional']);
     Route::get('/citas/{id}', [CitaController::class, 'show']);
     Route::post('/citas', [CitaController::class, 'store']);
     Route::put('/citas/edit/{id}', [CitaController::class, 'update']);
@@ -98,6 +106,7 @@ Route::middleware('auth:sanctum')->group(function () {
 
     //CONSULTAS
     Route::get('/consultas', [ConsultaController::class, 'index']);
+    Route::get('/consultas/profesional/{profesional_id}', [ConsultaController::class, 'consultasPorProfesional']);
     Route::post('/consultas', [ConsultaController::class, 'store']);
     // Route::get('/consultas/{id}', [ConsultaController::class, 'show']);
     Route::delete('/consultas/{id}',[ ConsultaController::class, 'destroy']);
@@ -123,7 +132,9 @@ Route::middleware('auth:sanctum')->group(function () {
     //DEPENDIENTE
     Route::post('/dependientes', [DependienteController::class, 'store']);
     Route::put('/dependientes/edit/{id}', [DependienteController::class, 'update']);
+    
     Route::get('/dependientes', [DependienteController::class, 'index']);
+
 
     Route::post('/antecendentes-personales-patologicos', [APPatologicoController::class, 'store']);
     Route::put('/antecendentes-personales-patologicos/edit/{id}', [APPatologicoController::class, 'update']);

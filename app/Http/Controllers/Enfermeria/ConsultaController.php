@@ -16,10 +16,16 @@ class ConsultaController extends Controller
         return response()->json($data, 200);
     }
 
+    public function consultasPorProfesional($profesional_id){
+        $data = Consulta::where('profesional_id', $profesional_id)->with(['cita', 'profesional', 'pacientable'])->get();
+        return response()->json($data, 200);
+    }
+
     public function store(Request $request)
     {
+        // Log::error($request);
         try{
-            // Log::error($request);
+            
 
             $consulta = new Consulta();
 
@@ -54,6 +60,7 @@ class ConsultaController extends Controller
             $consulta->diagnostico = $request['diagnostico'];
             $consulta->receta = $request['receta'];
             $consulta->save();
+            
 
             return response()->json(['message' => 'Consulta guardada con éxito'], 201);
 

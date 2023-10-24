@@ -14,4 +14,10 @@ class CalendarioController extends Controller
         $data = Cita::with(['paciente', 'profesional', 'paciente.pacientable'])->get();
         return response()->json($data, 200);
     }
+
+    public function citasPorProfesional($profesional_id)
+    {
+        $data = Cita::where('profesional_id', $profesional_id)->with(['paciente', 'profesional', 'paciente.pacientable'])->get();
+        return response()->json($data, 200);
+    }
 }

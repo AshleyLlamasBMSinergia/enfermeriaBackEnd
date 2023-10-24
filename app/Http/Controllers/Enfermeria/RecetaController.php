@@ -10,12 +10,7 @@ use Barryvdh\DomPDF\Facade\Pdf;
 
 class RecetaController extends Controller
 {
-    // public function generica($id){
-    //     $pdf = Pdf::loadView('pdfs.recetas.generica', ['consulta' => Consulta::find($id)]);
-    //     return $pdf->setPaper('a4', 'landscape')->download('receta.pdf');
-    // } 
-    
-    public function generica($id){
+    public function receta($id){
         $consulta = Consulta::find($id);
 
         switch($consulta->profesional->receta){

@@ -10,15 +10,10 @@
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css" integrity="sha384-B0vP5xmATw1+K9KRQjQERJvTumQW0nPEzvF6L/Z6nronJ3oUOFUFpCjEUQouq2+l" crossorigin="anonymous">
         <!-- STILE -->
         <style>
-            /** 
-                Establezca los márgenes de la página en 0, por lo que el pie de página y el encabezado
-                puede ser de altura y anchura completas.
-            **/
             @page {
                 margin: 0cm 0cm;
             }
-
-            /** Defina ahora los márgenes reales de cada página en el PDF **/
+            
             body {
                 margin-top: 0.5cm;
                 margin-left: 1cm;
@@ -171,7 +166,8 @@
             <p class="frecuencia-respiratoria text-secondary">{{$consulta->frecuenciaRespiratoria}}</p>
             <p class="frecuencia-cardiaca text-secondary">{{$consulta->frecuenciaCardiaca}}</p>
 
-            <p class="receta text-secondary">{{$consulta->receta}}</p>
+            <div class="receta text-secondary">{!!$consulta->receta!!}</p>
+
             <p class="telefono text-secondary">{{$consulta->profesional->telefono}}</p>
             <p class="correo text-secondary">{{$consulta->profesional->correo}}</p>
             <p class="direccion text-secondary">

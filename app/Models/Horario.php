@@ -22,8 +22,8 @@ class Horario extends Model
     ];
 
     // Uno a muchos inversa
-    public function user()
+    public function profesional()
     {
-        return $this->belongsTo('App\Models\User');
+        return $this->belongsTo('App\Models\Profesional', 'profesional_id');
     }
 }
