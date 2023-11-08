@@ -48,16 +48,8 @@ class Movimiento extends Model
         return $this->hasMany('App\Models\MovimientoMov');
     }
 
-    //Uno a uno polimorfico
     public function archivos()
     {
-        $archivos = $this->morphMany('App\Models\Archivo', 'archivable')->get();
-        
-        $archivosPorCategoria = $archivos->groupBy('categoria');
-
-        dd($archivosPorCategoria);
-
-        return $archivosPorCategoria;
+       return $this->morphMany('App\Models\Archivo', 'archivable');
     }
-
 }

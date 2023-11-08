@@ -23,8 +23,4 @@ class Archivo extends Model
     public function archivable(){
         return $this->MorphTo();
     }
-
-    public function archivables(){
-        return $this->MorphTo();
-    }
 }

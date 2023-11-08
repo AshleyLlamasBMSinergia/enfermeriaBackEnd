@@ -137,28 +137,25 @@ class MovimientoController extends Controller
 
     public function show($id){
 
-        $data = Movimiento::with(['archivos'])->find($id);
+        $data = Movimiento::with([
+            'archivos',
+            'profesional',
+            'profesional.image',
+            'tipoDeMovimiento',
+            'inventario',
+            'movimientoMovs',
+            'movimientoMovs.lote',
+            'movimientoMovs.lote.insumo'
+        ])->find($id);
+    
+        if (!$data) {
+            return response()->json(['error' => 'Reporte de movimiento no encontrado'], 404);
+        }
+    
+        $archivosPorCategoria = $data->archivos->groupBy('categoria');
+        $data->archivosPorCategoria = $archivosPorCategoria;
 
         return response()->json($data, 200);
-
-        // $data = Movimiento::with([
-        //     'archivos',
-        //     'profesional',
-        //     'profesional.image',
-        //     'tipoDeMovimiento',
-        //     'inventario',
-        //     'movimientoMovs',
-        //     'movimientoMovs.lote',
-        //     'movimientoMovs.lote.insumo'
-        // ])->find($id);
-
-        
-
-        // if (!$data) {
-        //     return response()->json(['error' => 'Reporte de movimiento no encontrado'], 404);
-        // }
-
-        // return response()->json($data, 200);
     }
 
     public function store(Request $request)

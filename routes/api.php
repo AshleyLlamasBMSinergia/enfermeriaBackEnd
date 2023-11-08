@@ -34,63 +34,20 @@ use App\Http\Controllers\Enfermeria\RequisicionController;
 use Illuminate\Support\Facades\Route;
 
 Route::post('/login', [AuthController::class, 'login'])->name('login');
-
-Route::get('/diagnosticos', [DiagnosticoController::class, 'index']);
-
-Route::get('/reactivos', [ReactivoController::class, 'index']);
-
-Route::post('/movimientos/archivos', [MovimientoController::class, 'subirArchivos']);
-
-Route::get('/historiales-medicos/buscador', [HistorialMedicoController::class, 'buscador']);
-Route::get('/insumos-medicos/buscador', [InsumoController::class, 'buscador']);
-Route::get('/insumos-medicos/{id}', [InsumoController::class, 'show']);
-Route::post('/inventarios/add-insumos', [InventarioController::class, 'addInsumos']);
-Route::get('/insumos/no-inventario/{id}', [InsumoController::class, 'insumosQueNoTieneInventario']);
-
-Route::get('/lotes/buscador', [LoteController::class, 'buscador']);
-
-Route::get('/tipos-de-movimientos', [MovimientoTipoController::class, 'mandarMovimientosParaLote']);
-
-Route::get('/inventarios/{inventario_id}/insumos/{insumo_id}', [InventarioController::class, 'insumoPorInventario']);
-Route::get('/inventarios/{inventario_id}/lotes/{lote_id}', [InventarioController::class, 'lotePorInventario']);
-Route::get('/movimientos/inventarios/{inventario_id}', [MovimientoController::class, 'movimientosPorInventario']);
-
-Route::get('/movimientos/{id}', [MovimientoController::class, 'show']);
-
-Route::get('/consultas/{id}', [ConsultaController::class, 'show']);
-Route::get('/historiales-medicos/{id}', [HistorialMedicoController::class, 'show']);
-Route::get('/historiales-medicos/empleado/{id}', [HistorialMedicoController::class, 'historialMedicoEmpleado']);
-Route::get('/historiales-medicos/externo/{id}', [HistorialMedicoController::class, 'historialMedicoExterno']);
-Route::get('/historiales-medicos/dependiente/{id}', [HistorialMedicoController::class, 'historialMedicoDependiente']);
-
-//INVENTARIOS
-Route::get('/inventarios', [InventarioController::class, 'index']);
-
-Route::get('/storage/private/{url}', [ImagenController::class, 'image']);
-Route::get('/insumos-medicos', [InsumoController::class, 'index']);
-    //PDF HISTORIAL MEDICO
-    Route::get('/historial-medico/pdf/{id}/{fecha}', [HistorialMedicoController::class, 'pdf']);
-
-    Route::post('/movimientos/pdfs', [MovimientoController::class, 'pdfs']);
-
-    //RECETAS
-    Route::get('/recetas/{id}', [RecetaController::class, 'receta']);
-
-    Route::get('/inventarios/profesional/{id}', [InventarioController::class, 'inventariosDelProfesional']);
-    Route::get('/inventarios/consulta/profesional/{id}', [InventarioController::class, 'inventariosDelProfesionalParaConsulta']); //TODO Obtener todos los inventarios con sus insumos y lotes que no esten caducos y que esten en existencia para la consulta
-    Route::get('/inventarios/{id}', [InventarioController::class, 'show']);
-
-    Route::get('/lotes/{id}', [LoteController::class, 'show']);
-    
-    Route::get('/dependientes/{empleado_id}', [DependienteController::class, 'dependientesDelEmpleado']);
     
 Route::middleware('auth:sanctum')->group(function () {
+
+    //BUSCADORES
+    Route::get('/historiales-medicos/buscador', [HistorialMedicoController::class, 'buscador']);
+    Route::get('/insumos-medicos/buscador', [InsumoController::class, 'buscador']);
+    Route::get('/lotes/buscador', [LoteController::class, 'buscador']);
+
 
     //LOGOUNT
     Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
     //IMAGENES
-    // Route::get('/storage/private/{url}', [ImagenController::class, 'image']);
+    Route::get('/storage/private/{url}', [ImagenController::class, 'image']);
 
     //ARCHIVOS
     Route::get('/storage/private/archivo/{url}', [ArchivoController::class, 'archivo']);
@@ -131,6 +88,8 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/consultas/profesional/{profesional_id}', [ConsultaController::class, 'consultasPorProfesional']);
     Route::post('/consultas', [ConsultaController::class, 'store']);
     Route::delete('/consultas/{id}',[ ConsultaController::class, 'destroy']);
+    Route::get('/consultas/{id}', [ConsultaController::class, 'show']);
+
 
     //EMPLEADOS
     Route::get('/empleados', [EmpleadoController::class, 'index']);
@@ -145,17 +104,20 @@ Route::middleware('auth:sanctum')->group(function () {
 
     //HISTORIALES MEDICOS
     Route::get('/historiales-medicos', [HistorialMedicoController::class, 'index']);
-    // Route::get('/historiales-medicos/{id}', [HistorialMedicoController::class, 'show']);
     Route::post('/historiales-medicos', [HistorialMedicoController::class, 'store']);
     Route::put('/historiales-medicos/edit/{id}', [HistorialMedicoController::class, 'update']);
     Route::delete('/historiales-medicos/{id}', [HistorialMedicoController::class, 'destroy']);
+    Route::get('/historiales-medicos/{id}', [HistorialMedicoController::class, 'show']);
+    Route::get('/historiales-medicos/empleado/{id}', [HistorialMedicoController::class, 'historialMedicoEmpleado']);
+    Route::get('/historiales-medicos/externo/{id}', [HistorialMedicoController::class, 'historialMedicoExterno']);
+    Route::get('/historiales-medicos/dependiente/{id}', [HistorialMedicoController::class, 'historialMedicoDependiente']);
+    
     
     //DEPENDIENTE
     Route::post('/dependientes', [DependienteController::class, 'store']);
     Route::put('/dependientes/edit/{id}', [DependienteController::class, 'update']);
-    
     Route::get('/dependientes', [DependienteController::class, 'index']);
-
+    Route::get('/dependientes/{empleado_id}', [DependienteController::class, 'dependientesDelEmpleado']);
 
     Route::post('/antecendentes-personales-patologicos', [APPatologicoController::class, 'store']);
     Route::put('/antecendentes-personales-patologicos/edit/{id}', [APPatologicoController::class, 'update']);
@@ -182,9 +144,12 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::delete('/examen/{id}', [ExamenController::class, 'destroy']);
 
     //INSUMOS MEDICOS
-
+    Route::get('/insumos/no-inventario/{id}', [InsumoController::class, 'insumosQueNoTieneInventario']);
     Route::post('/insumos-medicos', [InsumoController::class, 'store']);
+    Route::get('/insumos-medicos/{id}', [InsumoController::class, 'show']);
     Route::delete('/insumos-medicos/{id}',[ InsumoController::class, 'destroy']);
+    Route::get('/insumos-medicos', [InsumoController::class, 'index']);
+
 
     //REQUISICIONES
     Route::get('/requisiciones', [RequisicionController::class, 'index']);
@@ -193,7 +158,41 @@ Route::middleware('auth:sanctum')->group(function () {
     // Route::get('/lotes', [LoteController::class, 'index']);
     Route::delete('/lotes/{id}',[ LoteController::class, 'destroy']);
     Route::post('/lotes', [LoteController::class, 'store']);
+    Route::get('/lotes/{id}', [LoteController::class, 'show']);
 
     //MOVIMIENTOS
     Route::post('/movimientos', [MovimientoController::class, 'store']);
+    Route::post('/movimientos/pdfs', [MovimientoController::class, 'pdfs']);
+    Route::post('/movimientos/archivos', [MovimientoController::class, 'subirArchivos']);
+
+    //REACTIVOS
+    Route::get('/reactivos', [ReactivoController::class, 'index']);
+
+    //DIAGNOSTICOS
+    Route::get('/diagnosticos', [DiagnosticoController::class, 'index']);
+
+    //MOVIMIENTOS
+    Route::get('/movimientos/inventarios/{inventario_id}', [MovimientoController::class, 'movimientosPorInventario']);
+    Route::get('/movimientos/{id}', [MovimientoController::class, 'show']);
+    //MOVIMEINTO TIPO
+        Route::get('/tipos-de-movimientos', [MovimientoTipoController::class, 'mandarMovimientosParaLote']);
+
+
+    //INVENTARIOS
+    Route::get('/inventarios', [InventarioController::class, 'index']);
+    Route::get('/inventarios/profesional/{id}', [InventarioController::class, 'inventariosDelProfesional']);
+    Route::get('/inventarios/consulta/profesional/{id}', [InventarioController::class, 'inventariosDelProfesionalParaConsulta']); //TODO Obtener todos los inventarios con sus insumos y lotes que no esten caducos y que esten en existencia para la consulta
+    Route::get('/inventarios/{id}', [InventarioController::class, 'show']);
+    Route::post('/inventarios/add-insumos', [InventarioController::class, 'addInsumos']);
+    Route::get('/inventarios/{inventario_id}/insumos/{insumo_id}', [InventarioController::class, 'insumoPorInventario']);
+    Route::get('/inventarios/{inventario_id}/lotes/{lote_id}', [InventarioController::class, 'lotePorInventario']);
+
+
+    //PDF HISTORIAL MEDICO
+    Route::get('/historial-medico/pdf/{id}/{fecha}', [HistorialMedicoController::class, 'pdf']);
+
+    //RECETAS
+    Route::get('/recetas/{id}', [RecetaController::class, 'receta']);
+
+    
 });
