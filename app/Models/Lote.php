@@ -19,6 +19,7 @@ class Lote extends Model
         'fechaIngreso',
         'piezasDisponibles',
         'insumo_id',
+        'inventario_id',
     ];
 
     //Uno a Muchos Inversa
@@ -27,8 +28,19 @@ class Lote extends Model
         return $this->belongsTo(Insumo::class, 'insumo_id');
     }
 
+    //Uno a Muchos Inversa
+    public function inventario()
+    {
+        return $this->belongsTo('App\Models\Inventario', 'inventario_id');
+    }
+
+    //Muchos a Muchos
+    public function inventarios(){
+        return $this->belongsToMany('App\Models\Lote');
+    }
+
     //Uno a Muchos
-    public function movimientos(){
-        return $this->hasMany('App\Models\Movimiento');
+    public function movimientoMovs(){
+        return $this->hasMany('App\Models\MovimientoMov');
     }
 }

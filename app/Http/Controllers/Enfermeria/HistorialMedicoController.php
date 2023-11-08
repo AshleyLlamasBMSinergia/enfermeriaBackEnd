@@ -34,10 +34,10 @@ class HistorialMedicoController extends Controller
         $fechaCreacion = Carbon::parse($fecha)->locale('es');
         $fechaFormateada = $fechaCreacion->isoFormat('D [de] MMMM [del] YYYY');
 
-        $examenFisico = EFisico::where('historialMedico_id', $historialMedico->id)->whereDate('fecha', $fecha)->get();
-        $examenAntidoping = EAntidoping::where('historialMedico_id', $historialMedico->id)->whereDate('fecha', $fecha)->get();
-        $examenEmbarazo = EEmbarazo::where('historialMedico_id', $historialMedico->id)->whereDate('fecha', $fecha)->get();
-        $examenVista = EVista::where('historialMedico_id', $historialMedico->id)->whereDate('fecha', $fecha)->get();
+        $examenFisico = EFisico::where('historialMedico_id', $historialMedico->id)->whereDate('fecha', $fecha)->first();
+        $examenAntidoping = EAntidoping::where('historialMedico_id', $historialMedico->id)->whereDate('fecha', $fecha)->first();
+        $examenEmbarazo = EEmbarazo::where('historialMedico_id', $historialMedico->id)->whereDate('fecha', $fecha)->first();
+        $examenVista = EVista::where('historialMedico_id', $historialMedico->id)->whereDate('fecha', $fecha)->first();
 
         $pdf = PDF::loadView('pdfs.formatoEnfermeria', [
             'historialMedico' => $historialMedico,
@@ -48,6 +48,7 @@ class HistorialMedicoController extends Controller
             'examenEmbarazo' => $examenEmbarazo,
             'examenVista'=> $examenVista,
         ]);
+
         return $pdf->stream('historial-medico.pdf');
     }  
 
@@ -79,17 +80,21 @@ class HistorialMedicoController extends Controller
             'examenes.archivos',
             ])->find($id);
 
-        if ($data) {
+        if (!$data) {
+            return response()->json(['error' => 'Historial médico no encontrado'], 404);
+        }else{
             if ($data->pacientable_type === 'App\\Models\\NomEmpleado') {
                 $data->load(
+                    'pacientable.dependientes',
+                    // 'pacientable.dependientes.historialMedico',
+                    // 'pacientable.dependientes.image',
+                    // 'pacientable.dependientes.empleado.historialMedico',
                     'pacientable.puesto',
-                    'pacientable.image');
+                    'pacientable.image'
+                );
             }
         }
 
-        if (!$data) {
-            return response()->json(['error' => 'Historial médico no encontrado'], 404);
-        }
         return response()->json($data, 200);
     }
 
@@ -162,27 +167,31 @@ class HistorialMedicoController extends Controller
                     ], 500);
             }
 
-            $imagenBase64 = explode(";base64,",$request['imagen']);
-            $imagenExplode = explode("image/", $imagenBase64[0]);
-            $imagenFormato = $imagenExplode[1];
-            $imagen = base64_decode($imagenBase64[1]);
-            $imagenNombre = Str::random(12);
-            $ruta = storage_path('app/private/fotografías/'.$imagenNombre.'.'.$imagenFormato);
+            if($request['imagen']){
+                $imagenBase64 = explode(";base64,",$request['imagen']);
+                $imagenExplode = explode("image/", $imagenBase64[0]);
+                $imagenFormato = $imagenExplode[1];
+                $imagen = base64_decode($imagenBase64[1]);
+                $imagenNombre = Str::random(12);
+                $ruta = storage_path('app/private/fotografías/'.$imagenNombre.'.'.$imagenFormato);
 
-            file_put_contents($ruta, $imagen);
-           
-            // Guardar la imagen
-            $imagen = Imagen::create([
-                'url' => $imagenNombre.'.'.$imagenFormato,
-                'categoria' => 'fotografías',
-                'imageable_id' => $pacientable_id,
-                'imageable_type' => $pacientable_type
-            ]);
+                file_put_contents($ruta, $imagen);
+            
+                // Guardar la imagen
+                $imagen = Imagen::create([
+                    'url' => $imagenNombre.'.'.$imagenFormato,
+                    'categoria' => 'fotografías',
+                    'imageable_id' => $pacientable_id,
+                    'imageable_type' => $pacientable_type
+                ]);
+            }
 
             //Crear historial medico
             $historialMedico = HistorialMedico::create([
                 'pacientable_id' => $pacientable_id,
                 'pacientable_type' => $pacientable_type,
+                'talla' => $request['talla'],
+                'peso' => $request['peso'],
                 //'user_id' => $user->id
             ]);
 
@@ -206,6 +215,11 @@ class HistorialMedicoController extends Controller
             if (!$historialMedico) {
                 return response()->json(['error' => 'Historial médico no encontrado'], 404);
             }
+
+            $historialMedico->update([
+                'talla' => $request['talla'],
+                'peso' => $request['peso'],
+            ]);
 
             switch($request['paciente'])
             {
@@ -379,6 +393,6 @@ class HistorialMedicoController extends Controller
 
     public function buscarHistorialMedicoPorTipo($id, $tipo){
         return HistorialMedico::where('pacientable_id', $id)->where('pacientable_type', $tipo)->with('pacientable',
-            'pacientable.image')->first();
+            'pacientable.image', 'antecedentesPersonalesPatologicos')->first();
     }
 }

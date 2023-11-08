@@ -6,27 +6,25 @@ use Illuminate\Support\Facades\Schema;
 
 class CreateMovimientosTable extends Migration
 {
-    /**
-     * Run the migrations.
-     *
-     * @return void
-     */
     public function up()
     {
         Schema::create('Movimientos', function (Blueprint $table) {
             $table->id();
-            $table->string('tipo')->nullable();
-            $table->string('folio')->nullable();
+            
             $table->dateTime('fecha');
 
             $table->unsignedBigInteger('profesional_id')->nullable();
             $table->foreign('profesional_id')->references('id')->on('Profesionales')->onDelete('set null')->onUpdate('cascade');
 
-            $table->unsignedBigInteger('lote_id')->nullable();
-            $table->foreign('lote_id')->references('id')->on('Lotes')->onDelete('set null')->onUpdate('cascade');
 
-            $table->unsignedBigInteger('typable_id');
-            $table->string('typable_type');
+            $table->unsignedBigInteger('inventario_id')->nullable();
+            $table->foreign('inventario_id')->references('id')->on('Inventarios')->onDelete('set null')->onUpdate('cascade');
+
+            $table->unsignedBigInteger('movimientoTipo_id')->nullable();
+            $table->foreign('movimientoTipo_id')->references('id')->on('MovimientoTipos')->onDelete('set null')->onUpdate('cascade');
+
+            // $table->unsignedBigInteger('aprobacion_id')->nullable();
+            // $table->foreign('aprobacion_id')->references('id')->on('Aprobaciones');
 
             $table->timestamps();
         });
@@ -39,6 +37,6 @@ class CreateMovimientosTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('movimientos');
+        Schema::dropIfExists('Movimientos');
     }
 }

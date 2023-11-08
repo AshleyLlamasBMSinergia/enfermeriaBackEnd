@@ -32,14 +32,16 @@ class CreateConsultasTable extends Migration
 
             //SIGNOS VITALES E INFORMACION DEL PACIENTE
             $table->smallInteger('triajeClasificacion')->nullable();
-            $table->smallInteger('precionDiastolica')->nullable();
+            $table->smallInteger('presionDiastolica')->nullable();
+            $table->smallInteger('presionSistolica')->nullable();
             $table->smallInteger('frecuenciaRespiratoria')->nullable();
             $table->smallInteger('frecuenciaCardiaca')->nullable();
             $table->smallInteger('temperatura')->nullable();
             $table->integer('edad')->nullable();
             $table->decimal('peso')->nullable();
             $table->decimal('talla')->nullable();
-            $table->string('grucemiaCapilar')->nullable();
+            $table->integer('mg')->nullable();
+            $table->integer('dl')->nullable();
 
             //SOAP
             $table->longText('subjetivo')->nullable();
@@ -48,8 +50,11 @@ class CreateConsultasTable extends Migration
             $table->longText('plan')->nullable();
 
             //RECETA
-            $table->longText('diagnostico')->nullable();
+            $table->longText('complemento')->nullable();
             $table->longText('receta')->nullable();
+
+            $table->unsignedBigInteger('diagnostico_id')->nullable(); 
+            $table->foreign('diagnostico_id')->references('id')->on('Diagnosticos')->onDelete('set null')->onUpdate('cascade');
 
             //INCAPACIDADES
             $table->enum('pronostico', ['Favorable', 'Moderado', 'Grave', 'Reservado'])->nullable();

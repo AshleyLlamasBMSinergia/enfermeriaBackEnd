@@ -26,14 +26,14 @@ class CreateProfesionalesTable extends Migration
             $table->unsignedBigInteger('direccion_id')->nullable();
             $table->foreign('direccion_id')->references('id')->on('Direcciones')->onDelete('set null')->onUpdate('cascade');
 
+            $table->unsignedBigInteger('cedis_id')->nullable();
+            $table->foreign('cedis_id')->references('id')->on('Cedis')->onDelete('set null')->onUpdate('cascade');
+
             $table->string('estatus')->nullable();
             
             $table->unsignedBigInteger('puesto_id')->nullable();
             $table->foreign('puesto_id')->references('id')->on('NomPuestos')->onDelete('set null')->onUpdate('cascade');
-
-            $table->unsignedBigInteger('empresa_id')->nullable();
-            $table->foreign('empresa_id')->references('id')->on('Empresas')->onDelete('set null')->onUpdate('cascade');
-
+            
             $table->timestamps();
         });
     }

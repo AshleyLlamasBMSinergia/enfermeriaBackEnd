@@ -19,7 +19,7 @@ class CreateExamensTable extends Migration
             $table->string('fecha')->nullable();
             $table->string('tipo')->nullable();
             $table->string('categoria')->nullable();
-            $table->longText('descripcion');
+            $table->longText('descripcion')->nullable();
 
             $table->unsignedBigInteger('historialMedico_id')->nullable();
             $table->foreign('historialMedico_id')->references('id')->on('HistorialesMedicos')->onDelete('set null')->onUpdate('cascade');
@@ -28,11 +28,6 @@ class CreateExamensTable extends Migration
         });
     }
 
-    /**
-     * Reverse the migrations.
-     *
-     * @return void
-     */
     public function down()
     {
         Schema::dropIfExists('Examenes');

@@ -59,6 +59,13 @@
             font-size: 12px;
         }
 
+        .pie-de-pagina {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            margin: 1.5cm;
+        }
+
         </style>
     </head>
     <body>
@@ -533,8 +540,8 @@
                 </tbody>
             </table>
         @endisset
-        <div style="page-break-after:always;"></div>
         @isset($historialMedico->antecedentesHeredofamiliares)
+        <div style="page-break-after:always;"></div>
             <table class="table table-sm table-borderless">
                 <thead class="thead-dark">
                     <tr>
@@ -753,7 +760,464 @@
                     @endisset
                 </tbody>
             </table>
-            @endisset
+        @endisset
+        @isset($examenFisico)
+        <div style="page-break-after:always;"></div>
+            <table class="table table-sm table-borderless">
+                <thead class="thead-dark">
+                    <tr>
+                        <th colspan="4" class="text-center">
+                            EXAMEN FÍSICO
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td colspan="1">
+                            <b>T.A:</b> <span class="text-secondary">{{ $examenFisico->TA }}</span>
+                        </td>
+                        <td colspan="1">
+                            <b>F.R:</b> <span class="text-secondary">{{ $examenFisico->FR }}</span>
+                        </td>
+                        <td colspan="1">
+                            <b>Peso:</b> <span class="text-secondary">{{ $examenFisico->peso }}</span>
+                        </td>
+                        <td colspan="1">
+                            <b>T.C:</b> <span class="text-secondary">{{ $examenFisico->TC }}</span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="1">
+                            <b>Temperatura:</b> <span class="text-secondary">{{ $examenFisico->temperatura }}</span>
+                        </td>
+                        <td colspan="1">
+                            <b>Talla:</b> <span class="text-secondary">{{ $examenFisico->talla }}</span>
+                        </td>
+                        <td colspan="1">
+                            <b>Estado de conciencia:</b> <span class="text-secondary">{{ $examenFisico->estadoConciencia }}</span>
+                        </td>
+                        <td colspan="1">
+                            <b>Coordinación:</b> <span class="text-secondary">{{ $examenFisico->coordinacion }}</span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="1">
+                            <b>Equilibrio:</b> <span class="text-secondary">{{ $examenFisico->equilibrio }}</span>
+                        </td>
+                        <td colspan="1">
+                            <b>Marcha:</b> <span class="text-secondary">{{ $examenFisico->marcha }}</span>
+                        </td>
+                        <td colspan="1">
+                            <b>Orientación:</b> <span class="text-secondary">{{ $examenFisico->orientacion }}</span>
+                        </td>
+                        <td colspan="1">
+                            <b>Orientación en tiempo:</b> <span class="text-secondary">{{ $examenFisico->orientacionTiempo }}</span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="2">
+                            <b>Orientación en persona:</b> <span class="text-secondary">{{ $examenFisico->orientacionPersona }}</span>
+                        </td>
+                        <td colspan="2">
+                            <b>Orientación en espacio:</b> <span class="text-secondary">{{ $examenFisico->orientacionEspacio }}</span>
+                        </td>
+                    </tr>
+                    
+                    @isset($examenFisico->cabeza)
+                        <tr class="bg-light">
+                            <th colspan="4" class="text-center">
+                                CABEZA
+                            </th>
+                        </tr>
+                        <tr>
+                            <td colspan="1">
+                                <b>Craneo:</b> <span class="text-secondary">{{ $examenFisico->cabeza->craneo }}</span>
+                            </td>
+                            <td colspan="1">
+                                <b>Ojos:</b> <span class="text-secondary">{{ $examenFisico->cabeza->ojos }}</span>
+                            </td>
+                            <td colspan="1">
+                                <b>Nariz:</b> <span class="text-secondary">{{ $examenFisico->cabeza->nariz }}</span>
+                            </td>
+                            <td colspan="1">
+                                <b>Boca:</b> <span class="text-secondary">{{ $examenFisico->cabeza->boca }}</span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="2">
+                                <b>Cuello:</b> <span class="text-secondary">{{ $examenFisico->cabeza->cuello }}</span>
+                            </td>
+                            <td colspan="2">
+                                <div class="d-flex py-2">
+                                    <div>
+                                        <b>Observaciones:</b>
+                                    </div>
+                                    <div class="ml-auto text-secondary border rounded p-2">
+                                        {{ $examenFisico->cabeza->observaciones }}
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                    @endisset
+                    @isset($examenFisico->torax)
+                        <tr class="bg-light">
+                            <th colspan="4" class="text-center">
+                                TÓRAX
+                            </th>
+                        </tr>
+                        <tr>
+                            <td colspan="1">
+                                <b>Campos pulmonares:</b> <span class="text-secondary">{{ $examenFisico->torax->camposPulmonares }}</span>
+                            </td>
+                            <td colspan="1">
+                                <b>AMP. AMPLEX.:</b> <span class="text-secondary">{{ $examenFisico->torax->ampAmplex }}</span>
+                            </td>
+                            <td colspan="1">
+                                <b>Ruido pulmonar:</b> <span class="text-secondary">{{ $examenFisico->torax->ruidoPulmonar }}</span>
+                            </td>
+                            <td colspan="1">
+                                <b>Trans. Voz:</b> <span class="text-secondary">{{ $examenFisico->torax->transVoz }}</span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="1">
+                                <b>Área precordial:</b> <span class="text-secondary">{{ $examenFisico->torax->areaPrecordial }}</span>
+                            </td>
+                            <td colspan="1">
+                                <b>FC.:</b> <span class="text-secondary">{{ $examenFisico->torax->FC }}</span>
+                            </td>
+                            <td colspan="1">
+                                <b>Tono:</b> <span class="text-secondary">{{ $examenFisico->torax->tono }}</span>
+                            </td>
+                            <td colspan="1">
+                                <b>Ritmo:</b> <span class="text-secondary">{{ $examenFisico->torax->ritmo }}</span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="4">
+                                <div class="d-flex py-2">
+                                    <div>
+                                        <b>Observaciones:</b> <span class="text-secondary"></span>
+                                    </div>
+                                    <div class="ml-auto text-secondary border rounded p-2">
+                                        {{ $examenFisico->torax->observaciones }}
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                    @endisset
+                    @isset($examenFisico->abdomen)
+                        <tr class="bg-light">
+                            <th colspan="4" class="text-center">
+                                ABDOMEN
+                            </th>
+                        </tr>
+                        <tr>
+                            <td colspan="1">
+                                <b>Pared:</b> <span class="text-secondary">{{ $examenFisico->abdomen->pared }}</span>
+                            </td>
+                            <td colspan="1">
+                                <b>Peristalsis:</b> <span class="text-secondary">{{ $examenFisico->abdomen->peristalsis }}</span>
+                            </td>
+                            <td colspan="1">
+                                <b>Visceromagalias:</b> <span class="text-secondary">{{ $examenFisico->abdomen->visceromegalias }}</span>
+                            </td>
+                            <td colspan="1">
+                                <b>Hernias:</b> <span class="text-secondary">{{ $examenFisico->abdomen->hernias }}</span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="4">
+                                <div class="d-flex py-2">
+                                    <div>
+                                        <b>Observaciones:</b> <span class="text-secondary"></span>
+                                    </div>
+                                    <div class="ml-auto text-secondary border rounded p-2">
+                                        {{ $examenFisico->abdomen->observaciones }}
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                    @endisset
+                    @isset($examenFisico->extremidad)
+                        <tr class="bg-light">
+                            <th colspan="4" class="text-center">
+                                EXTREMIDADES
+                            </th>
+                        </tr>
+                        <tr>
+                            <td colspan="1">
+                                <b>Toraxicas:</b> <span class="text-secondary">{{ $examenFisico->extremidad->toraxicas }}</span>
+                            </td>
+                            <td colspan="1">
+                                <b>Hombros:</b> <span class="text-secondary">{{ $examenFisico->extremidad->hombro }}</span>
+                            </td>
+                            <td colspan="1">
+                                <b>Codos:</b> <span class="text-secondary">{{ $examenFisico->extremidad->codo }}</span>
+                            </td>
+                            <td colspan="1">
+                                <b>Muñecas:</b> <span class="text-secondary">{{ $examenFisico->extremidad->muneca }}</span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="1">
+                                <b>Pie:</b> <span class="text-secondary">{{ $examenFisico->extremidad->pie }}</span>
+                            </td>
+                            <td colspan="1">
+                                <b>Movilidad:</b> <span class="text-secondary">{{ $examenFisico->extremidad->movilidad }}</span>
+                            </td>
+                            <td colspan="1">
+                                <b>Pelvicas:</b> <span class="text-secondary">{{ $examenFisico->extremidad->pelvicas }}</span>
+                            </td>
+                            <td colspan="1">
+                                <b>Cadera:</b> <span class="text-secondary">{{ $examenFisico->extremidad->cadera }}</span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="1">
+                                <b>Rodillas:</b> <span class="text-secondary">{{ $examenFisico->extremidad->rodilla }}</span>
+                            </td>
+                            <td colspan="1">
+                                <b>Tobillos:</b> <span class="text-secondary">{{ $examenFisico->extremidad->tobillo }}</span>
+                            </td>
+                            <td colspan="1">
+                                <b>Manos:</b> <span class="text-secondary">{{ $examenFisico->extremidad->mano }}</span>
+                            </td>
+                            <td colspan="1">
+                                <b>Fuerza:</b> <span class="text-secondary">{{ $examenFisico->extremidad->fuerza }}</span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="4">
+                                <div class="d-flex py-2">
+                                    <div>
+                                        <b>Observaciones:</b> <span class="text-secondary"></span>
+                                    </div>
+                                    <div class="ml-auto text-secondary border rounded p-2">
+                                        {{ $examenFisico->extremidad->observaciones }}
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                    @endisset
+                    @isset($examenFisico->columnaVertebral)
+                        <tr class="bg-light">
+                            <th colspan="4" class="text-center">
+                                COLUMNA VERTEBRAL
+                            </th>
+                        </tr>
+                        <tr>
+                            <td colspan="1">
+                                <b>Lordosis:</b> <span class="text-secondary">{{ $examenFisico->columnaVertebral->lordosis }}</span>
+                            </td>
+                            <td colspan="1">
+                                <b>Flexión:</b> <span class="text-secondary">{{ $examenFisico->columnaVertebral->flexion }}</span>
+                            </td>
+                            <td colspan="1">
+                                <b>Lateralizacion:</b> <span class="text-secondary">{{ $examenFisico->columnaVertebral->lateralizacion }}</span>
+                            </td>
+                            <td colspan="1">
+                                <b>Puntos de dolor:</b> <span class="text-secondary">{{ $examenFisico->columnaVertebral->puntosDolor }}</span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="1">
+                                <b>Xifosis:</b> <span class="text-secondary">{{ $examenFisico->columnaVertebral->xifosis }}</span>
+                            </td>
+                            <td colspan="1">
+                                <b>Extensión:</b> <span class="text-secondary">{{ $examenFisico->columnaVertebral->extension }}</span>
+                            </td>
+                            <td colspan="2">
+                                <b>Rotación:</b> <span class="text-secondary">{{ $examenFisico->columnaVertebral->rotacion }}</span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="4">
+                                <div class="d-flex py-2">
+                                    <div>
+                                        <b>Otros:</b> <span class="text-secondary"></span>
+                                    </div>
+                                    <div class="ml-auto text-secondary border rounded p-2">
+                                        {{ $examenFisico->columnaVertebral->otros }}
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="4">
+                                <div class="d-flex py-2">
+                                    <div>
+                                        <b>Observaciones:</b> <span class="text-secondary"></span>
+                                    </div>
+                                    <div class="ml-auto text-secondary border rounded p-2">
+                                        {{ $examenFisico->columnaVertebral->observaciones }}
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                    @endisset
+                    @isset($examenFisico->organoSentido)
+                        <tr class="bg-light">
+                            <th colspan="4" class="text-center">
+                                ORGANOS DE LOS SENTIDOS
+                            </th>
+                        </tr>
+                        <tr>
+                            <td colspan="1">
+                                <b>Vista:</b> <span class="text-secondary">{{ $examenFisico->organoSentido->vista }}</span>
+                            </td>
+                            <td colspan="1">
+                                <b>Oido:</b> <span class="text-secondary">{{ $examenFisico->organoSentido->oido }}</span>
+                            </td>
+                            <td colspan="1">
+                                <b>Olfato:</b> <span class="text-secondary">{{ $examenFisico->organoSentido->olfato }}</span>
+                            </td>
+                            <td colspan="1">
+                                <b>Tacto:</b> <span class="text-secondary">{{ $examenFisico->organoSentido->tacto }}</span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="4">
+                                <div class="d-flex py-2">
+                                    <div>
+                                        <b>Observaciones:</b> <span class="text-secondary"></span>
+                                    </div>
+                                    <div class="ml-auto text-secondary border rounded p-2">
+                                        {{ $examenFisico->organoSentido->observaciones }}
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                    @endisset
+                </tbody>
+            </table>
+        @endisset
+        
+        @isset($examenAntidoping)
+            <table class="table table-sm table-borderless">
+                <thead class="thead-dark">
+                    <tr>
+                        <th colspan="4" class="text-center">
+                            EXAMEN ANTIDOPING
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td colspan="2">
+                            <b>Tipo:</b> <span class="text-secondary">{{ $examenAntidoping->tipo }}</span>
+                        </td>
+                        <td colspan="2">
+                            <b>Examen:</b> <span class="text-secondary">{{ $examenAntidoping->examen }}</span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="1">
+                            <b>Sustancias:</b>
+                        </td>
+                        <td colspan="3">
+                            @if($examenAntidoping->sustancias->count())
+                                @foreach($examenAntidoping->sustancias as $sustancia)
+                                    [<span @if($sustancia->resultado == 'Positivo') class="text-danger" @endif>{{ $sustancia->sustancia }}</span>]
+                                @endforeach
+                            @else
+                                No se encontró ninguna sustancia
+                            @endif
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        @endisset
+        @isset($examenEmbarazo)
+            <table class="table table-sm table-borderless">
+                <thead class="thead-dark">
+                    <tr>
+                        <th colspan="4" class="text-center">
+                            EXAMEN DE EMBARAZO 
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td colspan="2">
+                            <b>Tipo:</b> <span class="text-secondary">{{ $examenEmbarazo->tipo }}</span>
+                        </td>
+                        <td colspan="2">
+                            <b>Resultado:</b> <span class="text-secondary">{{ $examenEmbarazo->resultado }}</span>
+                        </td>
+                    </tr>
+                    @isset($examenEmbarazo->observaciones)
+                        <tr>
+                            <td colspan="4">
+                                <div class="d-flex py-2">
+                                    <div>
+                                        <b>Observaciones:</b>
+                                    </div>
+                                    <div class="ml-auto text-secondary border rounded p-2">
+                                        {{ $examenEmbarazo->observaciones }}
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                    @endisset
+                </tbody>
+            </table>
+        @endisset
+        @isset($examenVista)
+            <table class="table table-sm table-borderless">
+                <thead class="thead-dark">
+                    <tr>
+                        <th colspan="4" class="text-center">
+                            EXAMEN DE VISTA 
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td colspan="2">
+                            <b>Tipo:</b> <span class="text-secondary">{{ $examenVista->tipo }}</span>
+                        </td>
+                        <td colspan="1">
+                            <b>¿Necesita lentes?:</b> <span class="text-secondary">{{ $examenVista->necesitaLentes }}</span>
+                        </td>
+                        <td colspan="1">
+                            <b>¿Usa lentes?:</b> <span class="text-secondary">{{ $examenVista->usaLentes }}</span>
+                        </td>
+                    </tr>
+                    @isset($examenEmbarazo->comentarios)
+                        <tr>
+                            <td colspan="4">
+                                <div class="d-flex py-2">
+                                    <div>
+                                        <b>Comentarios:</b>
+                                    </div>
+                                    <div class="ml-auto text-secondary border rounded p-2">
+                                        {{ $examenEmbarazo->comentarios }}
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                    @endisset
+                </tbody>
+            </table>
+        @endisset
+            <div class="pie-de-pagina">
+                <div class="pt-5 mt-5">
+                    <div style="width: 280px; border-bottom: 1px solid black; margin: 0 auto;"></div>
+                    <p class="text-center">NOMBRE Y FIRMA ENFERMERA </p>
+                </div>
+                <div>
+                    <p>
+                        <b>Nota:</b>  Declaro bajo protesta haber dicho la verdad y acepto que cualquier falsedad en los datos proporcionados serán causa de Rescición de mi contrato de trabajo,  estoy de acuerdo en usar el Equipo de Protección Personal  que la Empresa me proporcione,  asi como someterme a los exámenes de laboratorio y gabinete que la empresa juzgue pertinente, además  recibí de conformidad los resultados de mi exámen médico y las recomendaciones pertinentes. Asimismo se me informa que de requerirlo se me puede otorgar copia de mis reportes médicos, previa solicitud por escrito.
+                        De la misma manera me informan que tengo todo el derecho de alegar cualquier reacción adversa para la salud o el medio ambiente proveniente de un producto, u  otro material manejado o emitido de los procesos de operación de la compañía.
+                    </p>
+                </div>
+                <div class="pt-5 mt-5">
+                    <div style="width: 280px; border-bottom: 1px solid black; margin: 0 auto;"></div>
+                    <p class="text-center">NOMBRE Y FIRMA</p>
+                </div>
+                <p class="text-center text-justify">Hago del conocimiento que, durante mi estancia laboral con la empresa, mi estado general de salud no presento ninguna alteración.</p>
+            </div>
         </main>
         <footer>
 

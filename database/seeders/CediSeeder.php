@@ -2,10 +2,11 @@
 
 namespace Database\Seeders;
 
-use App\Models\Empresa;
+use App\Models\Cedi;
+use App\Models\Direccion;
 use Illuminate\Database\Seeder;
 
-class EmpresaSeeder extends Seeder
+class CediSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -14,12 +15,12 @@ class EmpresaSeeder extends Seeder
      */
     public function run()
     {
-        Empresa::create([
-            'grupo' => 'Sinergia',
+        Cedi::create([
+            "nombre" => "CAN",
         ]);
 
-        Empresa::create([
-            'grupo' => 'CAN',
+        Cedi::create([
+            "nombre" => "CYSA",
         ]);
     }
 }

@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Enfermeria;
 use App\Http\Controllers\Controller;
 use App\Models\Imagen;
 use App\Models\Insumo;
+use App\Models\Inventario;
 use App\Models\Lote;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
@@ -40,6 +41,41 @@ class InsumoController extends Controller
         }
     }
 
+    public function insumosQueNoTieneInventario($id)
+    {
+        try{
+            $data = Insumo::with('image')->whereDoesntHave('inventarios', function ($query) use ($id) {
+                $query->where('inventario_id', $id);
+            })->get();
+
+            return response()->json($data, 200);
+        }catch(\Exception $e){
+            return response()->json([
+                'error' => 'Ocurrió un error al buscar todos los insumos'
+                // 'error' => $e
+            ], 500);
+        }
+    }
+
+    public function show($id){
+        try{
+            $data = Insumo::with(['image'])->find($id);
+
+            if(!$data){
+                return response()->json([
+                    'error' => 'No se encontro el insumo'
+                ], 400);
+            }
+
+            return response()->json($data, 200);
+        }catch(\Exception $e){
+            return response()->json([
+                'error' => 'Ocurrió un error al buscar el insumo'
+                // 'error' => $e
+            ], 500);
+        }
+    }
+
     public function store(Request $request)
     {
         try{
@@ -48,25 +84,32 @@ class InsumoController extends Controller
                 'piezasPorLote' => $request['piezasPorLote'],
                 'descripcion' => $request['descripcion'],
                 'precio' => $request['precio'],
-                'inventario_id' => $request['inventario_id'],
+                'inventario_id' => $request['inventario_id']
             ]);
 
-            $imagenBase64 = explode(";base64,",$request['imagen']);
-            $imagenExplode = explode("image/", $imagenBase64[0]);
-            $imagenFormato = $imagenExplode[1];
-            $imagen = base64_decode($imagenBase64[1]);
-            $imagenNombre = Str::random(12);
-            $ruta = storage_path('app/private/insumos/'.$imagenNombre.'.'.$imagenFormato);
+            $insumo->inventarios()->attach($request['inventario_id']);
 
-            file_put_contents($ruta, $imagen);
-           
-            // Guardar la imagen
-            $imagen = Imagen::create([
-                'url' => $imagenNombre.'.'.$imagenFormato,
-                'categoria' => 'insumos',
-                'imageable_id' => $insumo->id,
-                'imageable_type' => Insumo::class
-            ]);
+            Log::error($request['reactivos']);
+            $insumo->reactivos()->attach($request['reactivos']);
+
+            if($request['imagen']){
+                $imagenBase64 = explode(";base64,",$request['imagen']);
+                $imagenExplode = explode("image/", $imagenBase64[0]);
+                $imagenFormato = $imagenExplode[1];
+                $imagen = base64_decode($imagenBase64[1]);
+                $imagenNombre = Str::random(12);
+                $ruta = storage_path('app/private/insumos/'.$imagenNombre.'.'.$imagenFormato);
+
+                file_put_contents($ruta, $imagen);
+            
+                // Guardar la imagen
+                $imagen = Imagen::create([
+                    'url' => $imagenNombre.'.'.$imagenFormato,
+                    'categoria' => 'insumos',
+                    'imageable_id' => $insumo->id,
+                    'imageable_type' => Insumo::class
+                ]);
+            }
 
             // Responder
             return response()->json([
@@ -79,16 +122,6 @@ class InsumoController extends Controller
                 'error' => 'Error al guardar el insumo',
             ], 500);
         }
-    }
-
-    public function show($id){
-        
-        $data = Insumo::with(['lotes', 'image'])->find($id);
-
-        if (!$data) {
-            return response()->json(['error' => 'El insumo y sus lotes no fueron encontrados'], 404);
-        }
-        return response()->json($data, 200);
     }
 
     public function update(Request $request, $id)

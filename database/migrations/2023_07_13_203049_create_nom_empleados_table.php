@@ -36,8 +36,8 @@ class CreateNomEmpleadosTable extends Migration
             $table->unsignedBigInteger('puesto_id')->nullable();
             $table->foreign('puesto_id')->references('id')->on('NomPuestos')->onDelete('set null')->onUpdate('cascade');
 
-            $table->unsignedBigInteger('empresa_id')->nullable();
-            $table->foreign('empresa_id')->references('id')->on('Empresas')->onDelete('set null')->onUpdate('cascade');
+            $table->unsignedBigInteger('cedi_id')->nullable();
+            $table->foreign('cedi_id')->references('id')->on('Cedis')->onDelete('set null')->onUpdate('cascade');
             
             $table->timestamps();
             

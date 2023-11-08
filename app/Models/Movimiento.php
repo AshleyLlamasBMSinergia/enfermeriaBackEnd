@@ -14,12 +14,10 @@ class Movimiento extends Model
     protected $guarded = ['id', 'created_at', 'updated'];
 
     protected $fillable = [
-        'folio',
         'fecha',
         'profesional_id',
-        'lote_id',
-        'typable_id',
-        'typable_type',
+        'inventario_id',
+        'movimientoTipo_id',
     ];
 
     // Uno a muchos inversa
@@ -29,12 +27,37 @@ class Movimiento extends Model
     }
 
     // Uno a muchos inversa
+    public function inventario()
+    {
+        return $this->belongsTo(Inventario::class, 'inventario_id');
+    }
+
+    // Uno a muchos inversa
     public function profesional()
     {
         return $this->belongsTo(Profesional::class, 'profesional_id');
     }
 
-    public function typable(){
-        return $this->MorphTo();
+     //Uno a Muchos Inversa
+     public function tipoDeMovimiento(){
+        return $this->belongsTo('App\Models\MovimientoTipo', 'movimientoTipo_id');
     }
+
+    //Uno a Muchos
+    public function movimientoMovs(){
+        return $this->hasMany('App\Models\MovimientoMov');
+    }
+
+    //Uno a uno polimorfico
+    public function archivos()
+    {
+        $archivos = $this->morphMany('App\Models\Archivo', 'archivable')->get();
+        
+        $archivosPorCategoria = $archivos->groupBy('categoria');
+
+        dd($archivosPorCategoria);
+
+        return $archivosPorCategoria;
+    }
+
 }

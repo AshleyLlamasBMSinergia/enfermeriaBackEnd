@@ -4,7 +4,7 @@ namespace Database\Factories;
 
 use Illuminate\Database\Eloquent\Factories\Factory;
 
-class EntradaFactory extends Factory
+class DiagnosticoFactory extends Factory
 {
     /**
      * Define the model's default state.
@@ -14,7 +14,7 @@ class EntradaFactory extends Factory
     public function definition()
     {
         return [
-            //
+            'nombre' => $this->faker->name(),
         ];
     }
 }

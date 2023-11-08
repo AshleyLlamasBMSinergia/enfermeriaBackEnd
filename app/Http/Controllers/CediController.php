@@ -2,11 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\MovimientoTipo;
-use App\Http\Requests\StoreMovimientoTipoRequest;
-use App\Http\Requests\UpdateMovimientoTipoRequest;
+use App\Models\Cedi;
+use App\Http\Requests\StoreCediRequest;
+use App\Http\Requests\UpdateCediRequest;
 
-class MovimientoTipoController extends Controller
+class CediController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -31,10 +31,10 @@ class MovimientoTipoController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \App\Http\Requests\StoreMovimientoTipoRequest  $request
+     * @param  \App\Http\Requests\StoreCediRequest  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(StoreMovimientoTipoRequest $request)
+    public function store(StoreCediRequest $request)
     {
         //
     }
@@ -42,10 +42,10 @@ class MovimientoTipoController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\MovimientoTipo  $movimientoTipo
+     * @param  \App\Models\Cedi  $cedi
      * @return \Illuminate\Http\Response
      */
-    public function show(MovimientoTipo $movimientoTipo)
+    public function show(Cedi $cedi)
     {
         //
     }
@@ -53,10 +53,10 @@ class MovimientoTipoController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Models\MovimientoTipo  $movimientoTipo
+     * @param  \App\Models\Cedi  $cedi
      * @return \Illuminate\Http\Response
      */
-    public function edit(MovimientoTipo $movimientoTipo)
+    public function edit(Cedi $cedi)
     {
         //
     }
@@ -64,11 +64,11 @@ class MovimientoTipoController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \App\Http\Requests\UpdateMovimientoTipoRequest  $request
-     * @param  \App\Models\MovimientoTipo  $movimientoTipo
+     * @param  \App\Http\Requests\UpdateCediRequest  $request
+     * @param  \App\Models\Cedi  $cedi
      * @return \Illuminate\Http\Response
      */
-    public function update(UpdateMovimientoTipoRequest $request, MovimientoTipo $movimientoTipo)
+    public function update(UpdateCediRequest $request, Cedi $cedi)
     {
         //
     }
@@ -76,10 +76,10 @@ class MovimientoTipoController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\MovimientoTipo  $movimientoTipo
+     * @param  \App\Models\Cedi  $cedi
      * @return \Illuminate\Http\Response
      */
-    public function destroy(MovimientoTipo $movimientoTipo)
+    public function destroy(Cedi $cedi)
     {
         //
     }

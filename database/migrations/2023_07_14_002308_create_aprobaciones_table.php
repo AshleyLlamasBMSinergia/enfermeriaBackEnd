@@ -19,8 +19,8 @@ class CreateAprobacionesTable extends Migration
             $table->enum('estatus', ['Aprobado', 'Rechazado'])->nullable();
             $table->longText('motivo')->nullable();
 
-            $table->unsignedBigInteger('empleado_id')->nullable();
-            $table->foreign('empleado_id')->references('id')->on('NomEmpleados')->onDelete('set null')->onUpdate('cascade');
+            $table->unsignedBigInteger('profesional_id')->nullable();
+            $table->foreign('profesional_id')->references('id')->on('Profesionales')->onDelete('cascade')->onUpdate('cascade');
 
             $table->timestamps();
         });

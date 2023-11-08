@@ -20,10 +20,6 @@ class CreateInsumosTable extends Migration
             $table->decimal('precio')->nullable();
             $table->integer('piezasPorLote')->nullable();
             $table->longText('descripcion')->nullable();
-
-            $table->unsignedBigInteger('inventario_id')->nullable();
-            $table->foreign('inventario_id')->references('id')->on('Inventarios')->onDelete('set null')->onUpdate('cascade');
-
             $table->timestamps();
         });
     }

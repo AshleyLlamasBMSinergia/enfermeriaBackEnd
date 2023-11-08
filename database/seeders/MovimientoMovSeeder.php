@@ -4,7 +4,7 @@ namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
 
-class SalidaSeeder extends Seeder
+class MovimientoMovSeeder extends Seeder
 {
     /**
      * Run the database seeds.

@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateEmpresasTable extends Migration
+class CreateReactivosTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,17 +13,22 @@ class CreateEmpresasTable extends Migration
      */
     public function up()
     {
-        Schema::create('Empresas', function (Blueprint $table) {
+        Schema::create('reactivos', function (Blueprint $table) {
             $table->id();
 
-            $table->string('grupo')->nullable();
+            $table->string('nombre');
 
             $table->timestamps();
         });
     }
 
+    /**
+     * Reverse the migrations.
+     *
+     * @return void
+     */
     public function down()
     {
-        Schema::dropIfExists('Empresas');
+        Schema::dropIfExists('reactivos');
     }
 }

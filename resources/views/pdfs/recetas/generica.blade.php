@@ -49,8 +49,6 @@
 
             .profesional-nombre{
                 text-align: center;
-                top: 80px;
-
                 font-size: 18;
             }
 
@@ -121,30 +119,40 @@
                 position: absolute;
                 top: 310px;
                 left: 65px;
-                max-width: 995px;
-                max-height: 500px;
-                overflow: hidden;
             }
 
             .telefono{
                 position: absolute;
 
-                bottom: 45px;
-                left: 90px;
+                top:398px;
+                left: 20px;
             }
 
             .correo{
                 position: absolute;
 
-                bottom: 45px;
-                left: 275px;
+                top:398px;
+                left: 210px;
             }
 
             .direccion{
                 position: absolute;
 
-                bottom: 45px;
-                left: 576px;
+                top:398px;
+                left: 510px;
+                width: 480px;
+            }
+
+            .center-div {
+                display: flex;
+                align-items: center;
+                width: 100%;
+                justify-content: space-between;
+            }
+
+            .center-div img {
+                line-height: 0;
+                height: auto;
             }
         </style>
     </head>
@@ -153,23 +161,58 @@
 
         </header>
         <main>
-            <p class="profesional-nombre text-white">{{$consulta->profesional->nombre}}</h1>
+            <p class="profesional-nombre text-white pt-3">{{$consulta->profesional->nombre}}</h1>
 
-            <p class="edad text-secondary">{{$consulta->edad}}</p>
+            <div class="center-div text-white text-center">
+                <img width="16px" class="pt-1" src="{{ public_path('images/profesion.svg') }}" alt="receta">
+                <b class="pb-5">{{$consulta->profesional->puesto->nombre}}</b>
+                <img width="22px" class="pl-3 pt-1" src="{{ public_path('images/cedulaProfesional.svg') }}" alt="receta">
+                <b>Cédula profesional: </b>{{$consulta->profesional->cedula}}
+            </div>    
+    
+            <p class="edad text-secondary">{{$consulta->edad}} años</p>
             <p class="paciente-nombre text-secondary">{{$consulta->pacientable->nombre}}</p>
             <p class="fecha text-secondary">{{$consulta->fecha->format('d/m/Y')}}</p>
 
-            <p class="peso text-secondary">{{$consulta->peso}}</p>
-            <p class="talla text-secondary">{{$consulta->talla}} mts.</p>
-            <p class="presion-diastolica text-secondary">{{$consulta->precionDiastolica}}</p>
-            <p class="glucemia-capilar text-secondary">{{$consulta->grucemiaCapilar}}</p>
-            <p class="frecuencia-respiratoria text-secondary">{{$consulta->frecuenciaRespiratoria}}</p>
-            <p class="frecuencia-cardiaca text-secondary">{{$consulta->frecuenciaCardiaca}}</p>
+            <p class="peso text-secondary">
+                @isset($consulta->peso)
+                    {{$consulta->peso}} Kg.
+                @endisset
+            </p>
+            <p class="talla text-secondary">
+                @isset($consulta->talla)
+                    {{$consulta->talla}} mts.
+                @endisset
+            </p>
+            <p class="presion-diastolica text-secondary">
+                {{$consulta->presionSistolica}}
+                @if ($consulta->presionSistolica || $consulta->presionDiastolica)
+                    /
+                @endif
+                {{$consulta->presionDiastolica}}</p>
+            <p class="glucemia-capilar text-secondary">
+                {{$consulta->mg}}
+                @if ($consulta->mg || $consulta->dl)
+                    /
+                @endif
+                {{$consulta->dl}}
+            </p>
+            <p class="frecuencia-respiratoria text-secondary">
+                @isset($consulta->frecuenciaRespiratoria)
+                    {{$consulta->frecuenciaRespiratoria}}
+                @endisset
+            </p>
+            <p class="frecuencia-cardiaca text-secondary">
+                @isset($consulta->frecuenciaCardiaca)
+                    {{$consulta->frecuenciaCardiaca}}
+                @endisset
+            </p>
 
             <div class="receta text-secondary">{!!$consulta->receta!!}</p>
 
             <p class="telefono text-secondary">{{$consulta->profesional->telefono}}</p>
             <p class="correo text-secondary">{{$consulta->profesional->correo}}</p>
+
             <p class="direccion text-secondary">
                 @if($consulta->profesional->direccion)
                     @if($consulta->profesional->direccion->calle)
@@ -198,6 +241,5 @@
 
         </footer>
         <img class="imagen-de-fondo" src="{{ public_path('images/generica.jpg') }}" alt="receta">
-
     </body>
 </html>

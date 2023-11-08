@@ -22,19 +22,22 @@ class Consulta extends Model
         'pacientable_id',
         'pacientable_type',
         'triajeClasificacion',
-        'precionDiastolica',
+        'presionSistolica',
+        'presionDiastolica',
         'frecuenciaRespiratoria',
         'frecuenciaCardiaca',
+        'mg',
+        'dl',
         'edad',
         'temperatura',
         'peso',
         'talla',
-        'grucemiaCapilar',
         'subjetivo',
         'objetivo',
         'analisis',
         'plan',
-        'diagnostico',
+        'diagnostico_id',
+        'complemento',
         'receta',
         'pronostico',
         'incapacidad'
@@ -53,6 +56,12 @@ class Consulta extends Model
     public function profesional()
     {
         return $this->belongsTo(Profesional::class, 'profesional_id');
+    }
+
+    // Uno a muchos inversa con NomEmpleado (profesional)
+    public function diagnostico()
+    {
+        return $this->belongsTo(Diagnostico::class, 'diagnostico_id');
     }
 
     public function imagenes(){

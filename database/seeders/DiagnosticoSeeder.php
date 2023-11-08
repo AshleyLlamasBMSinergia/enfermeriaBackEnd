@@ -2,9 +2,10 @@
 
 namespace Database\Seeders;
 
+use App\Models\Diagnostico;
 use Illuminate\Database\Seeder;
 
-class EntradaSeeder extends Seeder
+class DiagnosticoSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -13,6 +14,6 @@ class EntradaSeeder extends Seeder
      */
     public function run()
     {
-        //
+        Diagnostico::factory(30)->create();
     }
 }

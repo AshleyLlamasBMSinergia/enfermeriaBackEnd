@@ -15,16 +15,19 @@ class Inventario extends Model
 
     protected $fillable = [
         'nombre',
+        'direccion_id',
+        'cedi_id'
     ];
 
-    //Uno a Muchos
-    public function insumos(){
-        return $this->hasMany('App\Models\Insumo');
-    }
-
+    
     //Muchos a Muchos
     public function profesionales(){
         return $this->belongsToMany('App\Models\Profesional');
+    }
+
+    //Muchos a Muchos
+    public function insumos(){
+        return $this->belongsToMany('App\Models\Insumo');
     }
 
     //Uno a muchos
@@ -35,5 +38,10 @@ class Inventario extends Model
     //Uno a muchos
     public function salidas(){
         return $this->hasMany('App\Models\Salida');
+    }
+
+    //Uno a muchos
+    public function lotes(){
+        return $this->hasMany('App\Models\Lote');
     }
 }

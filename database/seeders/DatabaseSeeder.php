@@ -3,6 +3,7 @@
 namespace Database\Seeders;
 
 use App\Models\EEmbarazo;
+use App\Models\Reactivo;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Storage;
 
@@ -19,11 +20,10 @@ class DatabaseSeeder extends Seeder
         // Storage::makeDirectory('public/fotografías');
 
         $this->call([
-            UserSeeder::class,
-            ImagenSeeder::class,
-            NomPuestoSeeder::class,
-            EmpresaSeeder::class,
-            DireccionSeeder::class,
+            // NomPuestoSeeder::class,
+            // DireccionSeeder::class,
+            CediSeeder::class,
+            InventarioSeeder::class,
             ProfesionalSeeder::class,
             // NomEmpleadoSeeder::class,
             // RHDependienteSeeder::class,
@@ -44,8 +44,10 @@ class DatabaseSeeder extends Seeder
             // ConsultaSeeder::class,
             // ExternoSeeder::class,
             // PendienteSeeder::class,
-            HorarioSeeder::class,
-            InventarioSeeder::class,
+            
+            MovimientoTipoSeeder::class,
+            //DiagnosticoSeeder::class,
+            ReactivoSeeder::class
             // InsumoSeeder::class,
             // LoteSeeder::class
         ]);

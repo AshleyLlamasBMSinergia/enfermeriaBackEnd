@@ -17,21 +17,21 @@ class UserSeeder extends Seeder
      */
     public function run()
     {
-        User::create([
-            'name' => 'Joseline Ashley Llamas Garcia',
-            'nickname' => 'Ashley Llamas',
-            'email' => 'ashleyllamasg@gmail.com',
-            'password' => bcrypt('123456'),
-            'useable_id' => 1,
-            'useable_type' => Profesional::class,
-        ]);
+        // User::create([
+        //     'name' => 'Joseline Ashley Llamas Garcia',
+        //     'nickname' => 'Ashley Llamas',
+        //     'email' => 'ashleyllamasg@gmail.com',
+        //     'password' => bcrypt('123456'),
+        //     'useable_id' => 1,
+        //     'useable_type' => Profesional::class,
+        // ]);
 
-        Imagen::create([
-            'url' => '1.jpg',
-            'categoria'  => 'fotografías',
-            'imageable_id' => 1,
-            'imageable_type' => Profesional::class,
-        ]);
+        // Imagen::create([
+        //     'url' => '1.jpg',
+        //     'categoria'  => 'fotografías',
+        //     'imageable_id' => 1,
+        //     'imageable_type' => Profesional::class,
+        // ]);
 
         // Imagen::create([
         //     'url' => '1.jpg',

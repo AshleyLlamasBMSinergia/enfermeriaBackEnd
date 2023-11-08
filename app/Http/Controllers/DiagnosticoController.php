@@ -2,11 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Movimiento;
-use App\Http\Requests\StoreMovimientoRequest;
-use App\Http\Requests\UpdateMovimientoRequest;
+use App\Models\Diagnostico;
+use App\Http\Requests\StoreDiagnosticoRequest;
+use App\Http\Requests\UpdateDiagnosticoRequest;
 
-class MovimientoController extends Controller
+class DiagnosticoController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -31,10 +31,10 @@ class MovimientoController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \App\Http\Requests\StoreMovimientoRequest  $request
+     * @param  \App\Http\Requests\StoreDiagnosticoRequest  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(StoreMovimientoRequest $request)
+    public function store(StoreDiagnosticoRequest $request)
     {
         //
     }
@@ -42,10 +42,10 @@ class MovimientoController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\Movimiento  $movimiento
+     * @param  \App\Models\Diagnostico  $diagnostico
      * @return \Illuminate\Http\Response
      */
-    public function show(Movimiento $movimiento)
+    public function show(Diagnostico $diagnostico)
     {
         //
     }
@@ -53,10 +53,10 @@ class MovimientoController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Models\Movimiento  $movimiento
+     * @param  \App\Models\Diagnostico  $diagnostico
      * @return \Illuminate\Http\Response
      */
-    public function edit(Movimiento $movimiento)
+    public function edit(Diagnostico $diagnostico)
     {
         //
     }
@@ -64,11 +64,11 @@ class MovimientoController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \App\Http\Requests\UpdateMovimientoRequest  $request
-     * @param  \App\Models\Movimiento  $movimiento
+     * @param  \App\Http\Requests\UpdateDiagnosticoRequest  $request
+     * @param  \App\Models\Diagnostico  $diagnostico
      * @return \Illuminate\Http\Response
      */
-    public function update(UpdateMovimientoRequest $request, Movimiento $movimiento)
+    public function update(UpdateDiagnosticoRequest $request, Diagnostico $diagnostico)
     {
         //
     }
@@ -76,10 +76,10 @@ class MovimientoController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\Movimiento  $movimiento
+     * @param  \App\Models\Diagnostico  $diagnostico
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Movimiento $movimiento)
+    public function destroy(Diagnostico $diagnostico)
     {
         //
     }

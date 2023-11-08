@@ -5,7 +5,11 @@ namespace App\Http\Controllers\Enfermeria;
 use App\Http\Controllers\Controller;
 use App\Models\Consulta;
 use App\Models\Externo;
+use App\Models\Lote;
+use App\Models\Movimiento;
+use App\Models\MovimientoMov;
 use App\Models\NomEmpleado;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 
@@ -23,10 +27,8 @@ class ConsultaController extends Controller
 
     public function store(Request $request)
     {
-        // Log::error($request);
+     
         try{
-            
-
             $consulta = new Consulta();
 
             $consulta->cita_id = $request['cita_id'];
@@ -45,22 +47,52 @@ class ConsultaController extends Controller
             }
 
             $consulta->triajeClasificacion = $request['triajeClasificacion'];
-            $consulta->precionDiastolica = $request['precionDiastolica'];
+            $consulta->presionDiastolica = $request['presionDiastolica'];
+            $consulta->presionSistolica = $request['presionSistolica'];
             $consulta->frecuenciaRespiratoria = $request['frecuenciaRespiratoria'];
             $consulta->frecuenciaCardiaca = $request['frecuenciaCardiaca'];
             $consulta->temperatura = $request['temperatura'];
             $consulta->edad = $request['edad'];
             $consulta->peso = $request['peso'];
             $consulta->talla = $request['talla'];
-            $consulta->grucemiaCapilar = $request['grucemiaCapilar'];
+            $consulta->mg = $request['mg'];
+            $consulta->dl = $request['dl'];
             $consulta->subjetivo = $request['subjetivo'];
             $consulta->objetivo = $request['objetivo'];
             $consulta->analisis = $request['analisis'];
             $consulta->plan = $request['plan'];
-            $consulta->diagnostico = $request['diagnostico'];
+            $consulta->diagnostico_id = $request['diagnostico_id'];
+            $consulta->complemento = $request['complemento'];
             $consulta->receta = $request['receta'];
             $consulta->save();
-            
+
+            if($request->formInsumos){
+                $movimiento = Movimiento::create([
+                    'fecha' => Carbon::now(),
+                    'profesional_id' => $request['profesional_id'],
+                    'inventario_id' => $request['inventario_id'],
+                    'movimientoTipo_id' => 1,
+                ]);
+
+                foreach ($request->formInsumos['itemInsumo'] as $i => $requestInsumo) {
+                    foreach($requestInsumo['lotes'] as $requestLote){
+
+                        //SALIDA
+                        $lote = Lote::find($requestLote['lote']);
+
+                        $lote->update([
+                            'piezasDisponibles' => $lote->piezasDisponibles - $requestLote['cantidad'],
+                        ]);
+
+                        MovimientoMov::create([
+                            'lote_id' => $lote->id,
+                            'unidades' => $requestLote['cantidad'],
+                            'movimiento_id' => $movimiento->id,
+                            'precio' => ($requestInsumo['precio']/$requestInsumo['piezasPorLote'])*$requestLote['cantidad'],
+                        ]);
+                    }
+                }
+            }
 
             return response()->json(['message' => 'Consulta guardada con éxito'], 201);
 
@@ -74,7 +106,7 @@ class ConsultaController extends Controller
     }
 
     public function show($id){
-        $data = Consulta::with(['pacientable', 'pacientable.historialMedico', 'pacientable.image', 'cita', 'profesional', 'profesional.image'])->find($id);
+        $data = Consulta::with(['pacientable', 'pacientable.historialMedico', 'pacientable.image', 'cita', 'profesional', 'profesional.image', 'profesional.direccion', 'diagnostico'])->find($id);
 
         if (!$data) {
             return response()->json(['error' => 'Consulta no encontrada'], 404);

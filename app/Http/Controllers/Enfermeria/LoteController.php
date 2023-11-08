@@ -31,39 +31,16 @@ class LoteController extends Controller
     public function store(Request $request)
     {
         try{
+
             $lote = Lote::create([
                 'lote' => $request['lote'],
                 'fechaCaducidad' => $request['fechaCaducidad'],
                 'fechaIngreso' => Carbon::now(),
                 'piezasDisponibles' => $request['piezasDisponibles'],
                 'insumo_id' => $request['insumo_id'],
+                'inventario_id' => $request['inventario_id'],
             ]);
 
-            $inventarioId = Insumo::find($request['insumo_id'])->inventario->id;
-
-            if(!$inventarioId){
-                return response()->json([
-                    'message' => "Inventario no encontrado",
-                ], 404);
-            }
-
-            $entrada = Entrada::create([
-                'motivo' => $request['motivo'],
-                'detalles' => $request['detalles'],
-                'inventario_id' => $inventarioId
-            ]);
-
-            Movimiento::create([
-                'tipo' => 'Entrada al inventario',
-                'folio' => $request['folio'],
-                'fecha' => Carbon::now(),
-                'profesional_id' => $request['profesional_id'],
-                'lote_id' => $lote->id,
-                'typable_id' => $entrada->id,
-                'typable_type' => Entrada::class,
-            ]);
-
-            // Log::error($request);
 
             // Responder
             return response()->json([
@@ -98,8 +75,8 @@ class LoteController extends Controller
                 'insumo',
                 'insumo.image',
                 'movimientos',
-                'movimientos.typable',
-                // 'insumo.inventario',
+                'movimientos.tipoDeMovimiento',
+                'movimientos.movimientoMovs',
             ])->find($id);
 
         if (!$data) {

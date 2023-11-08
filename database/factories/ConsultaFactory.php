@@ -24,7 +24,7 @@ class ConsultaFactory extends Factory
             'pacientable_id' => NomEmpleado::all()->random()->id,
             'pacientable_type' => NomEmpleado::class,
             'triajeClasificacion' => rand(1,5),
-            'precionDiastolica' => rand(80, 140),
+            'presionDiastolica' => rand(80, 140),
             'frecuenciaRespiratoria' => rand(15,30),
             'frecuenciaCardiaca' => rand(80,140),
             'temperatura' => rand(35,40),

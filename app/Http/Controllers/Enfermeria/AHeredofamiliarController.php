@@ -14,6 +14,7 @@ class AHeredofamiliarController extends Controller
         if (!$data) {
             return response()->json(['error' => 'Antecedentes heredofamiliares no encontrados'], 404);
         }
+        
         return response()->json($data, 200);
     }
 

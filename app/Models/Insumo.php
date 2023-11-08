@@ -18,8 +18,6 @@ class Insumo extends Model
         'piezasPorLote',
         'descripcion',
         'precio',
-        'requisicion_id',
-        'inventario_id'
     ];
 
     //Uno a Muchos
@@ -27,12 +25,15 @@ class Insumo extends Model
         return $this->hasMany('App\Models\Lote');
     }
 
-    // Uno a muchos inversa
-    public function inventario()
-    {
-        return $this->belongsTo(Inventario::class, 'inventario_id');
+    //Muchos a Muchos
+    public function reactivos(){
+        return $this->belongsToMany('App\Models\Reactivo');
     }
-    
+
+    //Muchos a Muchos
+    public function inventarios(){
+        return $this->belongsToMany('App\Models\Inventario');
+    }
 
     public function image(){
         return $this->morphOne('App\Models\Imagen', 'imageable');

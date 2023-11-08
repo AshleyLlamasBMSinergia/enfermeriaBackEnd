@@ -23,6 +23,9 @@ class CreateLotesTable extends Migration
             $table->unsignedBigInteger('insumo_id')->nullable();
             $table->foreign('insumo_id')->references('id')->on('Insumos');
 
+            $table->unsignedBigInteger('inventario_id')->nullable();
+            $table->foreign('inventario_id')->references('id')->on('Inventarios');
+
             $table->integer('piezasDisponibles')->nullable();
 
             $table->timestamps();

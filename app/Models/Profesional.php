@@ -18,7 +18,7 @@ class Profesional extends Model
         'telefono',
         'correo',
         'cedula',
-        'empresa_id',
+        'cedis_id',
         'direccion_id',
         'estatus',
         'puesto_id',
@@ -38,6 +38,11 @@ class Profesional extends Model
      //Uno a Muchos Inversa
      public function puesto(){
         return $this->belongsTo('App\Models\NomPuesto');
+    }
+
+     //Uno a Muchos Inversa
+     public function cedi(){
+        return $this->belongsTo('App\Models\Cedi');
     }
 
     //Uno a uno polimorficab

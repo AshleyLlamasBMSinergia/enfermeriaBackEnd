@@ -9,25 +9,11 @@ use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
-use Illuminate\Support\Str;
 
 class ExamenController extends Controller
 {
     private function determinarTipoArchivo($base64)
     {
-        // $encabezado = base64($bytes, 0, 4);
-
-        // switch(bin2hex($encabezado)){
-        //     case 'ffd8ffe0':
-        //         return 'jpg';
-        //     case '89504e47':
-        //         return 'png';
-        //     case '25504446':
-        //         return 'pdf';
-        //     default:
-        //         return null;
-        // }
-
         $data = base64_decode($base64);
         $finfo = finfo_open();
         $mime = finfo_buffer($finfo, $data, FILEINFO_MIME_TYPE);
@@ -38,16 +24,13 @@ class ExamenController extends Controller
             'image/png' => 'png',
             'application/pdf' => 'pdf',
         ];
-    
-        return $extensions[$mime] ?? null;
+
+        return $extensions[$mime] ?? 'application/octet-stream';
     }
 
     public function store(Request $request)
     {
-        Log::error($request);
-
         try{
-
             $examen = Examen::create([
                 'fecha' => Carbon::now(),
                 'tipo' => $request['tipo'],
@@ -62,6 +45,7 @@ class ExamenController extends Controller
                 $tipoArchivo = $this->determinarTipoArchivo($archivoBase64);
 
                 if(!$tipoArchivo){
+                    Log::error($tipoArchivo);
                     return response()->json([
                         'error' => 'Problema con la subida de archivos, revise que los archivos cumplan con estos tipos de formato: PNG, JPG y PDF'
                     ], 500);
@@ -71,7 +55,7 @@ class ExamenController extends Controller
         
                 Storage::disk('private')->put('/archivos/'.$nombreArchivo, $archivoDecodificado);
 
-                $archivo = Archivo::create([
+                Archivo::create([
                     'url' => $nombreArchivo,
                     'categoria' => $request['categoria'],
                     'archivable_id' => $examen->id,

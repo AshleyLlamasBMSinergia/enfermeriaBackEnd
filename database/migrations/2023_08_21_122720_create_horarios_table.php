@@ -18,8 +18,8 @@ class CreateHorariosTable extends Migration
 
             $table->enum('dia', [0, 1, 2, 3, 4, 5, 6]);
             $table->time('entrada');
-            $table->time('inicioBreak');
-            $table->time('finBreak');
+            $table->time('inicioBreak')->nullable();
+            $table->time('finBreak')->nullable();
             $table->time('salida');
             
             //ENFERMERO - DOCTOR

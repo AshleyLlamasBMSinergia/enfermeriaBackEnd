@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateSalidasTable extends Migration
+class CreateInsumoInventarioTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,15 +13,15 @@ class CreateSalidasTable extends Migration
      */
     public function up()
     {
-        Schema::create('Salidas', function (Blueprint $table) {
+        Schema::create('insumo_inventario', function (Blueprint $table) {
             $table->id();
 
-            $table->string('motivo');
-            $table->longText('detalles')->nullable();
+            $table->unsignedBigInteger('insumo_id')->nullable();
+            $table->foreign('insumo_id')->references('id')->on('Insumos');
 
             $table->unsignedBigInteger('inventario_id')->nullable();
-            $table->foreign('inventario_id')->references('id')->on('Inventarios')->onDelete('set null')->onUpdate('cascade');
-            
+            $table->foreign('inventario_id')->references('id')->on('Inventarios');
+
             $table->timestamps();
         });
     }
@@ -33,6 +33,6 @@ class CreateSalidasTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('Salidas');
+        Schema::dropIfExists('insumo_inventario');
     }
 }

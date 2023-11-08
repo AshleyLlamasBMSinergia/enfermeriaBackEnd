@@ -14,7 +14,7 @@ class NomPuesto extends Model
     protected $guarded = ['id', 'created_at', 'updated'];
 
     protected $fillable = [
-        'Nombre',
+        'nombre',
     ];
 
     //Uno a muchos
