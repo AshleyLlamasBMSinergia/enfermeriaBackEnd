@@ -11,9 +11,11 @@ class NomPuesto extends Model
 
     protected $table = 'NomPuestos';
 
-    protected $guarded = ['id', 'created_at', 'updated'];
+    // protected $guarded = ['id', 'created_at', 'updated'];
+    public $incrementing = false;
 
     protected $fillable = [
+        'id',
         'nombre',
     ];
 

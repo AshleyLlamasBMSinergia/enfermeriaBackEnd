@@ -35,12 +35,25 @@ return [
 
     'connections' => [
 
+        'RecursosHumanosCAN' => [
+            'driver' => 'sqlsrv',
+            'host' => env('RRHH_DB_HOST'),
+            'database' => 'RecursosHumanosCAN',
+            'username' => env('RRHH_DB_USERNAME'),
+            'password' => env('RRHH_DB_PASSWORD'),
+            'charset' => 'utf8',
+            'prefix' => '',
+            'prefix_indexes' => true,
+        ],
+
         'sqlite' => [
             'driver' => 'sqlite',
             'url' => env('DATABASE_URL'),
             'database' => env('DB_DATABASE', database_path('database.sqlite')),
             'prefix' => '',
             'foreign_key_constraints' => env('DB_FOREIGN_KEYS', true),
+            'charset' => 'utf8mb4',
+            'collation' => 'utf8mb4_unicode_ci',
         ],
 
         'mysql' => [

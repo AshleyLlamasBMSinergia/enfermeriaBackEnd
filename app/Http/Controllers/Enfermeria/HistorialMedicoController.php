@@ -61,6 +61,7 @@ class HistorialMedicoController extends Controller
         
         $data = HistorialMedico::with(
             [
+            'examenes.archivos',
             'pacientable',
             'pacientable.image',
             'antecedentesPersonalesPatologicos',
@@ -77,18 +78,23 @@ class HistorialMedicoController extends Controller
             'examenesAntidoping.sustancias',
             'examenesEmbarazo',
             'examenesVista',
-            'examenes.archivos',
             ])->find($id);
 
         if (!$data) {
             return response()->json(['error' => 'Historial médico no encontrado'], 404);
         }else{
+            if ($data->examenes) {
+
+                $examenesPorCategoria = $data->examenes->groupBy('categoria');
+                $data->examenesPorCategoria = $examenesPorCategoria;
+            }
+
             if ($data->pacientable_type === 'App\\Models\\NomEmpleado') {
                 $data->load(
                     'pacientable.dependientes',
-                    // 'pacientable.dependientes.historialMedico',
-                    // 'pacientable.dependientes.image',
-                    // 'pacientable.dependientes.empleado.historialMedico',
+                    'pacientable.dependientes.historialMedico',
+                    'pacientable.dependientes.image',
+                    'pacientable.dependientes.empleado.historialMedico',
                     'pacientable.puesto',
                     'pacientable.image'
                 );
@@ -323,12 +329,13 @@ class HistorialMedicoController extends Controller
                 ], 404);
             }
 
-            if ($historialMedico->image) {
-                Storage::delete($historialMedico->image->url);
-                $historialMedico->image->delete();
-            }
-
             if ($historialMedico->pacientable) {
+
+                if ($historialMedico->pacientable->image) {
+                    Storage::delete('private/fotografías/'.$historialMedico->pacientable->image->url);
+                    $historialMedico->pacientable->image->delete();
+                }
+
                 $historialMedico->pacientable->delete();
             }
 

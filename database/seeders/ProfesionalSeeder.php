@@ -31,9 +31,9 @@ class ProfesionalSeeder extends Seeder
             'localidad' => 'Mexicali, BC',
         ]);
 
-        $puesto = NomPuesto::create([
-            'nombre'=> 'Medico Familiar',
-        ]);
+        // $puesto = NomPuesto::create([
+        //     'nombre'=> 'Medico Familiar',
+        // ]);
 
         $profesional = Profesional::create([
             'nombre' => 'Dra. Raquel Solis Sanchez',
@@ -43,7 +43,7 @@ class ProfesionalSeeder extends Seeder
             'cedis_id' => 1,
             'direccion_id' => $direccion->id,
             'estatus' => 'Activo',
-            'puesto_id' => $puesto->id,
+            // 'puesto_id' => $puesto->id,
         ]);
 
         $profesional->inventarios()->attach(1);
@@ -65,15 +65,6 @@ class ProfesionalSeeder extends Seeder
             'useable_id' => 1,
             'useable_type' => Profesional::class,
         ]);
-
-        // Imagen::create([
-        //     'url' => '1.jpg',
-        //     'categoria'  => 'fotografías',
-        //     'imageable_id' => 1,
-        //     'imageable_type' => Profesional::class,
-        // ]);
-
-        //////////////////////////////////////////////////
 
         $direccion = Direccion::create([
             'calle' => 'Avenida Rapida Oriente',
@@ -120,7 +111,7 @@ class ProfesionalSeeder extends Seeder
             'cedis_id' => 2,
             'direccion_id' => $direccion->id,
             'estatus' => 'Activo',
-            'puesto_id' => 1,
+            // 'puesto_id' => 1,
         ]);
 
         for( $i = 1; $i <= 5; $i++ ) {
@@ -159,7 +150,7 @@ class ProfesionalSeeder extends Seeder
             'cedis_id' => 2,
             'direccion_id' => $direccion->id,
             'estatus' => 'Activo',
-            'puesto_id' => 1,
+            // 'puesto_id' => 1,
         ]);
 
         for( $i = 1; $i <= 5; $i++ ) {

@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateNomPuestosTable extends Migration
+class CreateZonasAfectadasTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,9 +13,11 @@ class CreateNomPuestosTable extends Migration
      */
     public function up()
     {
-        Schema::create('NomPuestos', function (Blueprint $table) {
-            $table->unsignedBigInteger('id', false)->primary(); 
-            $table->string('nombre');
+        Schema::create('ZonasAfectadas', function (Blueprint $table) {
+            $table->id();
+
+            $table->string('zona');
+            
             $table->timestamps();
         });
     }
@@ -27,6 +29,6 @@ class CreateNomPuestosTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('NomPuestos');
+        Schema::dropIfExists('ZonasAfectadas');
     }
 }

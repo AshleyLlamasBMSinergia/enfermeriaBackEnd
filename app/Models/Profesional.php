@@ -57,7 +57,18 @@ class Profesional extends Model
 
     //Uno a Muchos
     public function consultas(){
-        return $this->hasMany('App\Models\Consultas');
+        return $this->hasMany('App\Models\Consulta');
+    }
+    
+
+    //Uno a Muchos
+    public function incapacidades(){
+        return $this->hasMany('App\Models\Incapacidad');
+    }
+
+    //Uno a Muchos
+    public function revisiones(){
+        return $this->hasMany('App\Models\Revision');
     }
 
     //Uno a Muchos
@@ -97,5 +108,10 @@ class Profesional extends Model
     //Uno a Muchos
     public function horarios(){
         return $this->hasMany('App\Models\Horario');
+    }
+
+    //Uno a Muchos
+    public function altas(){
+        return $this->hasMany('App\Models\Alta');
     }
 }

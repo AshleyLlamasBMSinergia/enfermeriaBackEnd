@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\CAN\EmpleadoController as CANEmpleadoController;
 use App\Http\Controllers\Enfermeria\AHeredofamiliarController;
 use App\Http\Controllers\Enfermeria\APNPatologicoController;
 use App\Http\Controllers\enfermeria\APPatologicoController;
@@ -22,6 +23,7 @@ use App\Http\Controllers\enfermeria\ExternoController;
 use App\Http\Controllers\Enfermeria\HistorialMedicoController;
 use App\Http\Controllers\Enfermeria\HorarioController;
 use App\Http\Controllers\Enfermeria\ImagenController;
+use App\Http\Controllers\enfermeria\IncapacidadController;
 use App\Http\Controllers\Enfermeria\InsumoController;
 use App\Http\Controllers\enfermeria\InventarioController;
 use App\Http\Controllers\Enfermeria\LoteController;
@@ -31,17 +33,20 @@ use App\Http\Controllers\Enfermeria\PendienteController;
 use App\Http\Controllers\enfermeria\ReactivoController;
 use App\Http\Controllers\enfermeria\RecetaController;
 use App\Http\Controllers\Enfermeria\RequisicionController;
+use App\Http\Controllers\enfermeria\ZonaAfectadaController;
 use Illuminate\Support\Facades\Route;
+
+Route::get('/traer-todos-los-empleados-de-rh', [EmpleadoController::class, 'traerTodosLosEmpleados']);
+Route::get('/traer-todos-los-puestos-de-rh', [EmpleadoController::class, 'traerTodosLosPuestos']);
 
 Route::post('/login', [AuthController::class, 'login'])->name('login');
     
-Route::middleware('auth:sanctum')->group(function () {
+// Route::middleware('auth:sanctum')->group(function () {
 
     //BUSCADORES
     Route::get('/historiales-medicos/buscador', [HistorialMedicoController::class, 'buscador']);
     Route::get('/insumos-medicos/buscador', [InsumoController::class, 'buscador']);
     Route::get('/lotes/buscador', [LoteController::class, 'buscador']);
-
 
     //LOGOUNT
     Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
@@ -51,9 +56,6 @@ Route::middleware('auth:sanctum')->group(function () {
 
     //ARCHIVOS
     Route::get('/storage/private/archivo/{url}', [ArchivoController::class, 'archivo']);
-
-    //ARCHIVOS
-    // Route::get('/storage/private/archivo/{url}', [ArchivoController::class, 'archivo']);
 
     //ENFERMERIA - INICIO
     Route::get('/inicio/citas-de-hoy', [EnfermeriaController::class, 'getCitasHoy']);
@@ -194,5 +196,16 @@ Route::middleware('auth:sanctum')->group(function () {
     //RECETAS
     Route::get('/recetas/{id}', [RecetaController::class, 'receta']);
 
+    //INCAPACIDADES
+    Route::get('/incapacidades', [IncapacidadController::class, 'index']);
+    Route::post('/incapacidades', [IncapacidadController::class, 'store']);
+    Route::get('/incapacidades/{id}', [IncapacidadController::class, 'show']);
+    Route::post('/incapacidades/archivos', [IncapacidadController::class, 'subirArchivos']);
+
+    //ZONAS AFECTADAS
+    Route::get('/zonas-afectadas', [ZonaAfectadaController::class, 'index']);
+
+    //CAN
+    Route::get('/can/empleados/{id}', [CANEmpleadoController::class, 'buscar']);
     
-});
+// });

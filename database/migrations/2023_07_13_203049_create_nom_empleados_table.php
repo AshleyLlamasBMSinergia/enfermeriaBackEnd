@@ -16,7 +16,7 @@ class CreateNomEmpleadosTable extends Migration
     {
         Schema::create('NomEmpleados', function (Blueprint $table) {
             $table->id();
-
+            $table->string('numero')->nullable();
             $table->string('nombre')->nullable();
             $table->string('RFC')->nullable();
             $table->string('curp')->nullable();
@@ -42,7 +42,6 @@ class CreateNomEmpleadosTable extends Migration
             $table->timestamps();
             
         });
-
     }
     
 

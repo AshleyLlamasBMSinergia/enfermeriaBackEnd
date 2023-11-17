@@ -11,9 +11,10 @@ class NomEmpleado extends Model
 
     protected $table = 'NomEmpleados';
 
-    protected $guarded = ['id', 'created_at', 'updated'];
+    // protected $guarded = ['id', 'created_at', 'updated'];
 
     protected $fillable = [
+        'numero',
         'nombre',
         'RFC',
         'CURP',
@@ -77,5 +78,10 @@ class NomEmpleado extends Model
     //Uno a uno polimorficab
     public function image(){
         return $this->morphOne('App\Models\Imagen', 'imageable');
+    }
+
+    //Uno a Muchos
+    public function incapacidades(){
+        return $this->hasMany('App\Models\Incapacidad');
     }
 }

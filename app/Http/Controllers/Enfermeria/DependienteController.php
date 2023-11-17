@@ -54,25 +54,27 @@ class DependienteController extends Controller
 
             $pacientable_type = RHDependiente::class;
 
-            $imagenBase64 = explode(";base64,",$request['imagen']);
-            $imagenExplode = explode("image/", $imagenBase64[0]);
-            $imagenFormato = $imagenExplode[1];
-            $imagen = base64_decode($imagenBase64[1]);
-            $imagenNombre = Str::random(12);
-            $ruta = storage_path('app/private/fotografías/'.$imagenNombre.'.'.$imagenFormato);
+            if($request['imagen']){
+                $imagenBase64 = explode(";base64,", $request['imagen']);
+                $imagenExplode = explode("image/", $imagenBase64[0]);
+                $imagenFormato = $imagenExplode[1];
+                $imagen = base64_decode($imagenBase64[1]);
+                $imagenNombre = Str::random(12);
+                $ruta = storage_path('app/private/fotografías/'.$imagenNombre.'.'.$imagenFormato);
 
-            file_put_contents($ruta, $imagen);
-           
-            // Guardar la imagen
-            $imagen = Imagen::create([
-                'url' => $imagenNombre.'.'.$imagenFormato,
-                'categoria' => 'fotografías',
-                'imageable_id' => $dependiente->id,
-                'imageable_type' => $pacientable_type
-            ]);
+                file_put_contents($ruta, $imagen);
+            
+                // Guardar la imagen
+                $imagen = Imagen::create([
+                    'url' => $imagenNombre.'.'.$imagenFormato,
+                    'categoria' => 'fotografías',
+                    'imageable_id' => $dependiente->id,
+                    'imageable_type' => $pacientable_type
+                ]);
+            }
 
             //Crear historial medico
-            $historialMedico = HistorialMedico::create([
+            HistorialMedico::create([
                 'pacientable_id' => $dependiente->id,
                 'pacientable_type' => $pacientable_type,
             ]);
