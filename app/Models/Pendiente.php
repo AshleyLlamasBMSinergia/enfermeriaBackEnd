@@ -14,7 +14,8 @@ class Pendiente extends Model
     protected $guarded = ['id', 'created_at', 'updated'];
 
     protected $fillable = [
+        'fecha',
         'titulo',
-        'estatus'
+        'estatus',
     ];
 }

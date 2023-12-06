@@ -29,7 +29,14 @@ use App\Http\Controllers\enfermeria\InventarioController;
 use App\Http\Controllers\Enfermeria\LoteController;
 use App\Http\Controllers\enfermeria\MovimientoController;
 use App\Http\Controllers\enfermeria\MovimientoTipoController;
+use App\Http\Controllers\enfermeria\NomControlIncapacidadController;
+use App\Http\Controllers\enfermeria\NomEstadoController;
+use App\Http\Controllers\enfermeria\NomSecuelaController;
+use App\Http\Controllers\enfermeria\NomTipoIncidenciaController;
+use App\Http\Controllers\enfermeria\NomTipoPermisoController;
+use App\Http\Controllers\enfermeria\NomTipoRiesgoController;
 use App\Http\Controllers\Enfermeria\PendienteController;
+use App\Http\Controllers\enfermeria\ProfesionalController;
 use App\Http\Controllers\enfermeria\ReactivoController;
 use App\Http\Controllers\enfermeria\RecetaController;
 use App\Http\Controllers\Enfermeria\RequisicionController;
@@ -40,13 +47,13 @@ Route::get('/traer-todos-los-empleados-de-rh', [EmpleadoController::class, 'trae
 Route::get('/traer-todos-los-puestos-de-rh', [EmpleadoController::class, 'traerTodosLosPuestos']);
 
 Route::post('/login', [AuthController::class, 'login'])->name('login');
-    
-// Route::middleware('auth:sanctum')->group(function () {
 
-    //BUSCADORES
-    Route::get('/historiales-medicos/buscador', [HistorialMedicoController::class, 'buscador']);
-    Route::get('/insumos-medicos/buscador', [InsumoController::class, 'buscador']);
-    Route::get('/lotes/buscador', [LoteController::class, 'buscador']);
+//BUSCADORES
+Route::get('/historiales-medicos/buscador', [HistorialMedicoController::class, 'buscador']);
+Route::get('/insumos-medicos/buscador', [InsumoController::class, 'buscador']);
+Route::get('/lotes/buscador', [LoteController::class, 'buscador']);
+    
+Route::middleware('auth:sanctum')->group(function () {
 
     //LOGOUNT
     Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
@@ -180,6 +187,9 @@ Route::post('/login', [AuthController::class, 'login'])->name('login');
         Route::get('/tipos-de-movimientos', [MovimientoTipoController::class, 'mandarMovimientosParaLote']);
 
 
+    //PROFESIONALES
+    Route::get('/profesionales', [ProfesionalController::class, 'index']);
+
     //INVENTARIOS
     Route::get('/inventarios', [InventarioController::class, 'index']);
     Route::get('/inventarios/profesional/{id}', [InventarioController::class, 'inventariosDelProfesional']);
@@ -202,10 +212,31 @@ Route::post('/login', [AuthController::class, 'login'])->name('login');
     Route::get('/incapacidades/{id}', [IncapacidadController::class, 'show']);
     Route::post('/incapacidades/archivos', [IncapacidadController::class, 'subirArchivos']);
 
+    //NOM CONTROL INCAPACIDAD
+    Route::get('/control-incapacidades', [NomControlIncapacidadController::class, 'index']);
+
+    //NOM SECUELA
+    Route::get('/secuelas', [NomSecuelaController::class, 'index']);
+
+    //NOM TIPO PERMISO
+    Route::get('/tipos-de-permisos', [NomTipoPermisoController::class, 'index']);
+
+    //NOM TIPO RIESGO
+    Route::get('/tipos-de-riesgos', [NomTipoRiesgoController::class, 'index']);
+
+    //NOM TIPO PERMISO
+    Route::get('/tipos-de-insidencias', [NomTipoIncidenciaController::class, 'index']);
+
+    //NOM INCIDENCIAS
+    Route::get('/incidencias/nomIncidencias/{empleado}/{fecha}', [IncapacidadController::class, 'nomIncidencias']);
+
     //ZONAS AFECTADAS
     Route::get('/zonas-afectadas', [ZonaAfectadaController::class, 'index']);
+
+    //ESTADOS
+    Route::get('/estados', [NomEstadoController::class, 'index']);
 
     //CAN
     Route::get('/can/empleados/{id}', [CANEmpleadoController::class, 'buscar']);
     
-// });
+});

@@ -2,11 +2,11 @@
 
 namespace App\Policies;
 
+use App\Models\NomControlIncapacidad;
 use App\Models\User;
-use App\Models\ZonaAfectada;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
-class ZonaAfectadaPolicy
+class NomControlIncapacidadPolicy
 {
     use HandlesAuthorization;
 
@@ -25,10 +25,10 @@ class ZonaAfectadaPolicy
      * Determine whether the user can view the model.
      *
      * @param  \App\Models\User  $user
-     * @param  \App\Models\ZonaAfectada  $zonaAfectada
+     * @param  \App\Models\NomControlIncapacidad  $nomControlIncapacidad
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function view(User $user, ZonaAfectada $zonaAfectada)
+    public function view(User $user, NomControlIncapacidad $nomControlIncapacidad)
     {
         //
     }
@@ -48,10 +48,10 @@ class ZonaAfectadaPolicy
      * Determine whether the user can update the model.
      *
      * @param  \App\Models\User  $user
-     * @param  \App\Models\ZonaAfectada  $zonaAfectada
+     * @param  \App\Models\NomControlIncapacidad  $nomControlIncapacidad
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function update(User $user, ZonaAfectada $zonaAfectada)
+    public function update(User $user, NomControlIncapacidad $nomControlIncapacidad)
     {
         //
     }
@@ -60,10 +60,10 @@ class ZonaAfectadaPolicy
      * Determine whether the user can delete the model.
      *
      * @param  \App\Models\User  $user
-     * @param  \App\Models\ZonaAfectada  $zonaAfectada
+     * @param  \App\Models\NomControlIncapacidad  $nomControlIncapacidad
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function delete(User $user, ZonaAfectada $zonaAfectada)
+    public function delete(User $user, NomControlIncapacidad $nomControlIncapacidad)
     {
         //
     }
@@ -72,10 +72,10 @@ class ZonaAfectadaPolicy
      * Determine whether the user can restore the model.
      *
      * @param  \App\Models\User  $user
-     * @param  \App\Models\ZonaAfectada  $zonaAfectada
+     * @param  \App\Models\NomControlIncapacidad  $nomControlIncapacidad
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function restore(User $user, ZonaAfectada $zonaAfectada)
+    public function restore(User $user, NomControlIncapacidad $nomControlIncapacidad)
     {
         //
     }
@@ -84,10 +84,10 @@ class ZonaAfectadaPolicy
      * Determine whether the user can permanently delete the model.
      *
      * @param  \App\Models\User  $user
-     * @param  \App\Models\ZonaAfectada  $zonaAfectada
+     * @param  \App\Models\NomControlIncapacidad  $nomControlIncapacidad
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function forceDelete(User $user, ZonaAfectada $zonaAfectada)
+    public function forceDelete(User $user, NomControlIncapacidad $nomControlIncapacidad)
     {
         //
     }

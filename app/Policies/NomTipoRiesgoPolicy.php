@@ -2,11 +2,11 @@
 
 namespace App\Policies;
 
-use App\Models\Incapacidad;
+use App\Models\NomTipoRiesgo;
 use App\Models\User;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
-class IncapacidadPolicy
+class NomTipoRiesgoPolicy
 {
     use HandlesAuthorization;
 
@@ -25,10 +25,10 @@ class IncapacidadPolicy
      * Determine whether the user can view the model.
      *
      * @param  \App\Models\User  $user
-     * @param  \App\Models\Incapacidad  $incapacidad
+     * @param  \App\Models\NomTipoRiesgo  $nomTipoRiesgo
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function view(User $user, Incapacidad $incapacidad)
+    public function view(User $user, NomTipoRiesgo $nomTipoRiesgo)
     {
         //
     }
@@ -48,10 +48,10 @@ class IncapacidadPolicy
      * Determine whether the user can update the model.
      *
      * @param  \App\Models\User  $user
-     * @param  \App\Models\Incapacidad  $incapacidad
+     * @param  \App\Models\NomTipoRiesgo  $nomTipoRiesgo
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function update(User $user, Incapacidad $incapacidad)
+    public function update(User $user, NomTipoRiesgo $nomTipoRiesgo)
     {
         //
     }
@@ -60,10 +60,10 @@ class IncapacidadPolicy
      * Determine whether the user can delete the model.
      *
      * @param  \App\Models\User  $user
-     * @param  \App\Models\Incapacidad  $incapacidad
+     * @param  \App\Models\NomTipoRiesgo  $nomTipoRiesgo
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function delete(User $user, Incapacidad $incapacidad)
+    public function delete(User $user, NomTipoRiesgo $nomTipoRiesgo)
     {
         //
     }
@@ -72,10 +72,10 @@ class IncapacidadPolicy
      * Determine whether the user can restore the model.
      *
      * @param  \App\Models\User  $user
-     * @param  \App\Models\Incapacidad  $incapacidad
+     * @param  \App\Models\NomTipoRiesgo  $nomTipoRiesgo
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function restore(User $user, Incapacidad $incapacidad)
+    public function restore(User $user, NomTipoRiesgo $nomTipoRiesgo)
     {
         //
     }
@@ -84,10 +84,10 @@ class IncapacidadPolicy
      * Determine whether the user can permanently delete the model.
      *
      * @param  \App\Models\User  $user
-     * @param  \App\Models\Incapacidad  $incapacidad
+     * @param  \App\Models\NomTipoRiesgo  $nomTipoRiesgo
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function forceDelete(User $user, Incapacidad $incapacidad)
+    public function forceDelete(User $user, NomTipoRiesgo $nomTipoRiesgo)
     {
         //
     }

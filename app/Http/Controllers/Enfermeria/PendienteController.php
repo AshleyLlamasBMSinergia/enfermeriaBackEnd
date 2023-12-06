@@ -5,11 +5,12 @@ namespace App\Http\Controllers\Enfermeria;
 use App\Http\Controllers\Controller;
 use App\Models\Pendiente;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 
 class PendienteController extends Controller
 {
     public function index(){
-        $data = Pendiente::all();
+        $data = Pendiente::orderBy('fecha', 'asc')->get();
         return response()->json($data, 200);
     }
 
@@ -37,7 +38,9 @@ class PendienteController extends Controller
     }
 
     public function updateTitulo(Request $request, $id){
-        
+
+        Log::error($request);
+
         try{
             $pendiente = Pendiente::find($id);
 
@@ -45,16 +48,18 @@ class PendienteController extends Controller
                 return response()->json(['error' => 'Pendiente no econtrado'], 404);
             }
 
+            $pendiente->fecha = $request['fecha'];
             $pendiente->titulo = $request['titulo'];
+
             $pendiente->save();
 
             return response()->json([
-                'message' => 'Título del pendiente actualizado exitosamente'
+                'message' => 'Pendiente actualizado exitosamente'
             ]);
 
         } catch (\Exception $e) {
             return response()->json([
-                'error' => 'Ocurrió un error al actualizar el título del pendiente'
+                'error' => 'Ocurrió un error al actualizar el pendiente'
             ], 500);
         }
     }
@@ -64,7 +69,8 @@ class PendienteController extends Controller
         try{
             $pendiente = Pendiente::create([
                 'estatus' => 0,
-                'titulo' => $request['titulo']
+                'titulo' => $request['titulo'],
+                'fecha' => $request['fecha']
             ]);
 
             return response()->json([

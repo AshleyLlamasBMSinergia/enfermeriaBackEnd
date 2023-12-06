@@ -18,6 +18,7 @@ class CreatePendientesTable extends Migration
 
             $table->string('titulo');
             $table->string('estatus');
+            $table->date('fecha');
 
             $table->timestamps();
         });

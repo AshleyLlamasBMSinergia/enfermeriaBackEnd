@@ -3,12 +3,12 @@
 namespace Database\Seeders;
 
 use App\Models\Direccion;
-use App\Models\EEmbarazo;
 use App\Models\HistorialMedico;
 use App\Models\Imagen;
 use App\Models\NomEmpleado;
+use App\Models\NomEstado;
+use App\Models\NomLocalidad;
 use App\Models\NomPuesto;
-use App\Models\Reactivo;
 use App\Models\RHDependiente;
 use App\Models\User;
 use Illuminate\Database\Seeder;
@@ -29,8 +29,10 @@ class DatabaseSeeder extends Seeder
         // Storage::deleteDirectory('public/fotografías');
         // Storage::makeDirectory('public/fotografías');
 
+        $this->traerTodasLasLocalidades();
+        
         $this->call([
-            // NomPuestoSeeder::class,
+            //NomPuestoSeeder::class,
             // DireccionSeeder::class,
             CediSeeder::class,
             InventarioSeeder::class,
@@ -64,6 +66,7 @@ class DatabaseSeeder extends Seeder
         ]);
 
         //$this->traerTodosLosEmpleados();
+       
     }
 
     public function traerTodosLosPuestos(){
@@ -83,6 +86,32 @@ class DatabaseSeeder extends Seeder
                     'nombre' => ucfirst(mb_strtolower($puesto->Nombre, 'UTF-8'))
                 ]);
             }    
+    }
+
+    public function traerTodasLasLocalidades(){
+        $RecursosHumanosCAN = DB::connection('RecursosHumanosCAN');
+
+        $estados = $RecursosHumanosCAN->table('NomEstados')->get();
+
+        foreach($estados as $estado) {
+            $nuevoEstado = NomEstado::create([
+                'estado' => $estado->Estado,
+                'nombre' => $estado->Nombre,
+                'clave' => $estado->Clave,
+            ]);
+
+            $localidades = $RecursosHumanosCAN->table('NomLocalidades')->where('Estado', $estado->Estado)->get();
+
+            foreach($localidades as $localidad) {
+                NomLocalidad::create([
+                    'localidad' => $localidad->Localidad,
+                    'nombre' => $localidad->NombreLocalidad,
+                    'clave' => $localidad->Clave,
+                    'municipio' => $localidad->NombreMunicipio,
+                    'estado_id' => $nuevoEstado->id,
+                ]);
+            }
+        }
     }
 
     public function traerTodosLosEmpleados(){
@@ -113,10 +142,12 @@ class DatabaseSeeder extends Seeder
                     'Localidad',
                     'Nombres',
                     'Paterno',
-                    // 'Foto'
+                    'Foto'
                 )->get();
 
             foreach($empleados as $empleado){
+
+                $localidad = NomLocalidad::where('localidad', $empleado->Localidad)->first();
 
                 $direccion = Direccion::create([
                     'calle' => $empleado->Calle,
@@ -124,7 +155,7 @@ class DatabaseSeeder extends Seeder
                     'interior' => $empleado->Interior,
                     'colonia' => $empleado->Colonia,
                     'CP' => $empleado->CP,
-                    'localidad' => $empleado->Localidad,
+                    'localidad_id' => $localidad->id,
                 ]);
 
                 

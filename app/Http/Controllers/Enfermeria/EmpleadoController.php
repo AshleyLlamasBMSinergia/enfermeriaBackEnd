@@ -152,8 +152,6 @@ class EmpleadoController extends Controller
                 ]);
             }
 
-            dd('Finalizado correctamente');
-
         }catch(Exception $e){
             dd($e->getMessage());
         }

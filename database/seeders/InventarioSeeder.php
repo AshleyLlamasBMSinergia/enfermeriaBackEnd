@@ -23,7 +23,7 @@ class InventarioSeeder extends Seeder
             'colonia' => 'Colonia Unión de Residentes
             Lázaro Cardenas',
             'CP' => 'C.P. 21383',
-            'localidad' => 'Mexicali, BC',
+            'localidad_id' => 16,
         ]);
 
         $inventario = Inventario::create([
@@ -37,7 +37,7 @@ class InventarioSeeder extends Seeder
             'colonia' => 'Colonia Rio Tijuana 3ra Etapa',
             'CP' => ' C.P.
             22226',
-            'localidad' => 'Tijuana, BC',
+            'localidad_id' => 89,
         ]);
 
         $inventario = Inventario::create([

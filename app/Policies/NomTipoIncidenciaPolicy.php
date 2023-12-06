@@ -2,11 +2,11 @@
 
 namespace App\Policies;
 
-use App\Models\Alta;
+use App\Models\NomTipoIncidencia;
 use App\Models\User;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
-class AltaPolicy
+class NomTipoIncidenciaPolicy
 {
     use HandlesAuthorization;
 
@@ -25,10 +25,10 @@ class AltaPolicy
      * Determine whether the user can view the model.
      *
      * @param  \App\Models\User  $user
-     * @param  \App\Models\Alta  $alta
+     * @param  \App\Models\NomTipoIncidencia  $nomTipoIncidencia
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function view(User $user, Alta $alta)
+    public function view(User $user, NomTipoIncidencia $nomTipoIncidencia)
     {
         //
     }
@@ -48,10 +48,10 @@ class AltaPolicy
      * Determine whether the user can update the model.
      *
      * @param  \App\Models\User  $user
-     * @param  \App\Models\Alta  $alta
+     * @param  \App\Models\NomTipoIncidencia  $nomTipoIncidencia
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function update(User $user, Alta $alta)
+    public function update(User $user, NomTipoIncidencia $nomTipoIncidencia)
     {
         //
     }
@@ -60,10 +60,10 @@ class AltaPolicy
      * Determine whether the user can delete the model.
      *
      * @param  \App\Models\User  $user
-     * @param  \App\Models\Alta  $alta
+     * @param  \App\Models\NomTipoIncidencia  $nomTipoIncidencia
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function delete(User $user, Alta $alta)
+    public function delete(User $user, NomTipoIncidencia $nomTipoIncidencia)
     {
         //
     }
@@ -72,10 +72,10 @@ class AltaPolicy
      * Determine whether the user can restore the model.
      *
      * @param  \App\Models\User  $user
-     * @param  \App\Models\Alta  $alta
+     * @param  \App\Models\NomTipoIncidencia  $nomTipoIncidencia
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function restore(User $user, Alta $alta)
+    public function restore(User $user, NomTipoIncidencia $nomTipoIncidencia)
     {
         //
     }
@@ -84,10 +84,10 @@ class AltaPolicy
      * Determine whether the user can permanently delete the model.
      *
      * @param  \App\Models\User  $user
-     * @param  \App\Models\Alta  $alta
+     * @param  \App\Models\NomTipoIncidencia  $nomTipoIncidencia
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function forceDelete(User $user, Alta $alta)
+    public function forceDelete(User $user, NomTipoIncidencia $nomTipoIncidencia)
     {
         //
     }

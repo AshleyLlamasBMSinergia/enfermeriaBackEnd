@@ -14,17 +14,50 @@ class Incapacidad extends Model
     protected $guarded = ['id', 'created_at', 'updated'];
 
     protected $fillable = [
-        'tipo',
-        'fechaInicial',
-        'fechaTermino',
+        'folio',
+        'fechaEfectiva',
         'dias',
-        'fechaProxRevision',
-        'calificacionAccidente',
-        'causa',
         'diagnostico',
+        'TipoIncidencia',
+        'TipoRiesgo',
+        'Secuela',
+        'ControlIncapacidad',
+        'TipoPermiso',
+        'observaciones',
         'empleado_id',
         'profesional_id',
     ];
+
+    //Uno a Muchos
+    public function nomIncidencias(){
+        return $this->hasMany('App\Models\NomIncidencia');
+    }
+
+    //Uno a Muchos Inversa
+    public function tipoIncidencia(){
+        return $this->belongsTo('App\Models\NomTipoIncidencia', 'TipoIncidencia');
+    }
+
+    //Uno a Muchos Inversa
+    public function tipoRiesgo(){
+        return $this->belongsTo('App\Models\NomTipoRiesgo', 'TipoRiesgo');
+    }
+
+    //Uno a Muchos Inversa
+    public function secuela(){
+        return $this->belongsTo('App\Models\NomSecuela', 'Secuela');
+    }
+
+    //Uno a Muchos Inversa
+    public function controlIncapacidad(){
+        return $this->belongsTo('App\Models\NomControlIncapacidad', 'ControlIncapacidad');
+    }
+
+    
+    //Uno a Muchos Inversa
+    public function tipoPermiso(){
+        return $this->belongsTo('App\Models\NomTipoPermiso', 'TipoPermiso');
+    }
 
     //Uno a muchos polimorfico
     public function archivos(){
@@ -39,11 +72,6 @@ class Incapacidad extends Model
     //Uno a Muchos Inversa
     public function profesional(){
         return $this->belongsTo('App\Models\Profesional');
-    }
-
-    //Uno a Muchos
-    public function revisiones(){
-        return $this->hasMany('App\Models\Revision');
     }
 
     //Muchos a Muchos

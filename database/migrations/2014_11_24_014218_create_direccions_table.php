@@ -21,7 +21,11 @@ class CreateDireccionsTable extends Migration
             $table->string('interior')->nullable();
             $table->string('colonia')->nullable();
             $table->string('CP')->nullable();
-            $table->string('localidad')->nullable();
+            
+            
+            $table->unsignedBigInteger('localidad_id')->nullable();
+            $table->foreign('localidad_id')->references('id')->on('NomLocalidades')->onDelete('set null')->onUpdate('cascade');
+
 
             $table->timestamps();
         });

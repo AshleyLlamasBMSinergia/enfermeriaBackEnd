@@ -127,6 +127,7 @@ class HistorialMedicoController extends Controller
             {
                 case 'Empleado':
                     $nomEmpleado = NomEmpleado::create([
+                        'numero' => $request['numero'],
                         'nombre' => $request['nombre'],
                         'RFC' => $request['RFC'],
                         'CURP' => $request['CURP'],

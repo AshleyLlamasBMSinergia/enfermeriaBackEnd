@@ -11,7 +11,7 @@ class NomEmpleado extends Model
 
     protected $table = 'NomEmpleados';
 
-    // protected $guarded = ['id', 'created_at', 'updated'];
+    protected $guarded = ['id', 'created_at', 'updated'];
 
     protected $fillable = [
         'numero',
@@ -28,7 +28,11 @@ class NomEmpleado extends Model
         'direccion_id',
         'estatus',
         'puesto_id',
-        'user_id'
+        'user_id',
+        'sueldo',
+        'integrado',
+        'sueldo',
+        'integrado'
     ];
 
     //Uno a uno polimorfico

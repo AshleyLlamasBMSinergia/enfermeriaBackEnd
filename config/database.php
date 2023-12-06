@@ -46,6 +46,17 @@ return [
             'prefix_indexes' => true,
         ],
 
+        'PruebaRecursosHumanosCAN' => [
+            'driver' => 'sqlsrv',
+            'host' => env('PRRHH_DB_HOST'),
+            'database' => 'RecursosHumanosCAN',
+            'username' => env('PRRHH_DB_USERNAME'),
+            'password' => env('PRRHH_DB_PASSWORD'),
+            'charset' => 'utf8',
+            'prefix' => '',
+            'prefix_indexes' => true,
+        ],
+
         'sqlite' => [
             'driver' => 'sqlite',
             'url' => env('DATABASE_URL'),

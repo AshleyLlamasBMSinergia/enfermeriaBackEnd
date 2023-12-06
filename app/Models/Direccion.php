@@ -19,6 +19,11 @@ class Direccion extends Model
         'interior',
         'colonia',
         'CP',
-        'localidad',
+        'localidad_id',
     ];
+
+    //Uno a Muchos Inversa
+    public function localidad(){
+        return $this->belongsTo('App\Models\NomLocalidades');
+    }
 }

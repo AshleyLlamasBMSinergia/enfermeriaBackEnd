@@ -28,7 +28,7 @@ class ProfesionalSeeder extends Seeder
             'colonia' => 'Colonia Unión de Residentes
             Lázaro Cardenas',
             'CP' => 'C.P. 21383',
-            'localidad' => 'Mexicali, BC',
+            'localidad_id' => 16,
         ]);
 
         // $puesto = NomPuesto::create([
@@ -73,7 +73,7 @@ class ProfesionalSeeder extends Seeder
             'colonia' => 'Colonia Rio Tijuana 3ra Etapa',
             'CP' => ' C.P.
             22226',
-            'localidad' => 'Tijuana, BC',
+            'localidad_id' => 89,
         ]);
 
         Profesional::create([
@@ -100,7 +100,7 @@ class ProfesionalSeeder extends Seeder
             'interior' => '',
             'colonia' => 'Col. La Misión
             Obregón',
-            'localidad' => 'Obregón, Sonora',
+            'localidad_id' => 95,
         ]);
 
         Profesional::create([
@@ -139,7 +139,7 @@ class ProfesionalSeeder extends Seeder
             'exterior' => '#372',
             'interior' => '',
             'colonia' => 'Parque Industrial',
-            'localidad' => 'Hermosillo, Sonora',
+            'localidad_id' => 100,
         ]);
 
         Profesional::create([

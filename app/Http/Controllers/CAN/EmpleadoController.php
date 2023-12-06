@@ -32,14 +32,14 @@ class EmpleadoController extends Controller
                 'Localidad',
                 'Nombres',
                 'Paterno',
-                'Foto'
+                // 'Foto'
             )->get();
 
-            $empleado = $data->first();
-            $empleado->Foto = utf8_encode($empleado->Foto);
+            // $empleado = $data->first();
+            // $empleado->Foto = utf8_encode($empleado->Foto);
 
             if(!$data){
-                return response()->json(['message' => 'Empleado no encontrado'], 404);
+                return response()->json(['error' => 'Empleado no encontrado'], 404);
             }
             
             return response()->json($data, 200);

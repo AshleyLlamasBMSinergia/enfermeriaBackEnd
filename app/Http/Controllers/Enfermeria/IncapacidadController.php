@@ -5,7 +5,11 @@ namespace App\Http\Controllers\enfermeria;
 use App\Http\Controllers\Controller;
 use App\Models\Archivo;
 use App\Models\Incapacidad;
+use App\Models\NomIncidencia;
+use App\Models\NomEmpleado;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
 
@@ -13,7 +17,7 @@ class IncapacidadController extends Controller
 {
     public function index(){
         try{
-            $data = Incapacidad::with('revisiones', 'revisiones.alta', 'empleado')->get();
+            $data = Incapacidad::with('empleado', 'tipoIncidencia')->get();
             return response()->json($data, 200);
         }catch (\Exception $e){
             return response()->json([
@@ -25,9 +29,88 @@ class IncapacidadController extends Controller
     public function store(Request $request)
     {
         try{
-            $incapacidad = Incapacidad::create($request->all());
+            $empleado = NomEmpleado::find($request['empleado_id'])->first();
 
-            $incapacidad->zonasAfectadas()->sync($request['zonasAfectadas']);
+            $empleadoRH = DB::connection('RecursosHumanosCAN')->table('NomEmpleados')->where('Empleado', $empleado->numero)->first();
+
+            $fecha =  Carbon::parse($request['FechaEfectiva']);
+
+            if(!$request['TipoRiesgo']){
+                $request['TipoRiesgo'] = 0;
+            }
+
+            if(!$request['Secuela']){
+                $request['Secuela'] = 0;
+            }
+
+            if(!$request['ControlIncapacidad']){
+                $request['ControlIncapacidad'] = 0;
+            }
+
+            if(!$request['TipoPermiso']){
+                $request['TipoPermiso'] = 0;
+            }
+
+            $incapacidad = Incapacidad::create([
+                'folio' => $request['Folio'],
+                'fechaEfectiva' => $request['FechaEfectiva'],
+                'dias' => $request['Dias'],
+                'diagnostico' => $request['diagnostico'],
+                'TipoIncidencia' => $request['TipoIncidencia'],
+                'TipoRiesgo' => $request['TipoRiesgo'],
+                'ControlIncapacidad' => $request['ControlIncapacidad'],
+                'TipoPermiso' => $request['TipoPermiso'],
+                'observaciones' => $request['observaciones'],
+                'empleado_id' => $request['empleado_id'],
+                'profesional_id' => $request['profesional_id'],
+            ]);
+
+            for ($i = 0; $i < $request['Dias']; $i++) {
+                NomIncidencia::create([
+                    'Empleado' => $empleadoRH->Empleado,
+                    'FechaEfectiva' => $fecha->copy()->addDays($i)->startOfDay()->toDateString(),
+                    'Sueldo' => $empleadoRH->Sueldo,
+                    'Integrado' => $empleadoRH->Integrado,
+                    'TipoIncidencia' => $request['TipoIncidencia'],
+                    'Incapacidad' => $fecha->year,
+                    'Axo' => 0,
+                    'Fecha' => $fecha->toDateString(),
+                    'Dias' => $request['Dias'],
+                    'Importado' => 'S',
+                    'TipoRiesgo' => $request['TipoRiesgo'],
+                    'Secuela' => $request['Secuela'],
+                    'ControlIncapacidad' => $request['ControlIncapacidad'],
+                    'Aplicada' => 1,
+                    'TipoPermiso' => $request['TipoPermiso'],
+                    'incapacidad_id' => $incapacidad->id,
+                ]);
+
+                DB::connection('PruebaRecursosHumanosCAN')->table('NomIncidencias')->insert([
+                    'Empleado' => $empleadoRH->Empleado,
+                    // 'FechaEfectiva' => $fecha->startOfDay(),
+                    'FechaEfectiva' => $fecha->copy()->addDays($i)->startOfDay()->toDateString(),
+                    'Sueldo' => $empleadoRH->Sueldo,
+                    // 'Sueldo' => 0,
+                    'Integrado' => $empleadoRH->Integrado,
+                    // 'Integrado' => 0,
+                    'TipoIncidencia' => $request['TipoIncidencia'],
+                    'Incapacidad' => $fecha->year,
+                    'Axo' => 0,
+                    // 'Fecha' => $fecha->copy()->addDays($i)->toDateString(),
+                    'Fecha' => $fecha->toDateString(),
+                    'Dias' => $request['Dias'],
+                    'Importado' => 'S',
+                    'TipoRiesgo' => $request['TipoRiesgo'],
+                    'Secuela' => $request['Secuela'],
+                    'ControlIncapacidad' => $request['ControlIncapacidad'],
+                    'Aplicada' => 1,
+                    'TipoPermiso' => $request['TipoPermiso'],
+                ]);
+            }
+
+            if($request['zonasAfectadas']){
+                $incapacidad->zonasAfectadas()->sync($request['zonasAfectadas']);
+            }
 
             return response()->json([
                 'message' => 'Incapacidad guardada con éxito',
@@ -35,7 +118,7 @@ class IncapacidadController extends Controller
             ], 201);
 
         }catch(\Exception $e){
-            Log::error($e);
+            Log::error($e->getTraceAsString());
             return response()->json([
                 // 'error' => 'Ocurrió un error al guardar la consulta'
                 'error' => $e
@@ -46,12 +129,17 @@ class IncapacidadController extends Controller
     public function show($id){
         $data = Incapacidad::with([
             'empleado',
+            'empleado.historialMedico',
             'empleado.image',
             'profesional',
             'profesional.image',
             'zonasAfectadas',
-            'revisiones',
-            'revisiones.alta'
+            'tipoIncidencia',
+            'tipoRiesgo',
+            'secuela',
+            'controlIncapacidad',
+            'tipoPermiso',
+            'nomIncidencias'
         ])->find($id);
 
         if (!$data) {
@@ -108,7 +196,7 @@ class IncapacidadController extends Controller
             }
 
             return response()->json([
-                'message' => 'Examen guardado exitosamente',
+                'message' => 'Archivo guardado exitosamente',
             ]);
 
         }catch(\Exception $e){
