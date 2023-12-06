@@ -65,7 +65,7 @@ class DatabaseSeeder extends Seeder
             // LoteSeeder::class
         ]);
 
-        //$this->traerTodosLosEmpleados();
+        $this->traerTodosLosEmpleados();
        
     }
 
