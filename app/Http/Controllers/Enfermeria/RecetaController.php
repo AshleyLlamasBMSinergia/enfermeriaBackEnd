@@ -11,7 +11,7 @@ use Barryvdh\DomPDF\Facade\Pdf;
 class RecetaController extends Controller
 {
     public function receta($id){
-        $consulta = Consulta::with('profesional')->find($id);
+        $consulta = Consulta::find($id);
 
         switch($consulta->profesional->receta){
             default:

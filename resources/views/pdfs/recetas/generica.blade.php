@@ -117,6 +117,7 @@
 
             .receta {
                 position: absolute;
+                width: 995px;
                 top: 310px;
                 left: 65px;
             }
@@ -164,9 +165,11 @@
             <p class="profesional-nombre text-white pt-3">{{$consulta->profesional->nombre}}</h1>
 
             <div class="center-div text-white text-center">
-                <img width="16px" class="pt-1" src="{{ public_path('images/profesion.svg') }}" alt="receta">
-                <b class="pb-5">{{$consulta->profesional->puesto->nombre}}</b>
-                <img width="22px" class="pl-3 pt-1" src="{{ public_path('images/cedulaProfesional.svg') }}" alt="receta">
+                @isset($consulta->profesional->puesto)
+                    <img width="16px" class="pt-1" src="{{ public_path('images/profesion.svg') }}" alt="receta">
+                    <b class="pb-5 pr-3">{{$consulta->profesional->puesto->nombre}}</b>
+                @endisset
+                <img width="22px" class="pt-1" src="{{ public_path('images/cedulaProfesional.svg') }}" alt="receta">
                 <b>Cédula profesional: </b>{{$consulta->profesional->cedula}}
             </div>    
     
@@ -231,7 +234,7 @@
                         {{ $consulta->profesional->direccion->CP }},
                     @endif
                     @if($consulta->profesional->direccion->localidad)
-                        {{ $consulta->profesional->direccion->localidad }}
+                        {{ $consulta->profesional->direccion->localidad->nombre }}
                     @endif
                 @endif
             </p>

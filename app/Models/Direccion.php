@@ -24,6 +24,6 @@ class Direccion extends Model
 
     //Uno a Muchos Inversa
     public function localidad(){
-        return $this->belongsTo('App\Models\NomLocalidades');
+        return $this->belongsTo('App\Models\NomLocalidad');
     }
 }
