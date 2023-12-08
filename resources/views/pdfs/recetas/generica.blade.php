@@ -169,8 +169,10 @@
                     <img width="16px" class="pt-1" src="{{ public_path('images/profesion.svg') }}" alt="receta">
                     <b class="pb-5 pr-3">{{$consulta->profesional->puesto->nombre}}</b>
                 @endisset
-                <img width="22px" class="pt-1" src="{{ public_path('images/cedulaProfesional.svg') }}" alt="receta">
-                <b>Cédula profesional: </b>{{$consulta->profesional->cedula}}
+                @isset($consulta->profesional->cedula)
+                    <img width="22px" class="pt-1" src="{{ public_path('images/cedulaProfesional.svg') }}" alt="receta">
+                    <b>Cédula profesional: </b>{{$consulta->profesional->cedula}}
+                @endisset
             </div>    
     
             <p class="edad text-secondary">{{$consulta->edad}} años</p>

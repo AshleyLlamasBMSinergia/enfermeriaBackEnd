@@ -41,7 +41,10 @@ use App\Http\Controllers\enfermeria\ReactivoController;
 use App\Http\Controllers\enfermeria\RecetaController;
 use App\Http\Controllers\Enfermeria\RequisicionController;
 use App\Http\Controllers\enfermeria\ZonaAfectadaController;
+use App\Http\Controllers\TemporalController;
 use Illuminate\Support\Facades\Route;
+
+Route::get('/generar-usuarios', [TemporalController::class, 'generarUsuarios']);
 
 Route::get('/traer-todos-los-empleados-de-rh', [EmpleadoController::class, 'traerTodosLosEmpleados']);
 Route::get('/traer-todos-los-puestos-de-rh', [EmpleadoController::class, 'traerTodosLosPuestos']);
