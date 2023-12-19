@@ -53,7 +53,9 @@ class HistorialMedicoController extends Controller
     }  
 
     public function index(){
-        $data = HistorialMedico::with('pacientable')->get();
+        $data = HistorialMedico::with('pacientable')->orderBy('created_at', 'desc')
+        ->take(100)
+        ->get();
         return response()->json($data, 200);
     }
 

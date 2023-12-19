@@ -1,0 +1,20 @@
+<table>
+    <thead>
+        <tr>
+            <th>Tipo</th>
+            <th>Fecha</th>
+            <th>Motivo</th>
+            <th>Paciente</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach($citas as $cita)
+            <tr>
+                <td>{{$cita->tipo}}</td>
+                <td>{{$cita->fecha}}</td>
+                <td>{{$cita->motivo}}</td>
+                <td>{{$cita->paciente->pacientable->nombre}}</td>
+            </tr>
+        @endforeach
+    </tbody>
+</table>

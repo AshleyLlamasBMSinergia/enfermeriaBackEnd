@@ -29,27 +29,32 @@ class IncapacidadController extends Controller
     public function store(Request $request)
     {
         try{
-            $empleado = NomEmpleado::find($request['empleado_id'])->first();
+            $empleado = NomEmpleado::find($request['empleado_id']);
 
-            $empleadoRH = DB::connection('RecursosHumanosCAN')->table('NomEmpleados')->where('Empleado', $empleado->numero)->first();
+            if (!$empleado) {
+                return response()->json([
+                    'error' => 'Empleado no encontrado'
+                ], 404);
+            }
+
+            $BDRecursosHumanosCAN = DB::connection('RecursosHumanosCAN');
+
+            if(!$BDRecursosHumanosCAN){
+                Log::error('No se encontro conexión con la base de datos de RH CAN');
+                return response()->json([
+                    'error' => 'No se encontro conexión con la base de datos de RH CAN'
+                ], 404);
+            }
+
+            $empleadoRH = $BDRecursosHumanosCAN->table('NomEmpleados')->where('Empleado', $empleado->numero)->first();
 
             $fecha =  Carbon::parse($request['FechaEfectiva']);
 
-            if(!$request['TipoRiesgo']){
-                $request['TipoRiesgo'] = 0;
-            }
-
-            if(!$request['Secuela']){
-                $request['Secuela'] = 0;
-            }
-
-            if(!$request['ControlIncapacidad']){
-                $request['ControlIncapacidad'] = 0;
-            }
-
-            if(!$request['TipoPermiso']){
-                $request['TipoPermiso'] = 0;
-            }
+            $request['TipoRiesgo'] = $request['TipoRiesgo'] ?? 0;
+            $request['Secuela'] = $request['Secuela'] ?? 0;
+            $request['ControlIncapacidad'] = $request['ControlIncapacidad'] ?? 0;
+            $request['TipoPermiso'] = $request['TipoPermiso'] ?? 0;
+            
 
             $incapacidad = Incapacidad::create([
                 'folio' => $request['Folio'],
@@ -66,62 +71,80 @@ class IncapacidadController extends Controller
             ]);
 
             for ($i = 0; $i < $request['Dias']; $i++) {
-                NomIncidencia::create([
-                    'Empleado' => $empleadoRH->Empleado,
-                    'FechaEfectiva' => $fecha->copy()->addDays($i)->startOfDay()->toDateString(),
-                    'Sueldo' => $empleadoRH->Sueldo,
-                    'Integrado' => $empleadoRH->Integrado,
-                    'TipoIncidencia' => $request['TipoIncidencia'],
-                    'Incapacidad' => $fecha->year,
-                    'Axo' => 0,
-                    'Fecha' => $fecha->toDateString(),
-                    'Dias' => $request['Dias'],
-                    'Importado' => 'S',
-                    'TipoRiesgo' => $request['TipoRiesgo'],
-                    'Secuela' => $request['Secuela'],
-                    'ControlIncapacidad' => $request['ControlIncapacidad'],
-                    'Aplicada' => 1,
-                    'TipoPermiso' => $request['TipoPermiso'],
-                    'incapacidad_id' => $incapacidad->id,
-                ]);
 
-                DB::connection('PruebaRecursosHumanosCAN')->table('NomIncidencias')->insert([
-                    'Empleado' => $empleadoRH->Empleado,
-                    // 'FechaEfectiva' => $fecha->startOfDay(),
-                    'FechaEfectiva' => $fecha->copy()->addDays($i)->startOfDay()->toDateString(),
-                    'Sueldo' => $empleadoRH->Sueldo,
-                    // 'Sueldo' => 0,
-                    'Integrado' => $empleadoRH->Integrado,
-                    // 'Integrado' => 0,
-                    'TipoIncidencia' => $request['TipoIncidencia'],
-                    'Incapacidad' => $fecha->year,
-                    'Axo' => 0,
-                    // 'Fecha' => $fecha->copy()->addDays($i)->toDateString(),
-                    'Fecha' => $fecha->toDateString(),
-                    'Dias' => $request['Dias'],
-                    'Importado' => 'S',
-                    'TipoRiesgo' => $request['TipoRiesgo'],
-                    'Secuela' => $request['Secuela'],
-                    'ControlIncapacidad' => $request['ControlIncapacidad'],
-                    'Aplicada' => 1,
-                    'TipoPermiso' => $request['TipoPermiso'],
-                ]);
+                $existe = NomIncidencia::
+                where('Empleado', $empleado->numero)
+                ->where('FechaEfectiva', $fecha->copy()->addDays($i)->startOfDay()->toDateString())
+                ->count();
+
+                if($existe == 0){
+
+                    NomIncidencia::create([
+                        // 'Empleado' => $empleadoRH->Empleado,
+                        'Empleado' => $empleado->numero,
+                        'FechaEfectiva' => $fecha->copy()->addDays($i)->startOfDay()->toDateString(),
+                        'Sueldo' => $empleadoRH->Sueldo,
+                        // 'Sueldo' => 0,
+                        'Integrado' => $empleadoRH->Integrado,
+                        // 'Integrado' => 0,
+                        'TipoIncidencia' => $request['TipoIncidencia'],
+                        'Incapacidad' => $fecha->year,
+                        'Axo' => 0,
+                        'Fecha' => $fecha->toDateString(),
+                        'Dias' => $request['Dias'],
+                        'Importado' => 'S',
+                        'TipoRiesgo' => $request['TipoRiesgo'],
+                        'Secuela' => $request['Secuela'],
+                        'ControlIncapacidad' => $request['ControlIncapacidad'],
+                        'Aplicada' => 1,
+                        'TipoPermiso' => $request['TipoPermiso'],
+                        'incapacidad_id' => $incapacidad->id,
+                    ]);
+    
+                    // DB::connection('PruebaRecursosHumanosCAN')->table('NomIncidencias')->insert([
+                    //     'Empleado' => $empleadoRH->Empleado,
+                    //     'FechaEfectiva' => $fecha->copy()->addDays($i)->startOfDay()->toDateString(),
+                    //     'Sueldo' => $empleadoRH->Sueldo,
+                    //     'Integrado' => $empleadoRH->Integrado,
+                    //     'TipoIncidencia' => $request['TipoIncidencia'],
+                    //     'Incapacidad' => $fecha->year,
+                    //     'Axo' => 0,
+                    //     'Fecha' => $fecha->toDateString(),
+                    //     'Dias' => $request['Dias'],
+                    //     'Importado' => 'S',
+                    //     'TipoRiesgo' => $request['TipoRiesgo'],
+                    //     'Secuela' => $request['Secuela'],
+                    //     'ControlIncapacidad' => $request['ControlIncapacidad'],
+                    //     'Aplicada' => 1,
+                    //     'TipoPermiso' => $request['TipoPermiso'],
+                    // ]);
+
+                    if($request['zonasAfectadas']){
+                        $incapacidad->zonasAfectadas()->sync($request['zonasAfectadas']);
+                    }
+                }else{
+                    $fechasRepetidas[] = $fecha->copy()->addDays($i)->startOfDay()->toDateString();
+                }
             }
 
-            if($request['zonasAfectadas']){
-                $incapacidad->zonasAfectadas()->sync($request['zonasAfectadas']);
+            if (!empty($fechasRepetidas)) {
+                $incapacidad->delete();
+            
+                return response()->json([
+                    'error' => 'Ya existe una incapacidad en la nómina en las fechas: ' . implode(', ', $fechasRepetidas)
+                ], 400);
+            }else{
+                return response()->json([
+                    'message' => 'Incapacidad guardada con éxito',
+                    'id' => $incapacidad->id
+                ], 201);
             }
-
-            return response()->json([
-                'message' => 'Incapacidad guardada con éxito',
-                'id' => $incapacidad->id
-            ], 201);
 
         }catch(\Exception $e){
-            Log::error($e->getTraceAsString());
+            Log::error($e->getMessage());
             return response()->json([
-                // 'error' => 'Ocurrió un error al guardar la consulta'
-                'error' => $e
+                'error' => 'Ocurrió un error al guardar la consulta'
+                // 'error' => $e
             ], 500);
         }
     }

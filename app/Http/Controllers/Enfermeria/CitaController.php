@@ -2,11 +2,13 @@
 
 namespace App\Http\Controllers\Enfermeria;
 
+use App\Exports\Citas;
 use App\Http\Controllers\Controller;
 use App\Models\Cita;
 use App\Models\HistorialMedico;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
+use Maatwebsite\Excel\Facades\Excel;
 
 class CitaController extends Controller
 {
@@ -112,6 +114,18 @@ class CitaController extends Controller
         return response()->json([
             'message' => "Cita actualizada exitosamente",
         ]);
+    }
+
+    public function excel(Request $request) 
+    {   
+        try{
+            return Excel::download(new Citas($request->profesional_id, $request->tipo, $request->fechaInicial, $request->fechaFinal), 'citas.xlsx');
+        }catch(\Exception $e){
+            Log::error($e);
+            return response()->json([
+                'error' => $e
+            ], 500);
+        }
     }
 
     public function destroy($id){

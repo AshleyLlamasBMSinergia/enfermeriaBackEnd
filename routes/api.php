@@ -68,7 +68,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/storage/private/archivo/{url}', [ArchivoController::class, 'archivo']);
 
     //ENFERMERIA - INICIO
-    Route::get('/inicio/citas-de-hoy', [EnfermeriaController::class, 'getCitasHoy']);
+    Route::get('/inicio/citas-de-hoy/{id}', [EnfermeriaController::class, 'getCitasHoy']);
 
     Route::get('/citas/{id}', [CitaController::class, 'show']);
 
@@ -241,5 +241,8 @@ Route::middleware('auth:sanctum')->group(function () {
 
     //CAN
     Route::get('/can/empleados/{id}', [CANEmpleadoController::class, 'buscar']);
-    
+
+    //EXCEL
+    // Route::get('/excel-assistances/{date}', [AssistanceController::class, 'excel'])->name('admin.assistances.export');
+    Route::post('/citas/excel', [CitaController::class, 'excel']);
 });
