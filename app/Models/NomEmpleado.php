@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Log;
 
 class NomEmpleado extends Model
 {
@@ -86,6 +87,6 @@ class NomEmpleado extends Model
 
     //Uno a Muchos
     public function incapacidades(){
-        return $this->hasMany('App\Models\Incapacidad');
+        return $this->hasMany('App\Models\Incapacidad', 'empleado_id');
     }
 }

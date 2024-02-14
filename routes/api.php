@@ -42,7 +42,10 @@ use App\Http\Controllers\enfermeria\RecetaController;
 use App\Http\Controllers\Enfermeria\RequisicionController;
 use App\Http\Controllers\enfermeria\ZonaAfectadaController;
 use App\Http\Controllers\TemporalController;
+use Illuminate\Routing\Router;
 use Illuminate\Support\Facades\Route;
+
+Router::get('/estadisticas/movimientos-del-insumo/{id}', [EstadisticaController::class, 'movimientosDelInsumo']);
 
 Route::get('/generar-usuarios', [TemporalController::class, 'generarUsuarios']);
 
@@ -124,7 +127,6 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/historiales-medicos/externo/{id}', [HistorialMedicoController::class, 'historialMedicoExterno']);
     Route::get('/historiales-medicos/dependiente/{id}', [HistorialMedicoController::class, 'historialMedicoDependiente']);
     
-    
     //DEPENDIENTE
     Route::post('/dependientes', [DependienteController::class, 'store']);
     Route::put('/dependientes/edit/{id}', [DependienteController::class, 'update']);
@@ -186,9 +188,9 @@ Route::middleware('auth:sanctum')->group(function () {
     //MOVIMIENTOS
     Route::get('/movimientos/inventarios/{inventario_id}', [MovimientoController::class, 'movimientosPorInventario']);
     Route::get('/movimientos/{id}', [MovimientoController::class, 'show']);
+    
     //MOVIMEINTO TIPO
         Route::get('/tipos-de-movimientos', [MovimientoTipoController::class, 'mandarMovimientosParaLote']);
-
 
     //PROFESIONALES
     Route::get('/profesionales', [ProfesionalController::class, 'index']);
@@ -201,7 +203,6 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('/inventarios/add-insumos', [InventarioController::class, 'addInsumos']);
     Route::get('/inventarios/{inventario_id}/insumos/{insumo_id}', [InventarioController::class, 'insumoPorInventario']);
     Route::get('/inventarios/{inventario_id}/lotes/{lote_id}', [InventarioController::class, 'lotePorInventario']);
-
 
     //PDF HISTORIAL MEDICO
     Route::get('/historial-medico/pdf/{id}/{fecha}', [HistorialMedicoController::class, 'pdf']);

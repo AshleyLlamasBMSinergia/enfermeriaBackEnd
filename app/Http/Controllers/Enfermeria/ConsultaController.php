@@ -9,6 +9,7 @@ use App\Models\Lote;
 use App\Models\Movimiento;
 use App\Models\MovimientoMov;
 use App\Models\NomEmpleado;
+use App\Models\rh\RHDependiente;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
@@ -27,7 +28,8 @@ class ConsultaController extends Controller
 
     public function store(Request $request)
     {
-     
+        Log::info($request);
+
         try{
             $consulta = new Consulta();
 
@@ -35,15 +37,17 @@ class ConsultaController extends Controller
             $consulta->fecha = $request['fecha'];
             $consulta->profesional_id = $request['profesional_id'];
             $consulta->pacientable_id = $request['paciente'];
-            
+
             switch($request['tipoPaciente']){
                 case 'Empleado':
                     $consulta->pacientable_type = NomEmpleado::class;
                 break;
+                case 'Dependiente':
+                    $consulta->pacientable_type = RHDependiente::class;
+                break;
                 case 'Externo';
                     $consulta->pacientable_type = Externo::class;
                 break;
-
             }
 
             $consulta->triajeClasificacion = $request['triajeClasificacion'];

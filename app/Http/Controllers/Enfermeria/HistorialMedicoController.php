@@ -93,11 +93,19 @@ class HistorialMedicoController extends Controller
 
             if ($data->pacientable_type === 'App\\Models\\NomEmpleado') {
                 $data->load(
+                    'pacientable.incapacidades',
                     'pacientable.dependientes',
                     'pacientable.dependientes.historialMedico',
                     'pacientable.dependientes.image',
                     'pacientable.dependientes.empleado.historialMedico',
                     'pacientable.puesto',
+                    'pacientable.image'
+                );
+            }
+
+            if ($data->pacientable_type === 'App\\Models\\RHDependiente') {
+                $data->load(
+                    'pacientable.empleado.historialMedico',
                     'pacientable.image'
                 );
             }

@@ -10,6 +10,8 @@ class RHDependiente extends Model
 {
     protected $key = 'Dependiente';
 
+    protected $table = 'RHDependientes';
+
     protected $guarded = ['Dependiente', 'created_at', 'updated'];
 
     protected $fillable = [

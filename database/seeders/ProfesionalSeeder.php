@@ -170,5 +170,34 @@ class ProfesionalSeeder extends Seeder
             'useable_id' => 4,
             'useable_type' => Profesional::class,
         ]);
+
+        Profesional::create([
+            'nombre' => 'Samara',
+            'telefono' => 'Samara',
+            'correo' => 'serviciomedicohmo@lecheyaqui.com.mx',
+            'cedula' => '041472',
+            'cedis_id' => 2,
+            'direccion_id' => $direccion->id,
+            'estatus' => 'Activo',
+            // 'puesto_id' => 1,
+        ]);
+
+        for( $i = 1; $i <= 5; $i++ ) {
+            Horario::create([
+                'dia' => $i,
+                'entrada' => '6:00',
+                'salida' => '13:00',
+                'profesional_id' => 4
+            ]);
+        }
+
+        User::create([
+            'name' => 'Dr. Juan Manuel Rodríguez Carrillo',
+            'nickname' => 'Dr. Juan Manuel',
+            'email' => 'serviciomedicohmo@lecheyaqui.com.mx',
+            'password' => bcrypt('~Ju4n!'),
+            'useable_id' => 4,
+            'useable_type' => Profesional::class,
+        ]);
     }
 }

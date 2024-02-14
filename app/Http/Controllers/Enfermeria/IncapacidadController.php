@@ -101,23 +101,23 @@ class IncapacidadController extends Controller
                         'incapacidad_id' => $incapacidad->id,
                     ]);
     
-                    // DB::connection('PruebaRecursosHumanosCAN')->table('NomIncidencias')->insert([
-                    //     'Empleado' => $empleadoRH->Empleado,
-                    //     'FechaEfectiva' => $fecha->copy()->addDays($i)->startOfDay()->toDateString(),
-                    //     'Sueldo' => $empleadoRH->Sueldo,
-                    //     'Integrado' => $empleadoRH->Integrado,
-                    //     'TipoIncidencia' => $request['TipoIncidencia'],
-                    //     'Incapacidad' => $fecha->year,
-                    //     'Axo' => 0,
-                    //     'Fecha' => $fecha->toDateString(),
-                    //     'Dias' => $request['Dias'],
-                    //     'Importado' => 'S',
-                    //     'TipoRiesgo' => $request['TipoRiesgo'],
-                    //     'Secuela' => $request['Secuela'],
-                    //     'ControlIncapacidad' => $request['ControlIncapacidad'],
-                    //     'Aplicada' => 1,
-                    //     'TipoPermiso' => $request['TipoPermiso'],
-                    // ]);
+                    DB::connection('PruebaRecursosHumanosCAN')->table('NomIncidencias')->insert([
+                        'Empleado' => $empleadoRH->Empleado,
+                        'FechaEfectiva' => $fecha->copy()->addDays($i)->startOfDay()->toDateString(),
+                        'Sueldo' => $empleadoRH->Sueldo,
+                        'Integrado' => $empleadoRH->Integrado,
+                        'TipoIncidencia' => $request['TipoIncidencia'],
+                        'Incapacidad' => $fecha->year,
+                        'Axo' => 0,
+                        'Fecha' => $fecha->toDateString(),
+                        'Dias' => $request['Dias'],
+                        'Importado' => 'S',
+                        'TipoRiesgo' => $request['TipoRiesgo'],
+                        'Secuela' => $request['Secuela'],
+                        'ControlIncapacidad' => $request['ControlIncapacidad'],
+                        'Aplicada' => 1,
+                        'TipoPermiso' => $request['TipoPermiso'],
+                    ]);
 
                     if($request['zonasAfectadas']){
                         $incapacidad->zonasAfectadas()->sync($request['zonasAfectadas']);

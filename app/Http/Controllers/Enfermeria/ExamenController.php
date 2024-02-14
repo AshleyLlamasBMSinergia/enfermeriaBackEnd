@@ -64,7 +64,7 @@ class ExamenController extends Controller
             }
 
             return response()->json([
-                'message' => 'Examen guardado exitosamente',
+                'message' => '¡Guardado exitosamente! :)',
             ]);
 
         }catch(\Exception $e){
