@@ -9,10 +9,10 @@ use Illuminate\Http\Request;
 class EstadisticaController extends Controller
 {
     public function movimientosDelInsumo($id){
-        $movimientosDelInsumo = Insumo::find($id)->whereHas('lotes', function ($query) {
+        $data = Insumo::find($id)->whereHas('lotes', function ($query) {
             $query->movimientoMovs;
         })->get();
 
-        return $movimientosDelInsumo;
+        return response()->json($data, 200);
     }
 }
