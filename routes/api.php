@@ -42,10 +42,9 @@ use App\Http\Controllers\enfermeria\RecetaController;
 use App\Http\Controllers\Enfermeria\RequisicionController;
 use App\Http\Controllers\enfermeria\ZonaAfectadaController;
 use App\Http\Controllers\TemporalController;
-use Illuminate\Routing\Router;
 use Illuminate\Support\Facades\Route;
 
-Router::get('/estadisticas/movimientos-del-insumo/{id}', [EstadisticaController::class, 'movimientosDelInsumo']);
+Route::get('/estadisticas/movimientos-del-insumo/{id}', [EstadisticaController::class, 'salidaDeMovimientosDelInsumo']);
 
 Route::get('/generar-usuarios', [TemporalController::class, 'generarUsuarios']);
 

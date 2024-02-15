@@ -8,8 +8,9 @@ use Illuminate\Database\Eloquent\Model;
 class Insumo extends Model
 {
     use HasFactory;
-
     protected $table = 'Insumos';
+
+    protected $primaryKey  = 'id';
 
     protected $guarded = ['id', 'created_at', 'updated'];
 

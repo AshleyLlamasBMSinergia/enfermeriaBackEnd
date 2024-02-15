@@ -22,7 +22,7 @@ class MovimientoMov extends Model
 
     //Uno a Muchos Inversa
      public function movimientos(){
-        return $this->belongsTo('App\Models\Movimiento');
+        return $this->belongsTo('App\Models\Movimiento', 'movimiento_id');
     }
 
     //Uno a Muchos Inversa
