@@ -37,8 +37,8 @@ class TemporalController extends Controller
             $profesional = Profesional::create([
                 'nombre' => $array['nombre'],
                 'correo' => $array['correo'],
-                'cedis_id' => 1,
-                'estatus' => 'Activo',
+                'cedi_id' => 1,
+                'estatus' => true,
             ]);
 
             $profesional->inventarios()->attach(1);

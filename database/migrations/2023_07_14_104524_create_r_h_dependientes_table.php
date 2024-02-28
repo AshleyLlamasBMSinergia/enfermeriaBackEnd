@@ -23,8 +23,12 @@ class CreateRHDependientesTable extends Migration
             $table->dateTime('fechaNacimiento')->nullable();
             $table->string('sexo')->nullable();
             $table->string('parentesco')->nullable();
+ 
+            $table->unsignedBigInteger('cedi_id')->nullable();
+            $table->foreign('cedi_id')->references('id')->on('Cedis');
 
-            $table->string('estatus')->nullable();
+            $table->string('estatus')->nullable()->default(true);
+            
             $table->timestamps();
         });
     }

@@ -11,12 +11,20 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Log;
 use App\Models\RHDependiente;
+use App\Services\HeaderService;
 use Illuminate\Support\Facades\Storage;
 
 class DependienteController extends Controller
 {
+    protected $headerProfesionalCedisService;
+
+    public function __construct(HeaderService $headerService)
+    {
+        $this->headerProfesionalCedisService = $headerService->getProfesionalCedisFromHeader();
+    }
+
     public function index(){
-        $data = RHDependiente::all();
+        $data = RHDependiente::whereIn('cedi_id', $this->headerProfesionalCedisService->pluck('id'))->get();
         return response()->json($data, 200);
     }
 
@@ -39,7 +47,6 @@ class DependienteController extends Controller
     
 
     public function store(Request $request){
-        // Log::error($request);
         try{
             $dependiente = RHDependiente::create([
                 'empleado_id' => $request['empleado_id'],
@@ -49,7 +56,7 @@ class DependienteController extends Controller
                 'telefono' => $request['prefijoInternacional'].$request['telefono'],
                 'correo' => $request['email'],
                 'parentesco' => $request['parentesco'],
-                'estatus' => 'Vivo',
+                'estatus' => true,
             ]);
 
             $pacientable_type = RHDependiente::class;
@@ -94,7 +101,6 @@ class DependienteController extends Controller
     }
 
     public function update($id, Request $request){
-        // Log::error($request);
         try{
             $dependiente = RHDependiente::find($id);
 
@@ -105,7 +111,7 @@ class DependienteController extends Controller
                 'telefono' => $request['prefijoInternacional'].$request['telefono'],
                 'correo' => $request['email'],
                 'parentesco' => $request['parentesco'],
-                'estatus' => 'Vivo',
+                'estatus' => true,
             ]);
 
             if($request['imagen']){

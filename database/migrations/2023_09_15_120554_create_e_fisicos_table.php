@@ -21,7 +21,7 @@ class CreateEFisicosTable extends Migration
             $table->string('FR')->nullable();
             $table->decimal('peso')->nullable();
             $table->string('TC')->nullable();
-            $table->smallInteger('temperatura')->nullable();
+            $table->decimal('temperatura')->nullable();
             $table->string('talla')->nullable();
             $table->string('estadoConciencia')->nullable();
             $table->string('coordinacion')->nullable();

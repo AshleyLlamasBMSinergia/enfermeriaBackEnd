@@ -40,6 +40,8 @@ class CreateIncapacidadesTable extends Migration
 
             $table->string('TipoPermiso')->nullable()->default('0');
             $table->foreign('TipoPermiso')->references('TipoPermiso')->on('NomTipoPermisos');
+
+            $table->string('causa')->nullable();
             
             $table->longText('observaciones')->nullable();
 

@@ -15,6 +15,8 @@ class AHeredofamiliar extends Model
 
     protected $fillable = [
         'padresViven',
+        'espPadresViven',
+        
         'hermanosViven',
         'hermanasViven',
 

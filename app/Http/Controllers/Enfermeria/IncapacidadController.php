@@ -7,6 +7,7 @@ use App\Models\Archivo;
 use App\Models\Incapacidad;
 use App\Models\NomIncidencia;
 use App\Models\NomEmpleado;
+use App\Services\HeaderService;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -15,9 +16,20 @@ use Illuminate\Support\Facades\Storage;
 
 class IncapacidadController extends Controller
 {
+    protected $headerProfesionalCedisService;
+
+    public function __construct(HeaderService $headerService)
+    {
+        $this->headerProfesionalCedisService = $headerService->getProfesionalCedisFromHeader();
+    }
+
     public function index(){
         try{
-            $data = Incapacidad::with('empleado', 'tipoIncidencia')->get();
+            $profesionalCedis = $this->headerProfesionalCedisService;
+
+            $data = Incapacidad::with('empleado', 'tipoIncidencia')->whereHas('empleado' ,function ($query) use ($profesionalCedis){
+                $query->whereIn('cedi_id', $profesionalCedis->pluck('id'));
+            })->get();
             return response()->json($data, 200);
         }catch (\Exception $e){
             return response()->json([
@@ -37,24 +49,38 @@ class IncapacidadController extends Controller
                 ], 404);
             }
 
-            $BDRecursosHumanosCAN = DB::connection('RecursosHumanosCAN');
+            switch($empleado->cedi->empresa->id){
+                case 1: //CAN
+                    $BDRecursosHumanos = DB::connection('RecursosHumanosCAN');
+                break;
+                case 2: //CVN
+                    
+                break;
+                case 5: //ENV
+                     
+                break;
+                case 11: //FCO
+                    $BDRecursosHumanos = DB::connection('RecursosHumanosFCO');
+                break;
+                case 12: //SBM
+                    $BDRecursosHumanos = DB::connection('RecursosHumanosSBM');
+                break;
+                default:
+                return response()->json([
+                    'error' => 'Empresa del empleado no encontado :('
+                ], 404);
+            }
 
-            if(!$BDRecursosHumanosCAN){
+            if(!$BDRecursosHumanos){
                 Log::error('No se encontro conexión con la base de datos de RH CAN');
                 return response()->json([
                     'error' => 'No se encontro conexión con la base de datos de RH CAN'
                 ], 404);
             }
 
-            $empleadoRH = $BDRecursosHumanosCAN->table('NomEmpleados')->where('Empleado', $empleado->numero)->first();
+            $empleadoRH = $BDRecursosHumanos->table('NomEmpleados')->where('Empleado', $empleado->numero)->first();
 
             $fecha =  Carbon::parse($request['FechaEfectiva']);
-
-            $request['TipoRiesgo'] = $request['TipoRiesgo'] ?? 0;
-            $request['Secuela'] = $request['Secuela'] ?? 0;
-            $request['ControlIncapacidad'] = $request['ControlIncapacidad'] ?? 0;
-            $request['TipoPermiso'] = $request['TipoPermiso'] ?? 0;
-            
 
             $incapacidad = Incapacidad::create([
                 'folio' => $request['Folio'],
@@ -62,9 +88,11 @@ class IncapacidadController extends Controller
                 'dias' => $request['Dias'],
                 'diagnostico' => $request['diagnostico'],
                 'TipoIncidencia' => $request['TipoIncidencia'],
-                'TipoRiesgo' => $request['TipoRiesgo'],
-                'ControlIncapacidad' => $request['ControlIncapacidad'],
-                'TipoPermiso' => $request['TipoPermiso'],
+                'TipoRiesgo' => $request['TipoRiesgo'] ?? 0,
+                'Secuela' => $request['Secuela'] ?? 0,
+                'ControlIncapacidad' => $request['ControlIncapacidad'] ?? 0,
+                'causa' => $request['causa'],
+                'TipoPermiso' => $request['TipoPermiso'] ?? 0,
                 'observaciones' => $request['observaciones'],
                 'empleado_id' => $request['empleado_id'],
                 'profesional_id' => $request['profesional_id'],
@@ -79,44 +107,31 @@ class IncapacidadController extends Controller
 
                 if($existe == 0){
 
-                    NomIncidencia::create([
-                        // 'Empleado' => $empleadoRH->Empleado,
+                    $nomIncidenciaInfo = [
                         'Empleado' => $empleado->numero,
                         'FechaEfectiva' => $fecha->copy()->addDays($i)->startOfDay()->toDateString(),
                         'Sueldo' => $empleadoRH->Sueldo,
-                        // 'Sueldo' => 0,
                         'Integrado' => $empleadoRH->Integrado,
-                        // 'Integrado' => 0,
                         'TipoIncidencia' => $request['TipoIncidencia'],
                         'Incapacidad' => $fecha->year,
                         'Axo' => 0,
                         'Fecha' => $fecha->toDateString(),
                         'Dias' => $request['Dias'],
                         'Importado' => 'S',
-                        'TipoRiesgo' => $request['TipoRiesgo'],
-                        'Secuela' => $request['Secuela'],
-                        'ControlIncapacidad' => $request['ControlIncapacidad'],
+                        'TipoRiesgo' => $request['TipoRiesgo']?? 0,
+                        'Secuela' => $request['Secuela']?? 0,
+                        'ControlIncapacidad' => $request['ControlIncapacidad']?? 0,
                         'Aplicada' => 1,
-                        'TipoPermiso' => $request['TipoPermiso'],
+                        'TipoPermiso' => $request['TipoPermiso']?? 0,
                         'incapacidad_id' => $incapacidad->id,
-                    ]);
+                    ];
+
+                    NomIncidencia::create($nomIncidenciaInfo);
+
+                    unset($nomIncidenciaInfo['incapacidad_id']);
     
-                    DB::connection('PruebaRecursosHumanosCAN')->table('NomIncidencias')->insert([
-                        'Empleado' => $empleadoRH->Empleado,
-                        'FechaEfectiva' => $fecha->copy()->addDays($i)->startOfDay()->toDateString(),
-                        'Sueldo' => $empleadoRH->Sueldo,
-                        'Integrado' => $empleadoRH->Integrado,
-                        'TipoIncidencia' => $request['TipoIncidencia'],
-                        'Incapacidad' => $fecha->year,
-                        'Axo' => 0,
-                        'Fecha' => $fecha->toDateString(),
-                        'Dias' => $request['Dias'],
-                        'Importado' => 'S',
-                        'TipoRiesgo' => $request['TipoRiesgo'],
-                        'Secuela' => $request['Secuela'],
-                        'ControlIncapacidad' => $request['ControlIncapacidad'],
-                        'Aplicada' => 1,
-                        'TipoPermiso' => $request['TipoPermiso'],
+                    $BDRecursosHumanos->table('NomIncidencias')->insert([
+                        $nomIncidenciaInfo
                     ]);
 
                     if($request['zonasAfectadas']){
@@ -129,6 +144,10 @@ class IncapacidadController extends Controller
 
             if (!empty($fechasRepetidas)) {
                 $incapacidad->delete();
+
+                foreach($incapacidad->nomIncidencias as $incidencia){
+                    $incidencia->delete();
+                }
             
                 return response()->json([
                     'error' => 'Ya existe una incapacidad en la nómina en las fechas: ' . implode(', ', $fechasRepetidas)
@@ -143,7 +162,7 @@ class IncapacidadController extends Controller
         }catch(\Exception $e){
             Log::error($e->getMessage());
             return response()->json([
-                'error' => 'Ocurrió un error al guardar la consulta'
+                'error' => 'Ocurrió un error al guardar'
                 // 'error' => $e
             ], 500);
         }

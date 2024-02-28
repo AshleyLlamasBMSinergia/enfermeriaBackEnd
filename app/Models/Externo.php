@@ -19,6 +19,7 @@ class Externo extends Model
         'fechaNacimiento',
         'telefono',
         'correo',
+        'cedi_id'
     ];
 
     //Uno a uno polimorfico
@@ -26,13 +27,24 @@ class Externo extends Model
         return $this->morphOne('App\Models\HistorialMedico', 'pacientable');
     }
 
-    //Uno a uno polimorfico
+    //Uno a uno polimorfico 
     public function consulta(){
-        return $this->morphOne('App\Models\Consulta', 'pacientable');
+        return $this->morphOne('App\Models\Consulta', 'pacientable'); //TODO Revisar !!!
+    }
+
+    //Uno a Muchos
+    public function consultas(){
+        return $this->hasMany('App\Models\Consulta', 'id');
     }
 
     //Uno a uno polimorficab
     public function image(){
         return $this->morphOne('App\Models\Imagen', 'imageable');
+    }
+
+    // Uno a muchos inversa
+    public function cedi()
+    {
+        return $this->belongsTo('App\Models\Cedi', 'cedi_id');
     }
 }

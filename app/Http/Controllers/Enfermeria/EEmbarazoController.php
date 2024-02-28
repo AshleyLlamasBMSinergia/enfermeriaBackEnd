@@ -11,8 +11,6 @@ class EEmbarazoController extends Controller
 {
     public function store(Request $request)
     {
-        //Log::error($request);
-        
         try{
             $EEmbarazo = EEmbarazo::create([
                 'fecha' => Carbon::now(),

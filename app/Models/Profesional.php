@@ -18,12 +18,18 @@ class Profesional extends Model
         'telefono',
         'correo',
         'cedula',
-        'cedis_id',
+        'cedi_id',
         'direccion_id',
         'estatus',
         'puesto_id',
-        'receta'
+        'receta',
     ];
+
+    // Uno a muchos inversa
+    public function cedi()
+    {
+        return $this->belongsTo('App\Models\Cedi', 'cedi_id');
+    }
 
     //Uno a uno polimorfico
     public function historialMedico(){
@@ -40,11 +46,6 @@ class Profesional extends Model
         return $this->belongsTo('App\Models\NomPuesto');
     }
 
-     //Uno a Muchos Inversa
-     public function cedi(){
-        return $this->belongsTo('App\Models\Cedi');
-    }
-
     //Uno a uno polimorficab
     public function user(){
         return $this->morphOne('App\Models\User', 'useable');
@@ -59,7 +60,11 @@ class Profesional extends Model
     public function consultas(){
         return $this->hasMany('App\Models\Consulta');
     }
-    
+
+    //Uno a Muchos
+    public function pendientes(){
+        return $this->hasMany('App\Models\Pendiente');
+    }
 
     //Uno a Muchos
     public function incapacidades(){
@@ -113,5 +118,10 @@ class Profesional extends Model
     //Uno a Muchos
     public function altas(){
         return $this->hasMany('App\Models\Alta');
+    }
+
+    //Muchos a Muchos
+    public function cedis(){
+        return $this->belongsToMany('App\Models\Cedi');
     }
 }

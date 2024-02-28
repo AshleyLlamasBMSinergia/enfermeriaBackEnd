@@ -19,8 +19,6 @@ class CitaController extends Controller
 
     public function store(Request $request)
     {
-        // Log::error($request);
-
        try{
             $cita = new Cita();
 

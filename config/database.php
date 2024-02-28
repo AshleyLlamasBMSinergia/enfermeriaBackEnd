@@ -57,6 +57,30 @@ return [
             'prefix_indexes' => true,
         ],
 
+        //SBM
+        'RecursosHumanosSBM' => [
+            'driver' => 'sqlsrv',
+            'host' => env('RRHH_DB_HOST'),
+            'database' => 'RecursosHumanosSBM',
+            'username' => env('RRHH_DB_USERNAME'),
+            'password' => env('RRHH_DB_PASSWORD'),
+            'charset' => 'utf8',
+            'prefix' => '',
+            'prefix_indexes' => true,
+        ],
+
+        //FCO
+        'RecursosHumanosFCO' => [
+            'driver' => 'sqlsrv',
+            'host' => env('RRHH_DB_HOST'),
+            'database' => 'RecursosHumanosFCO',
+            'username' => env('RRHH_DB_USERNAME'),
+            'password' => env('RRHH_DB_PASSWORD'),
+            'charset' => 'utf8',
+            'prefix' => '',
+            'prefix_indexes' => true,
+        ],
+
         'sqlite' => [
             'driver' => 'sqlite',
             'url' => env('DATABASE_URL'),

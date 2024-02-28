@@ -27,7 +27,10 @@ class CreateAPNPatologicosTable extends Migration
             $table->string('espMenarca')->nullable();
 
             $table->enum('alcoholismo', ['No', 'Si'])->nullable();
+            $table->string('espAlcoholismo')->nullable();
+
             $table->enum('tabaquismo', ['No', 'Si'])->nullable();
+            $table->string('espTabaquismo')->nullable();
 
             $table->enum('toxicomanias', ['No', 'Si'])->nullable();
             $table->string('espToxicomanias')->nullable();

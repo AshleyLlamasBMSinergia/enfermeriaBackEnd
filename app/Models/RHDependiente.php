@@ -20,6 +20,7 @@ class RHDependiente extends Model
         'fechaNacimiento',
         'parentesco',
         'estatus',
+        'cedi_id'
     ];
 
     //Uno a uno polimorfico
@@ -32,6 +33,11 @@ class RHDependiente extends Model
         return $this->morphOne('App\Models\Consulta', 'pacientable');
     }
 
+    //Uno a Muchos
+    public function consultas(){
+        return $this->hasMany('App\Models\Consulta', 'id');
+    }
+
     // Uno a muchos inversa
     public function empleado()
     {
@@ -41,5 +47,11 @@ class RHDependiente extends Model
     //Uno a uno polimorficab
     public function image(){
         return $this->morphOne('App\Models\Imagen', 'imageable');
+    }
+
+    // Uno a muchos inversa
+    public function cedi()
+    {
+        return $this->belongsTo('App\Models\Cedi', 'cedi_id');
     }
 }

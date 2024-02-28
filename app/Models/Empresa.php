@@ -11,9 +11,27 @@ class Empresa extends Model
 
     protected $table = 'Empresas';
 
-    protected $guarded = ['id', 'created_at', 'updated'];
+    protected $primaryKey  = 'id';
+
+    
+    protected $keyType = 'integer';
+
+
+    protected $guarded = ['id'];
+
+    public $timestamps = false;
 
     protected $fillable = [
-        'grupo',
+        'Empresa',
+        'RFC',
+        'Nombre',
+        'NombreLargo',
+        'Path',
+        'Path2',
     ];
+
+    //Uno a Muchos
+    public function cedis(){
+        return $this->hasMany('App\Models\Cedi');
+    }
 }

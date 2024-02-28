@@ -25,8 +25,11 @@ class CreateExternosTable extends Migration
 
             $table->unsignedBigInteger('direccion_id')->nullable();
             $table->foreign('direccion_id')->references('id')->on('Direcciones')->onDelete('set null')->onUpdate('cascade');
-            
-            $table->string('estatus')->nullable();
+
+            $table->unsignedBigInteger('cedi_id')->nullable();
+            $table->foreign('cedi_id')->references('id')->on('Cedis');
+
+            $table->boolean('estatus')->nullable()->default(true);
 
             $table->timestamps();
         });

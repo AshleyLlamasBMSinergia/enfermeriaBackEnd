@@ -11,7 +11,6 @@ use App\Models\EFisico;
 use App\Models\EOrganoSentido;
 use App\Models\ETorax;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Log;
 
 class EFisicoController extends Controller
 {
@@ -121,17 +120,6 @@ class EFisicoController extends Controller
                 'error' => 'Ocurrió un error: '.$e->getMessage()
             ], 500);
         }
-    }
-
-
-    public function edit($id)
-    {
-        //
-    }
-
-    public function update(Request $request, $id)
-    {
-        //
     }
 
     public function destroy($id){

@@ -88,8 +88,6 @@ class InsumoController extends Controller
             ]);
 
             $insumo->inventarios()->attach($request['inventario_id']);
-
-            Log::error($request['reactivos']);
             $insumo->reactivos()->attach($request['reactivos']);
 
             if($request['imagen']){

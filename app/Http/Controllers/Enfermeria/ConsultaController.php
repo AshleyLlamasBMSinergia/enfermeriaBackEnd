@@ -10,14 +10,27 @@ use App\Models\Movimiento;
 use App\Models\MovimientoMov;
 use App\Models\NomEmpleado;
 use App\Models\rh\RHDependiente;
+use App\Services\HeaderService;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 
 class ConsultaController extends Controller
 {
+    protected $headerProfesionalCedisService;
+
+    public function __construct(HeaderService $headerService)
+    {
+        $this->headerProfesionalCedisService = $headerService->getProfesionalCedisFromHeader();
+    }
+
     public function index(){
-        $data = Consulta::with(['cita', 'profesional', 'pacientable'])->get();
+        $profesionalCedis = $this->headerProfesionalCedisService;
+        
+        $data = Consulta::with(['cita', 'profesional', 'pacientable'])
+            ->whereHas('pacientable', function ($query) use ($profesionalCedis) {
+                $query->whereIn('cedi_id', $profesionalCedis->pluck('id'));
+            })->get();
         return response()->json($data, 200);
     }
 
@@ -28,8 +41,6 @@ class ConsultaController extends Controller
 
     public function store(Request $request)
     {
-        Log::info($request);
-
         try{
             $consulta = new Consulta();
 

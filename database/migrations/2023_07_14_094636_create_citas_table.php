@@ -18,7 +18,7 @@ class CreateCitasTable extends Migration
 
             $table->dateTime('fecha')->nullable();
             $table->string('tipo');
-            // $table->enum('Tipo', ['Consulta', ' Psicólogo', 'Nutriólogo']);
+
             $table->string('color')->nullable();
             $table->string('motivo')->nullable();
 
@@ -27,6 +27,8 @@ class CreateCitasTable extends Migration
             
             $table->unsignedBigInteger('profesional_id')->nullable();
             $table->foreign('profesional_id')->references('id')->on('Profesionales');
+
+            $table->boolean('estatus')->nullable()->default(false);
             
             $table->timestamps();
         });

@@ -33,7 +33,10 @@ class APNPatologicoController extends Controller
             $antecedentesPersonalesNoPatologicos->espMenarca = $request['espMenarca'];
 
             $antecedentesPersonalesNoPatologicos->alcoholismo = $request['alcoholismo'];
+            $antecedentesPersonalesNoPatologicos->espAlcoholismo = $request['espAlcoholismo'];
+
             $antecedentesPersonalesNoPatologicos->tabaquismo = $request['tabaquismo'];
+            $antecedentesPersonalesNoPatologicos->espTabaquismo = $request['espTabaquismo'];
 
             $antecedentesPersonalesNoPatologicos->toxicomanias = $request['toxicomanias'];
             $antecedentesPersonalesNoPatologicos->espToxicomanias = $request['espToxicomanias'];
@@ -109,7 +112,11 @@ class APNPatologicoController extends Controller
             $antecedentesPersonalesNoPatologicos->espMenarca = $request['espMenarca'];
 
             $antecedentesPersonalesNoPatologicos->alcoholismo = $request['alcoholismo'];
+            $antecedentesPersonalesNoPatologicos->espAlcoholismo = $request['espAlcoholismo'];
+
             $antecedentesPersonalesNoPatologicos->tabaquismo = $request['tabaquismo'];
+            $antecedentesPersonalesNoPatologicos->espTabaquismo = $request['espTabaquismo'];
+
             $antecedentesPersonalesNoPatologicos->toxicomanias = $request['toxicomanias'];
             $antecedentesPersonalesNoPatologicos->religion = $request['religion'];
             $antecedentesPersonalesNoPatologicos->pasatiempos = $request['pasatiempos'];

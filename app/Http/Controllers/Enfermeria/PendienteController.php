@@ -4,13 +4,26 @@ namespace App\Http\Controllers\Enfermeria;
 
 use App\Http\Controllers\Controller;
 use App\Models\Pendiente;
+use App\Services\HeaderService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 
 class PendienteController extends Controller
 {
+    protected $headerProfesionalCedisService, $getProfesionalFromHeader;
+
+    public function __construct(HeaderService $headerService)
+    {
+        $this->headerProfesionalCedisService = $headerService->getProfesionalCedisFromHeader();
+    }
     public function index(){
-        $data = Pendiente::orderBy('fecha', 'asc')->get();
+
+        $profesionalCedisIds = $this->headerProfesionalCedisService->pluck('id');
+    
+        $data = Pendiente::with('profesional')->whereHas('profesional', function($query) use ($profesionalCedisIds){
+            $query->whereIn('cedi_id', $profesionalCedisIds);
+        })->orderBy('fecha', 'asc')->get();
+        
         return response()->json($data, 200);
     }
 
@@ -26,10 +39,6 @@ class PendienteController extends Controller
             $pendiente->estatus = $request->input('estatus');
             $pendiente->save();
 
-            // return response()->json([
-            //     'message' => 'Estado del pendiente actualizado exitosamente'
-            // ]);
-
         } catch (\Exception $e) {
             return response()->json([
                 'error' => 'Ocurrió un error al actualizar el estado del pendiente'
@@ -38,9 +47,6 @@ class PendienteController extends Controller
     }
 
     public function updateTitulo(Request $request, $id){
-
-        Log::error($request);
-
         try{
             $pendiente = Pendiente::find($id);
 
@@ -50,6 +56,7 @@ class PendienteController extends Controller
 
             $pendiente->fecha = $request['fecha'];
             $pendiente->titulo = $request['titulo'];
+            $pendiente->titulo = $request['profesional_id'];
 
             $pendiente->save();
 
@@ -70,7 +77,8 @@ class PendienteController extends Controller
             $pendiente = Pendiente::create([
                 'estatus' => 0,
                 'titulo' => $request['titulo'],
-                'fecha' => $request['fecha']
+                'fecha' => $request['fecha'],
+                'profesional_id' => $request['profesional_id'],
             ]);
 
             return response()->json([

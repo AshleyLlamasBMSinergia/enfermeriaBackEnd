@@ -13,8 +13,6 @@ class EAntidopingController extends Controller
 {
     public function store(Request $request)
     {
-        Log::error($request);
-        
         try{
             $EAntidoping = EAntidoping::create([
                 'fecha' => Carbon::now(),

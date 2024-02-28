@@ -32,16 +32,16 @@ class CreateConsultasTable extends Migration
 
             //SIGNOS VITALES E INFORMACION DEL PACIENTE
             $table->smallInteger('triajeClasificacion')->nullable();
-            $table->smallInteger('presionDiastolica')->nullable();
-            $table->smallInteger('presionSistolica')->nullable();
-            $table->smallInteger('frecuenciaRespiratoria')->nullable();
-            $table->smallInteger('frecuenciaCardiaca')->nullable();
-            $table->smallInteger('temperatura')->nullable();
+            $table->decimal('presionDiastolica')->nullable();
+            $table->decimal('presionSistolica')->nullable();
+            $table->decimal('frecuenciaRespiratoria')->nullable();
+            $table->decimal('frecuenciaCardiaca')->nullable();
+            $table->decimal('temperatura')->nullable();
             $table->integer('edad')->nullable();
             $table->decimal('peso')->nullable();
             $table->decimal('talla')->nullable();
-            $table->integer('mg')->nullable();
-            $table->integer('dl')->nullable();
+            $table->decimal('mg')->nullable();
+            $table->decimal('dl')->nullable();
 
             //SOAP
             $table->longText('subjetivo')->nullable();

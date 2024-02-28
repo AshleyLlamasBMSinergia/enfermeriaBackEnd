@@ -17,6 +17,8 @@ class CreateAHeredofamiliaresTable extends Migration
             $table->id();
 
             $table->enum('padresViven', ['No', 'Si'])->nullable();
+            $table->string('espPadresViven')->nullable();
+
             $table->enum('hermanosViven', ['No', 'Si', 'N/A'])->nullable();
             $table->enum('hermanasViven', ['No', 'Si', 'N/A'])->nullable();
 

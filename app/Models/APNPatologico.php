@@ -25,7 +25,10 @@ class APNPatologico extends Model
         'espMenarca',
 
         'alcoholismo',
+        'espAlcoholismo',
+
         'tabaquismo',
+        'espTabaquismo',
 
         'toxicomanias',
         'espToxicomanias',

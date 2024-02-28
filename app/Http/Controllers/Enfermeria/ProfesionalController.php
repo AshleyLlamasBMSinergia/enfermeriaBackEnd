@@ -4,7 +4,6 @@ namespace App\Http\Controllers\enfermeria;
 
 use App\Http\Controllers\Controller;
 use App\Models\Profesional;
-use Illuminate\Http\Request;
 
 class ProfesionalController extends Controller
 {

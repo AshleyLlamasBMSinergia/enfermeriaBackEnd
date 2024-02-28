@@ -11,8 +11,6 @@ class EVistaController extends Controller
 {
     public function store(Request $request)
     {
-        //Log::error($request);
-        
         try{
             $EVista = EVista::create([
                 'fecha' => Carbon::now(),

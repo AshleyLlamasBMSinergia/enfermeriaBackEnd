@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Enfermeria;
 
 use App\Http\Controllers\Controller;
 use App\Models\Cita;
+use App\Models\Direccion;
 use App\Models\EAntidoping;
 use App\Models\EEmbarazo;
 use App\Models\EFisico;
@@ -13,9 +14,8 @@ use App\Models\HistorialMedico;
 use App\Models\Imagen;
 use App\Models\NomEmpleado;
 use App\Models\RHDependiente;
-use App\Models\User;
+use App\Services\HeaderService;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
@@ -24,6 +24,14 @@ use Carbon\Carbon;
 
 class HistorialMedicoController extends Controller
 {
+    protected $headerProfesionalCedisService, $getProfesionalFromHeader;
+
+    public function __construct(HeaderService $headerService)
+    {
+        $this->headerProfesionalCedisService = $headerService->getProfesionalCedisFromHeader();
+        $this->getProfesionalFromHeader = $headerService->getUserFromHeader()->useable;
+    }
+
     public function pdf($id, $fecha){
 
         $historialMedico = HistorialMedico::find($id);
@@ -53,11 +61,24 @@ class HistorialMedicoController extends Controller
     }  
 
     public function index(){
-        $data = HistorialMedico::with('pacientable')->orderBy('created_at', 'desc')
-        ->take(100)
-        ->get();
-        return response()->json($data, 200);
+        try {
+            $profesionalCedisIds = $this->headerProfesionalCedisService->pluck('id');
+    
+            $data = HistorialMedico::with(['pacientable'])
+                ->whereHas('pacientable', function($query) use ($profesionalCedisIds) {
+                    $query->whereIn('cedi_id', $profesionalCedisIds);
+                })
+                ->take(100)
+                ->get();
+               
+            return response()->json($data, 200);
+        } catch(\Exception $e) {
+            return response()->json([
+                'error' => 'Ocurrió un error: '.$e->getMessage()
+            ], 500);
+        }
     }
+    
 
     public function show($id){
         
@@ -115,23 +136,39 @@ class HistorialMedicoController extends Controller
     }
 
     public function buscador(Request $request){
-        try{    
+        try {
             $nombre = $request->input('nombre');
     
-            $historialesMedicos = HistorialMedico::whereHas('pacientable', function($query) use ($nombre) {
-                $query->where('nombre', 'like', '%' . $nombre . '%');
-            })->with(['pacientable'])->get();
-
+            $profesionalCedisIds = $this->headerProfesionalCedisService->pluck('id');
+    
+            $historialesMedicos = HistorialMedico::with('pacientable')
+                ->whereHas('pacientable', function($query) use ($nombre, $profesionalCedisIds) {
+                    $query->whereIn('cedi_id', $profesionalCedisIds)
+                          ->where('nombre', 'like', '%' . $nombre . '%');
+                })
+                ->get();
+    
             return response()->json($historialesMedicos);    
-         }catch(\Exception $e){
+        } catch(\Exception $e) {
             return response()->json([
                 'error' => 'Ocurrió un error: '.$e->getMessage()
             ], 500);
         }
     }
+    
 
     public function store(Request $request){
+
         try{
+
+            $hayValores = !empty(array_filter($request['formDireccion'], function($value) {
+                return $value !== null;
+            }));
+            
+            if ($hayValores) {
+                $direccion = Direccion::create($request['formDireccion']);
+            }
+
             //Crear cuenta de usuario
             switch($request['paciente'])
             {
@@ -147,24 +184,12 @@ class HistorialMedicoController extends Controller
                         'estadoCivil' => $request['estadoCivil'],
                         'telefono' => $request['prefijoInternacional'].$request['telefono'],
                         'correo' => $request['email'],
-                        // 'direccion_id',
-                        // 'estatus',
-                        // 'puesto_id',
-                        // 'clinica',
+                        'cedi_id' => $request['cedi_id'],
+                        'direccion_id' => $direccion->id ?? null
                     ]);
 
                     $pacientable_id = $nomEmpleado->id;
                     $pacientable_type = NomEmpleado::class;
-
-                    $user = User::create([
-                        'name' => $request['nombre'],
-                        'email' => $request['email'],
-                        // 'password' => Hash::make(Str::random(8)),
-                        'password' => Hash::make(1),
-                        'nickname' => $request['nickname'],
-                        'useable_id' => $pacientable_id,
-                        'useable_type' => $pacientable_type,
-                    ]);
                 break;
                 case 'Externo':
                     $externo = Externo::create([
@@ -173,10 +198,27 @@ class HistorialMedicoController extends Controller
                         'fechaNacimiento' => $request['fechaNacimiento'],
                         'telefono' => $request['prefijoInternacional'].$request['telefono'],
                         'correo' => $request['email'],
+                        'cedi_id' => $request['cedi_id'],
+                        'direccion_id' => $direccion->id ?? null
                     ]);
 
                     $pacientable_id = $externo->id;
                     $pacientable_type = Externo::class;
+                break;
+                case 'Dependiente':
+                    $dependiente = RHDependiente::create([
+                        'empleado_id' => $request['empleado_id'],
+                        'nombre' => $request['nombre'],
+                        'sexo' => $request['sexo'],
+                        'fechaNacimiento' => $request['fechaNacimiento'],
+                        'parentesco' => $request['parentesco'],
+                        // 'estatus' => $request['estatus'],
+                        'cedi_id' => $request['cedi_id'],
+                    ]);
+
+                    $pacientable_id = $dependiente->id;
+                    $pacientable_type = RHDependiente::class;
+
                 break;
                 default:
                     return response()->json([
@@ -204,12 +246,11 @@ class HistorialMedicoController extends Controller
             }
 
             //Crear historial medico
-            $historialMedico = HistorialMedico::create([
+            HistorialMedico::create([
                 'pacientable_id' => $pacientable_id,
                 'pacientable_type' => $pacientable_type,
                 'talla' => $request['talla'],
                 'peso' => $request['peso'],
-                //'user_id' => $user->id
             ]);
 
             return response()->json([
@@ -320,7 +361,7 @@ class HistorialMedicoController extends Controller
             ]);
 
         }catch(\Exception $e){
-            // Log::error($e);
+            Log::error($e);
             return response()->json([
                  'error' => $e->getMessage()
                 //'error' => $request,
@@ -410,7 +451,16 @@ class HistorialMedicoController extends Controller
     }
 
     public function buscarHistorialMedicoPorTipo($id, $tipo){
-        return HistorialMedico::where('pacientable_id', $id)->where('pacientable_type', $tipo)->with('pacientable',
-            'pacientable.image', 'antecedentesPersonalesPatologicos')->first();
+
+        $profesionalCedis = $this->headerProfesionalCedisService;
+        
+        return HistorialMedico::where('pacientable_id', $id)->where('pacientable_type', $tipo)
+            ->with(
+            'pacientable',
+            'pacientable.image', 'antecedentesPersonalesPatologicos'
+            )
+            ->whereHas('pacientable', function ($query) use ($profesionalCedis) {
+                $query->whereIn('cedi_id', $profesionalCedis->pluck('id'));
+            })->first();
     }
 }

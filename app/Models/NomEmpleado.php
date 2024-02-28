@@ -25,7 +25,7 @@ class NomEmpleado extends Model
         'estadoCivil',
         'telefono',
         'correo',
-        'empresa_id',
+        'cedi_id',
         'direccion_id',
         'estatus',
         'puesto_id',
@@ -61,9 +61,19 @@ class NomEmpleado extends Model
         return $this->hasMany('App\Models\Cita');
     }
 
+    // Uno a muchos inversa
+    public function cedi()
+    {
+        return $this->belongsTo('App\Models\Cedi', 'cedi_id');
+    }
+
     //Uno a Muchos
+    // public function consultas(){
+    //     return $this->hasMany('App\Models\Consulta');
+    // }
+
     public function consultas(){
-        return $this->hasMany('App\Models\Consultas');
+        return $this->hasMany('App\Models\Consulta', 'id');
     }
 
     //Uno a Muchos

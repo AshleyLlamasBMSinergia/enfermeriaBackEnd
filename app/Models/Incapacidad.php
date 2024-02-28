@@ -23,6 +23,7 @@ class Incapacidad extends Model
         'Secuela',
         'ControlIncapacidad',
         'TipoPermiso',
+        'causa',
         'observaciones',
         'empleado_id',
         'profesional_id',

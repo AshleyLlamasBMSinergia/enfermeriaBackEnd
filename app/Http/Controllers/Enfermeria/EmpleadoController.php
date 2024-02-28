@@ -3,35 +3,33 @@
 namespace App\Http\Controllers\enfermeria;
 
 use App\Http\Controllers\Controller;
+use App\Models\Cedi;
 use App\Models\Direccion;
 use App\Models\HistorialMedico;
 use App\Models\NomEmpleado;
 use App\Models\NomPuesto;
 use App\Models\User;
+use App\Services\HeaderService;
 use Exception;
 use Illuminate\Support\Str;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Log;
 
 class EmpleadoController extends Controller
 {
+    protected $headerProfesionalCedisService;
+
+    public function __construct(HeaderService $headerService)
+    {
+        $this->headerProfesionalCedisService = $headerService->getProfesionalCedisFromHeader();
+    }
     public function index(){
-        $data = NomEmpleado::all();
+        $data = NomEmpleado::whereIn('cedi_id', $this->headerProfesionalCedisService->pluck('id'))->get();
         return response()->json($data, 200);
     }
-
-    // public function show($id){
-    //     $data = NomEmpleado::find($id);
-    //     return response()->json($data, 200);
-    // }
-
-    // public function show($id){
-    //     $data = RhNomEmpleado::getEmpleado($id);
-    //     $data->puesto = NomPuesto::getPuesto($data->Puesto);
-    //     return $data;
-    // }
 
     public function traerTodosLosPuestos(){
 
@@ -122,7 +120,7 @@ class EmpleadoController extends Controller
                     'telefono' => $empleado->Telefono,
                     'correo' => $empleado->Correo,
                     'direccion_id' => $direccion->id,
-                    'estatus' => 'Activo',
+                    'estatus' => true,
                     'cedi_id' => 1,
                     'puesto_id' => $empleado->Puesto,
                 ]);
@@ -154,6 +152,72 @@ class EmpleadoController extends Controller
 
         }catch(Exception $e){
             dd($e->getMessage());
+        }
+    }
+
+    public function buscarEmpleado($cedi_id, $numero){
+        try{
+            $cedi = Cedi::find($cedi_id);
+
+            switch($cedi->empresa_id){
+                case 1: //CAN
+                    $BDRecursosHumanos = DB::connection('RecursosHumanosCAN');
+                    $imagen = 'https://200.92.206.26:3443/gaz/public/api/empleado/imagen/'.$numero;
+                break;
+                case 2: //CVN
+                    
+                break;
+                case 5: //ENV
+                    
+                break;
+                case 11: //FCO
+                    $BDRecursosHumanos = DB::connection('RecursosHumanosFCO');
+                    $imagen = 'https://200.92.206.26:4433/gazfco/public/api/empleado/imagen/'.$numero;
+
+                break;
+                case 12: //SBM
+                    $BDRecursosHumanos = DB::connection('RecursosHumanosSBM');
+                    $imagen = 'https://200.92.206.26:3443/gazsbm/public/api/empleado/imagen/'.$numero;
+                break;
+                default:
+                return response()->json([
+                    'error' => 'Empresa del empleado no encontado :('
+                ], 404);
+            }
+
+            $empleado = $BDRecursosHumanos->table('NomEmpleados')
+            ->where('Empleado', $numero)
+            ->select(
+                'Empleado',
+                'Nombre',
+                'RFC',
+                'Curp',
+                'Sexo',
+                'FechaNacimiento',
+                'EstadoCivil',
+                'Telefono',
+                'Correo',
+                'Puesto',
+                'Calle',
+                'Exterior',
+                'Interior',
+                'Colonia',
+                'CP',
+                'Localidad',
+                'Nombres',
+                'Paterno',
+            )->get();
+
+            if(!$empleado){
+                return response()->json(['error' => 'Empleado no encontrado'], 404);
+            }
+
+            $data = [$empleado, $imagen];
+
+            return response()->json($data, 200);
+        }catch(Exception $e){
+            Log::error($e);
+            return response()->json(['error'=> $e->getMessage()], 500);
         }
     }
 }

@@ -20,12 +20,15 @@ class AuthController extends Controller
                 if(Hash::check($request->password, $user->password)){
                     Auth::attempt($request->only(['email', 'password']), $remember);
                     $token = $user->createToken("API", [], now()->addHours(3));
+                    $userPermissions = $user->getAllPermissions()->pluck('name');
+
                     return response()->json([
                         'status' => true, 
                         'message' => 'Se inició sesión con éxito.',
                         'data' => [
                             'token' => $token->plainTextToken,
                             'user' => [$user],
+                            'permissions' => $userPermissions,
                         ]
                     ], 200);
                 }else{

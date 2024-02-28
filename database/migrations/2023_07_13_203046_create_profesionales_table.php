@@ -25,11 +25,11 @@ class CreateProfesionalesTable extends Migration
 
             $table->unsignedBigInteger('direccion_id')->nullable();
             $table->foreign('direccion_id')->references('id')->on('Direcciones')->onDelete('set null')->onUpdate('cascade');
+            
+            $table->unsignedBigInteger('cedi_id')->nullable();
+            $table->foreign('cedi_id')->references('id')->on('Cedis');
 
-            $table->unsignedBigInteger('cedis_id')->nullable();
-            $table->foreign('cedis_id')->references('id')->on('Cedis')->onDelete('set null')->onUpdate('cascade');
-
-            $table->string('estatus')->nullable();
+            $table->boolean('estatus')->nullable()->default(true);
             
             $table->unsignedBigInteger('puesto_id')->nullable();
             $table->foreign('puesto_id')->references('id')->on('NomPuestos')->onDelete('set null')->onUpdate('cascade');
@@ -38,11 +38,6 @@ class CreateProfesionalesTable extends Migration
         });
     }
 
-    /**
-     * Reverse the migrations.
-     *
-     * @return void
-     */
     public function down()
     {
         Schema::dropIfExists('profesionals');

@@ -17,5 +17,11 @@ class Pendiente extends Model
         'fecha',
         'titulo',
         'estatus',
+        'profesional_id'
     ];
+
+    //Uno a Muchos Inversa
+    public function profesional(){
+        return $this->belongsTo('App\Models\Profesional');
+    }
 }

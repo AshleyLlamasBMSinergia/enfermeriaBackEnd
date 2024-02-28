@@ -20,6 +20,10 @@ class CreatePendientesTable extends Migration
             $table->string('estatus');
             $table->date('fecha');
 
+            //ENFERMERO - DOCTOR
+            $table->unsignedBigInteger('profesional_id')->nullable();
+            $table->foreign('profesional_id')->references('id')->on('Profesionales');
+
             $table->timestamps();
         });
     }
