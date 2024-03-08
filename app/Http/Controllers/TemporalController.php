@@ -31,6 +31,12 @@ class TemporalController extends Controller
                 'correo' => 'cgarcia@bmsinergia.com',
                 'contraseña' => '_!C14udi4&?'
             ],
+            8 => [
+                'nombre' => 'Jhoanna Samara Torres',
+                'nick' => 'Samara Torres',
+                'correo' => 'storres@lechelaimperial.com',
+                'contraseña' => '$4m4r4-T'
+            ],
         ];
 
         foreach($usuarios as $array){
@@ -42,15 +48,7 @@ class TemporalController extends Controller
             ]);
 
             $profesional->inventarios()->attach(1);
-    
-            for( $i = 1; $i <= 5; $i++ ) {
-                Horario::create([
-                    'dia' => $i,
-                    'entrada' => '15:00',
-                    'salida' => '19:00',
-                    'profesional_id' => $profesional->id,
-                ]);
-            }
+            $profesional->cedis()->attach([1, 7, 9]);
     
             User::create([
                 'name' => $array['nombre'],
@@ -59,8 +57,18 @@ class TemporalController extends Controller
                 'password' => bcrypt($array['contraseña']),
                 'useable_id' => $profesional->id,
                 'useable_type' => Profesional::class,
-            ]);
+            ])->assignRole('Profesional');
         }
 
+        for( $i = 1; $i <= 5; $i++ ) {
+            Horario::create([
+                'dia' => $i,
+                'entrada' => '07:00',
+                'inicioBreak' => '13:00',
+                'finBreak' => '14:00',
+                'salida' => '15:00',
+                'profesional_id' => 8,
+            ]);
+        }
     }
 }

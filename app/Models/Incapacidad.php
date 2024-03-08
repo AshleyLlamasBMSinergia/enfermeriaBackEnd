@@ -34,6 +34,11 @@ class Incapacidad extends Model
         return $this->hasMany('App\Models\NomIncidencia');
     }
 
+    //Uno a Muchos
+    public function accidente(){
+        return $this->hasOne('App\Models\Accidente');
+    }
+
     //Uno a Muchos Inversa
     public function tipoIncidencia(){
         return $this->belongsTo('App\Models\NomTipoIncidencia', 'TipoIncidencia');

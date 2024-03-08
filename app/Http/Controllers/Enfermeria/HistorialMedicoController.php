@@ -68,7 +68,7 @@ class HistorialMedicoController extends Controller
                 ->whereHas('pacientable', function($query) use ($profesionalCedisIds) {
                     $query->whereIn('cedi_id', $profesionalCedisIds);
                 })
-                ->take(100)
+                ->take(100)->orderBy('id', 'desc')
                 ->get();
                
             return response()->json($data, 200);
@@ -145,7 +145,7 @@ class HistorialMedicoController extends Controller
                 ->whereHas('pacientable', function($query) use ($nombre, $profesionalCedisIds) {
                     $query->whereIn('cedi_id', $profesionalCedisIds)
                           ->where('nombre', 'like', '%' . $nombre . '%');
-                })
+                })->orderBy('id', 'desc')
                 ->get();
     
             return response()->json($historialesMedicos);    

@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CAN\EmpleadoController as CANEmpleadoController;
+use App\Http\Controllers\enfermeria\AccidenteController;
 use App\Http\Controllers\Enfermeria\AHeredofamiliarController;
 use App\Http\Controllers\Enfermeria\APNPatologicoController;
 use App\Http\Controllers\enfermeria\APPatologicoController;
@@ -10,6 +11,7 @@ use App\Http\Controllers\Enfermeria\CitaController;
 use App\Http\Controllers\enfermeria\CalendarioController;
 use App\Http\Controllers\Enfermeria\CediController;
 use App\Http\Controllers\Enfermeria\ConsultaController;
+use App\Http\Controllers\enfermeria\DepartamentoController;
 use App\Http\Controllers\enfermeria\DependienteController;
 use App\Http\Controllers\enfermeria\DiagnosticoController;
 use App\Http\Controllers\Enfermeria\EAntidopingController;
@@ -52,7 +54,6 @@ use Illuminate\Support\Facades\Route;
 //CEDIS
 Route::get('/cedis/profesional/{id}', [CediController::class, 'cedisPorProfesional']);
 Route::get('/cedis/{cedi_id}/empleados/{numero}', [EmpleadoController::class, 'buscarEmpleado']);
-
 
 //LOCALIDADES
 Route::get('/estados', [EstadoController::class, 'index']);
@@ -259,6 +260,14 @@ Route::middleware('auth:sanctum')->group(function () {
 
     //ZONAS AFECTADAS
     Route::get('/zonas-afectadas', [ZonaAfectadaController::class, 'index']);
+
+    //DEPARTAMENTOS
+    Route::get('/departamentos', [DepartamentoController::class, 'index']);
+    
+    //ACCIDENTES
+    Route::post('/accidentes', [AccidenteController::class, 'store'])->can('incapacidades.create');
+    Route::put('/accidentes/edit/{id}', [AccidenteController::class, 'update']);
+    Route::delete('/accidentes/{id}',[ AccidenteController::class, 'destroy']);    
 
     //ESTADOS
     Route::get('/estados', [NomEstadoController::class, 'index']);

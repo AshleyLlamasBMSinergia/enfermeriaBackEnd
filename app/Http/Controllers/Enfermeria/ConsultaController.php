@@ -30,7 +30,7 @@ class ConsultaController extends Controller
         $data = Consulta::with(['cita', 'profesional', 'pacientable'])
             ->whereHas('pacientable', function ($query) use ($profesionalCedis) {
                 $query->whereIn('cedi_id', $profesionalCedis->pluck('id'));
-            })->get();
+            })->orderBy('id', 'desc')->get();
         return response()->json($data, 200);
     }
 

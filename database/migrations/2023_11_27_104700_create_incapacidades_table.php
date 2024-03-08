@@ -6,11 +6,6 @@ use Illuminate\Support\Facades\Schema;
 
 class CreateIncapacidadesTable extends Migration
 {
-    /**
-     * Run the migrations.
-     *
-     * @return void
-     */
     public function up()
     {
         Schema::create('Incapacidades', function (Blueprint $table) {

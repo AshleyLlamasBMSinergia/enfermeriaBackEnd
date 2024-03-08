@@ -72,16 +72,16 @@ class IncapacidadController extends Controller
             }
 
             if(!$BDRecursosHumanos){
-                Log::error('No se encontro conexión con la base de datos de RH CAN');
+                Log::error('No se encontro conexión con la base de datos de RH');
                 return response()->json([
-                    'error' => 'No se encontro conexión con la base de datos de RH CAN'
+                    'error' => 'No se encontro conexión con la base de datos de RH'
                 ], 404);
             }
 
             $empleadoRH = $BDRecursosHumanos->table('NomEmpleados')->where('Empleado', $empleado->numero)->first();
 
             $fecha =  Carbon::parse($request['FechaEfectiva']);
-
+                    
             $incapacidad = Incapacidad::create([
                 'folio' => $request['Folio'],
                 'fechaEfectiva' => $request['FechaEfectiva'],
@@ -181,7 +181,12 @@ class IncapacidadController extends Controller
             'secuela',
             'controlIncapacidad',
             'tipoPermiso',
-            'nomIncidencias'
+            'nomIncidencias',
+            'accidente',
+            'accidente.departamento',
+            'accidente.accidenteCostEstudios',
+            'accidente.empleado',
+            'accidente.empleado.puesto'
         ])->find($id);
 
         if (!$data) {

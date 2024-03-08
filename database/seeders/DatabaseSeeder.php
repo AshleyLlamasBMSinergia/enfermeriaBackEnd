@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\Departamento;
 use App\Models\Direccion;
 use App\Models\HistorialMedico;
 use App\Models\NomEmpleado;
@@ -34,8 +35,26 @@ class DatabaseSeeder extends Seeder
 
         $this->traerTodosLosPuestos();
 
-        $this->traerTodosLosEmpleadosSBM();
+        // $this->traerTodosLosEmpleadosSBM();
         $this->traerTodosLosEmpleadosCAN();
+
+        // $this->traerTodosLosEmpleadosFCO();
+
+        $this->departamentos();
+    }
+
+    public function departamentos(){
+        $departamentos = DB::connection('RecursosHumanosCAN')->table('NomDepartamentos')->get();
+
+        foreach($departamentos as $departamento){
+            Departamento::create([
+                'departamento' => $departamento->Departamento,
+                'nombre' => $departamento->Nombre,
+                'grupo' => $departamento->Grupo,
+                'depto' => $departamento->Depto,
+                'cedi_id' => $departamento->Plaza
+            ]);
+        }
     }
 
     public function traerTodosLosPuestos(){
@@ -78,6 +97,139 @@ class DatabaseSeeder extends Seeder
                     'clave' => $localidad->Clave,
                     'municipio' => $localidad->NombreMunicipio,
                     'estado_id' => $nuevoEstado->id,
+                ]);
+            }
+        }
+    }
+
+    public function traerTodosLosEmpleadosFCO(){
+        $RecursosHumanosFCO = DB::connection('RecursosHumanosFCO');
+
+        $empleados = $RecursosHumanosFCO->table('NomEmpleados')
+            ->where('Baja', 0)
+            ->select(
+                'Plaza',
+                'Empleado',
+                'Nombre',
+                'RFC',
+                'Curp',
+                'Sexo',
+                'FechaNacimiento',
+                'EstadoCivil',
+                'Telefono',
+                'Correo',
+                'Puesto',
+                'Calle',
+                'Exterior',
+                'Interior',
+                'Colonia',
+                'CP',
+                'Localidad',
+                'Nombres',
+                'Paterno',
+                'Foto'
+            )->get();
+
+        foreach($empleados as $empleado){
+
+            $localidad = NomLocalidad::where('localidad', $empleado->Localidad)->first();
+
+            $direccion = Direccion::create([
+                'calle' => $empleado->Calle,
+                'exterior' => $empleado->Exterior,
+                'interior' => $empleado->Interior,
+                'colonia' => $empleado->Colonia,
+                'CP' => $empleado->CP,
+                'localidad_id' => $localidad->id,
+            ]);
+
+            switch($empleado->Plaza){
+                case 1:
+                    $cedi = 9;
+                break;
+                default:
+                    $cedi = null;
+                break;
+            }
+
+            $nomEmpleado = NomEmpleado::create([
+                'numero' => $empleado->Empleado,
+                'nombre' => $empleado->Nombre,
+                'RFC' => $empleado->RFC,
+                'CURP' => $empleado->Curp,
+                'sexo' => $empleado->Sexo,
+                'fechaNacimiento' => $empleado->FechaNacimiento,
+                'estadoCivil' => $empleado->EstadoCivil,
+                'telefono' => '+52'.$empleado->Telefono,
+                'correo' => $empleado->Correo,
+                'direccion_id' => $direccion->id,
+                'estatus' => true,
+                'cedi_id' => $cedi,
+                'puesto_id' => $empleado->Puesto,
+            ]);
+
+            $pacientable_id = $nomEmpleado->id;
+            $pacientable_type = NomEmpleado::class;
+
+            // if ($empleado->Foto) {
+            //     // Obtén la foto en formato binario
+            //     $imagenBinaria = $empleado->Foto;
+            
+            //     // Genera un nombre único para la imagen
+            //     $imagenNombre = Str::random(12);
+            
+            //     // Ruta de almacenamiento
+            //     $ruta = storage_path('app/private/fotografías/' . $imagenNombre . '.jpeg'); // Puedes ajustar la extensión según el formato real de las imágenes
+            
+            //     // Guarda la imagen directamente en el sistema de archivos
+            //     file_put_contents($ruta, $imagenBinaria);
+            
+            //     // Guarda la información de la imagen en la base de datos
+            //     $imagen = Imagen::create([
+            //         'url' => $imagenNombre . '.jpeg',
+            //         'categoria' => 'fotografías',
+            //         'imageable_id' => $pacientable_id,
+            //         'imageable_type' => $pacientable_type
+            //     ]);
+            // }
+            
+            // $nombreCompleto = $empleado->Nombres;
+            // $nombres = explode(' ', $nombreCompleto);
+            // $primerNombre = $nombres[0];
+
+            // User::create([
+            //     'name' => $empleado->Nombre,
+            //     'email' => $correo,
+            //     'password' => Hash::make(Str::random(8)),
+            //     'nickname' => $primerNombre.' '.$empleado->Paterno,
+            //     'useable_id' => $pacientable_id,
+            //     'useable_type' => $pacientable_type,
+            // ]);
+
+            HistorialMedico::create([
+                'pacientable_id' => $pacientable_id,
+                'pacientable_type' => $pacientable_type,
+                'talla' =>  null,
+                'peso' => null,
+            ]);
+
+            $dependientes = $RecursosHumanosFCO->table('RHDependientes')->where('Empleado', $empleado->Empleado)->get();
+
+            foreach ($dependientes as $dependiente){
+
+                $dependiente = RHDependiente::create([
+                    'empleado_id' => $nomEmpleado->id,
+                    'nombre' => $dependiente->Nombres.' '.$dependiente->Paterno.' '.$dependiente->Materno,
+                    'sexo' => $dependiente->Sexo,
+                    'fechaNacimiento' => $dependiente->Nacimiento,
+                    'parentesco' => $dependiente->Parentesco,
+                    'estatus' => $dependiente->Status,
+                    'cedi_id' => $cedi
+                ]);
+
+                HistorialMedico::create([
+                    'pacientable_id' => $dependiente->id,
+                    'pacientable_type' => RHDependiente::class,
                 ]);
             }
         }

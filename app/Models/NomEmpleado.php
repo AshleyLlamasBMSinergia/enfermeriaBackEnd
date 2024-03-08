@@ -36,6 +36,12 @@ class NomEmpleado extends Model
         'integrado'
     ];
 
+     // Uno a mucho
+     public function accidentes()
+     {
+        return $this->hasMany('App\Models\Accidente');
+     }
+
     //Uno a uno polimorfico
     public function historialMedico(){
         return $this->morphOne('App\Models\HistorialMedico', 'pacientable');
