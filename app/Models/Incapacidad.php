@@ -25,18 +25,17 @@ class Incapacidad extends Model
         'TipoPermiso',
         'causa',
         'observaciones',
-        'empleado_id',
         'profesional_id',
+        'caso_id'
     ];
 
-    //Uno a Muchos
     public function nomIncidencias(){
         return $this->hasMany('App\Models\NomIncidencia');
-    }
+    }    
 
     //Uno a Muchos
-    public function accidente(){
-        return $this->hasOne('App\Models\Accidente');
+    public function accidentes(){
+        return $this->hasMany('App\Models\Accidente', 'accidente_id');
     }
 
     //Uno a Muchos Inversa
@@ -59,20 +58,15 @@ class Incapacidad extends Model
         return $this->belongsTo('App\Models\NomControlIncapacidad', 'ControlIncapacidad');
     }
 
+    //Uno a Muchos Inversa
+    public function caso(){
+        return $this->belongsTo('App\Models\Caso', 'caso_id');
+    }
+
     
     //Uno a Muchos Inversa
     public function tipoPermiso(){
         return $this->belongsTo('App\Models\NomTipoPermiso', 'TipoPermiso');
-    }
-
-    //Uno a muchos polimorfico
-    public function archivos(){
-        return $this->morphMany('App\Models\Archivo', 'archivable');
-    }
-
-    //Uno a Muchos Inversa
-    public function empleado(){
-        return $this->belongsTo('App\Models\NomEmpleado');
     }
 
     //Uno a Muchos Inversa

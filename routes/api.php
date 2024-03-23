@@ -9,6 +9,7 @@ use App\Http\Controllers\enfermeria\APPatologicoController;
 use App\Http\Controllers\Enfermeria\ArchivoController;
 use App\Http\Controllers\Enfermeria\CitaController;
 use App\Http\Controllers\enfermeria\CalendarioController;
+use App\Http\Controllers\enfermeria\CasoController;
 use App\Http\Controllers\Enfermeria\CediController;
 use App\Http\Controllers\Enfermeria\ConsultaController;
 use App\Http\Controllers\enfermeria\DepartamentoController;
@@ -51,6 +52,8 @@ use Illuminate\Support\Facades\Route;
 
 // Route::middleware('profesional')->get('/ruta', 'Controlador@metodo');
 
+Route::get('/salario-de-empleado/{id}', [EmpleadoController::class, 'getEmpleadoSalario']);
+
 //CEDIS
 Route::get('/cedis/profesional/{id}', [CediController::class, 'cedisPorProfesional']);
 Route::get('/cedis/{cedi_id}/empleados/{numero}', [EmpleadoController::class, 'buscarEmpleado']);
@@ -88,9 +91,6 @@ Route::middleware('auth:sanctum')->group(function () {
 
     //IMAGENES
     Route::get('/storage/private/{url}', [ImagenController::class, 'image']);
-
-    //ARCHIVOS
-    Route::get('/storage/private/archivo/{url}', [ArchivoController::class, 'archivo']);
 
     //ENFERMERIA - INICIO
     Route::get('/inicio/citas-de-hoy/{id}', [EnfermeriaController::class, 'getCitasHoy']);
@@ -201,7 +201,10 @@ Route::middleware('auth:sanctum')->group(function () {
     //MOVIMIENTOS
     Route::post('/movimientos', [MovimientoController::class, 'store']);
     Route::post('/movimientos/pdfs', [MovimientoController::class, 'pdfs']);
-    Route::post('/movimientos/archivos', [MovimientoController::class, 'subirArchivos']);
+
+    //ARCHIVOS
+    Route::get('/storage/private/archivo/{url}', [ArchivoController::class, 'archivo']);
+    Route::post('/archivos', [ArchivoController::class, 'create']);
 
     //REACTIVOS
     Route::get('/reactivos', [ReactivoController::class, 'index']);
@@ -237,8 +240,14 @@ Route::middleware('auth:sanctum')->group(function () {
     //INCAPACIDADES
     Route::get('/incapacidades', [IncapacidadController::class, 'index'])->can('incapacidades.index');
     Route::post('/incapacidades', [IncapacidadController::class, 'store'])->can('incapacidades.create');
+    Route::put('/incapacidades/edit/{id}', [IncapacidadController::class, 'update']);
     Route::get('/incapacidades/{id}', [IncapacidadController::class, 'show'])->can('incapacidades.show');
-    Route::post('/incapacidades/archivos', [IncapacidadController::class, 'subirArchivos']);
+
+    //CASOS
+    Route::get('/casos', [CasoController::class, 'index']);
+    Route::post('/casos', [CasoController::class, 'store']);
+    Route::get('/casos/{id}', [CasoController::class, 'show']);
+    Route::post('/casos/archivos', [ArchivoController::class, 'create']);
 
     //NOM CONTROL INCAPACIDAD
     Route::get('/control-incapacidades', [NomControlIncapacidadController::class, 'index'])->can('incapacidades.index');
@@ -257,6 +266,7 @@ Route::middleware('auth:sanctum')->group(function () {
 
     //NOM INCIDENCIAS
     Route::get('/incidencias/nomIncidencias/{empleado}/{fecha}', [IncapacidadController::class, 'nomIncidencias']);
+    Route::post('/incidencias/importar/rh/incidencias/{id}', [IncapacidadController::class, 'importarRH']);
 
     //ZONAS AFECTADAS
     Route::get('/zonas-afectadas', [ZonaAfectadaController::class, 'index']);

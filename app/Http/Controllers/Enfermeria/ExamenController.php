@@ -12,22 +12,6 @@ use Illuminate\Support\Facades\Storage;
 
 class ExamenController extends Controller
 {
-    private function determinarTipoArchivo($base64)
-    {
-        $data = base64_decode($base64);
-        $finfo = finfo_open();
-        $mime = finfo_buffer($finfo, $data, FILEINFO_MIME_TYPE);
-        finfo_close($finfo);
-
-        $extensions = [
-            'image/jpeg' => 'jpeg',
-            'image/png' => 'png',
-            'application/pdf' => 'pdf',
-        ];
-
-        return $extensions[$mime] ?? 'application/octet-stream';
-    }
-
     public function store(Request $request)
     {
         try{
@@ -39,29 +23,10 @@ class ExamenController extends Controller
                 'historialMedico_id' => $request['historialMedico_id']
             ]);
             
-            foreach($request['archivos'] as $archivoBase64){
-                $archivoDecodificado = base64_decode($archivoBase64);
-        
-                $tipoArchivo = $this->determinarTipoArchivo($archivoBase64);
+            $request['archivable_id'] = $examen->id;
 
-                if(!$tipoArchivo){
-                    Log::error($tipoArchivo);
-                    return response()->json([
-                        'error' => 'Problema con la subida de archivos, revise que los archivos cumplan con estos tipos de formato: PNG, JPG y PDF'
-                    ], 500);
-                }
-        
-                $nombreArchivo = uniqid().'.'.$tipoArchivo;
-        
-                Storage::disk('private')->put('/archivos/'.$nombreArchivo, $archivoDecodificado);
-
-                Archivo::create([
-                    'url' => $nombreArchivo,
-                    'categoria' => $request['categoria'],
-                    'archivable_id' => $examen->id,
-                    'archivable_type' => Examen::class 
-                ]);
-            }
+            $archivoController = new ArchivoController();
+            $archivoController->create($request);
 
             return response()->json([
                 'message' => '¡Guardado exitosamente! :)',

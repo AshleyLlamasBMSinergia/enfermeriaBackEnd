@@ -27,21 +27,4 @@ class NomEmpleado extends Model
         'CorreoEmpresa',
         'Puesto',
     ];
-
-    static function getEmpleado($id){
-        // return NomEmpleado::on('RecursosHumanosCAN')->where('Empleado', $id)->first();
-        return DB::connection('RecursosHumanosCAN')->table('NomEmpleados')->where('Empleado', $id)
-            ->select(
-                'Nombre',
-                'RFC',
-                'Curp',
-                'Sexo',
-                'FechaNacimiento',
-                'EstadoCivil',
-                'Telefono',
-                'Correo',
-                'CorreoEmpresa',
-                'Puesto',
-            )->first();
-    }
 }

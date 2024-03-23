@@ -29,7 +29,8 @@ class NomIncidencia extends Model
         'ControlIncapacidad',
         'Aplicada',
         'TipoPermiso',
-        'incapacidad_id'
+        'incapacidad_id',
+        'importado'
     ];
 
     //Uno a Muchos Inversa

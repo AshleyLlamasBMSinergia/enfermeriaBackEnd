@@ -14,7 +14,7 @@ class DataBaseService
     public function conexionEmpresa($empresa_id){
         switch($empresa_id){
             case 1: //CAN
-                $BDRecursosHumanos = DB::connection('RecursosHumanosCAN');
+                $BDRecursosHumanos = DB::connection('PruebaRecursosHumanosCAN');
             break;
             case 2: //CVN
                 
@@ -23,10 +23,10 @@ class DataBaseService
                  
             break;
             case 11: //FCO
-                $BDRecursosHumanos = DB::connection('RecursosHumanosFCO');
+                $BDRecursosHumanos = DB::connection('PruebaRecursosHumanosFCO');
             break;
             case 12: //SBM
-                $BDRecursosHumanos = DB::connection('RecursosHumanosSBM');
+                $BDRecursosHumanos = DB::connection('PruebaRecursosHumanosSBM');
             break;
             default:
             return response()->json([

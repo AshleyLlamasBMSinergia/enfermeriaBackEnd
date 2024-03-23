@@ -29,18 +29,13 @@ class NomEmpleado extends Model
         'direccion_id',
         'estatus',
         'puesto_id',
-        'user_id',
-        'sueldo',
-        'integrado',
-        'sueldo',
-        'integrado'
     ];
 
-     // Uno a mucho
-     public function accidentes()
-     {
-        return $this->hasMany('App\Models\Accidente');
-     }
+    // Uno a mucho
+    public function casos()
+    {
+        return $this->hasMany('App\Models\Caso');
+    }
 
     //Uno a uno polimorfico
     public function historialMedico(){
@@ -72,11 +67,6 @@ class NomEmpleado extends Model
     {
         return $this->belongsTo('App\Models\Cedi', 'cedi_id');
     }
-
-    //Uno a Muchos
-    // public function consultas(){
-    //     return $this->hasMany('App\Models\Consulta');
-    // }
 
     public function consultas(){
         return $this->hasMany('App\Models\Consulta', 'id');

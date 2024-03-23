@@ -38,9 +38,6 @@ class CreateNomEmpleadosTable extends Migration
 
             $table->unsignedBigInteger('cedi_id')->nullable();
             $table->foreign('cedi_id')->references('id')->on('Cedis');
-            
-            $table->decimal('sueldo')->nullable();
-            $table->decimal('integrado')->nullable();
 
             $table->timestamps();
             

@@ -53,5 +53,24 @@ class EmpresaSeeder extends Seeder
             'Path' => '172.16.80.2\SQLSVR|RecursosHumanosSBM',
             'Path2' => '25.63.56.136\SQLSVR|RecursosHumanosSBM',
         ]);
+
+        Empresa::create([
+            'id' => 3,
+            'RFC' => '',
+            'Nombre' => 'CYSA',
+            'NombreLargo' => 'CYSA',
+            'Path' => '25.63.56.136\SQLSVR|RecursosHumanosCYSA',
+            'Path2' => '172.16.80.2\sqlsvr|RecursosHumanosCYSA',
+        ]);
+
+        Empresa::create([
+            'id' => 13,
+            'RFC' => '',
+            'Nombre' => 'BEL',
+            'NombreLargo' => 'BEL',
+            'Path' => '25.63.56.136\SQLSVR|RecursosHumanosBEL',
+            'Path2' => '172.16.80.2\sqlsvr|RecursosHumanosBEL',
+        ]);
+        
     }
 }

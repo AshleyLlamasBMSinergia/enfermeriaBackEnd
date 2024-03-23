@@ -7,6 +7,8 @@ use App\Models\Archivo;
 use App\Models\Incapacidad;
 use App\Models\NomIncidencia;
 use App\Models\NomEmpleado;
+use App\Models\User;
+use App\Services\DataBaseService;
 use App\Services\HeaderService;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -16,31 +18,24 @@ use Illuminate\Support\Facades\Storage;
 
 class IncapacidadController extends Controller
 {
+    protected $headerService;
+    protected $dataBaseService;
+    protected $headerUserService;
     protected $headerProfesionalCedisService;
 
-    public function __construct(HeaderService $headerService)
+    public function __construct(DataBaseService $dataBaseService, HeaderService $headerService)
     {
+        $this->headerService = $headerService;
+
+        $this->dataBaseService = $dataBaseService;
+        $this->headerUserService = $headerService->getUserFromHeader();
         $this->headerProfesionalCedisService = $headerService->getProfesionalCedisFromHeader();
-    }
-
-    public function index(){
-        try{
-            $profesionalCedis = $this->headerProfesionalCedisService;
-
-            $data = Incapacidad::with('empleado', 'tipoIncidencia')->whereHas('empleado' ,function ($query) use ($profesionalCedis){
-                $query->whereIn('cedi_id', $profesionalCedis->pluck('id'));
-            })->get();
-            return response()->json($data, 200);
-        }catch (\Exception $e){
-            return response()->json([
-                'error'=> $e->getMessage()
-            ]);
-        }
     }
 
     public function store(Request $request)
     {
         try{
+            $request['profesional_id'] = $this->headerUserService->id;
             $empleado = NomEmpleado::find($request['empleado_id']);
 
             if (!$empleado) {
@@ -49,36 +44,21 @@ class IncapacidadController extends Controller
                 ], 404);
             }
 
-            switch($empleado->cedi->empresa->id){
-                case 1: //CAN
-                    $BDRecursosHumanos = DB::connection('RecursosHumanosCAN');
-                break;
-                case 2: //CVN
-                    
-                break;
-                case 5: //ENV
-                     
-                break;
-                case 11: //FCO
-                    $BDRecursosHumanos = DB::connection('RecursosHumanosFCO');
-                break;
-                case 12: //SBM
-                    $BDRecursosHumanos = DB::connection('RecursosHumanosSBM');
-                break;
-                default:
-                return response()->json([
-                    'error' => 'Empresa del empleado no encontado :('
-                ], 404);
-            }
-
-            if(!$BDRecursosHumanos){
-                Log::error('No se encontro conexión con la base de datos de RH');
-                return response()->json([
-                    'error' => 'No se encontro conexión con la base de datos de RH'
-                ], 404);
-            }
+            $BDRecursosHumanos = $this->dataBaseService->conexionEmpresa($empleado->cedi->empresa_id);
 
             $empleadoRH = $BDRecursosHumanos->table('NomEmpleados')->where('Empleado', $empleado->numero)->first();
+
+            if (!isset($request['caso_id']) || $request['caso_id'] === NULL) {
+                try {
+                    $casoController = new CasoController($this->headerService);
+                    $casoId = $casoController->store($request, $empleadoRH->Departamento);
+                } catch (\Exception $e) {
+                    Log::error($e);
+                    return response()->json(['error' => $e->getMessage()], 500);
+                }
+            }else{
+                $casoId = $request['caso_id'];
+            }    
 
             $fecha =  Carbon::parse($request['FechaEfectiva']);
                     
@@ -94,20 +74,19 @@ class IncapacidadController extends Controller
                 'causa' => $request['causa'],
                 'TipoPermiso' => $request['TipoPermiso'] ?? 0,
                 'observaciones' => $request['observaciones'],
-                'empleado_id' => $request['empleado_id'],
+                'caso_id' => $casoId,
                 'profesional_id' => $request['profesional_id'],
             ]);
 
             for ($i = 0; $i < $request['Dias']; $i++) {
 
                 $existe = NomIncidencia::
-                where('Empleado', $empleado->numero)
-                ->where('FechaEfectiva', $fecha->copy()->addDays($i)->startOfDay()->toDateString())
-                ->count();
+                        where('Empleado', $empleado->numero)
+                        ->where('FechaEfectiva', $fecha->copy()->addDays($i)->startOfDay()->toDateString())
+                        ->exists();
 
-                if($existe == 0){
-
-                    $nomIncidenciaInfo = [
+                if(!$existe){
+                    $nomIncidenciaInfo[] = [
                         'Empleado' => $empleado->numero,
                         'FechaEfectiva' => $fecha->copy()->addDays($i)->startOfDay()->toDateString(),
                         'Sueldo' => $empleadoRH->Sueldo,
@@ -125,39 +104,26 @@ class IncapacidadController extends Controller
                         'TipoPermiso' => $request['TipoPermiso']?? 0,
                         'incapacidad_id' => $incapacidad->id,
                     ];
-
-                    NomIncidencia::create($nomIncidenciaInfo);
-
-                    unset($nomIncidenciaInfo['incapacidad_id']);
-    
-                    $BDRecursosHumanos->table('NomIncidencias')->insert([
-                        $nomIncidenciaInfo
-                    ]);
-
-                    if($request['zonasAfectadas']){
-                        $incapacidad->zonasAfectadas()->sync($request['zonasAfectadas']);
-                    }
                 }else{
                     $fechasRepetidas[] = $fecha->copy()->addDays($i)->startOfDay()->toDateString();
+                    $incapacidad->delete();
+
+                    return response()->json([
+                        'error' => 'Ya existe una incapacidad en la nómina en las fechas: ' . implode(', ', $fechasRepetidas)
+                    ], 400);
                 }
             }
 
-            if (!empty($fechasRepetidas)) {
-                $incapacidad->delete();
+            NomIncidencia::insert($nomIncidenciaInfo);
 
-                foreach($incapacidad->nomIncidencias as $incidencia){
-                    $incidencia->delete();
-                }
-            
-                return response()->json([
-                    'error' => 'Ya existe una incapacidad en la nómina en las fechas: ' . implode(', ', $fechasRepetidas)
-                ], 400);
-            }else{
-                return response()->json([
-                    'message' => 'Incapacidad guardada con éxito',
-                    'id' => $incapacidad->id
-                ], 201);
+            if($request['zonasAfectadas']){
+                $incapacidad->zonasAfectadas()->sync($request['zonasAfectadas']);
             }
+
+            return response()->json([
+                'message' => 'Incapacidad guardada con éxito',
+                'id' => $casoId
+            ], 201);
 
         }catch(\Exception $e){
             Log::error($e->getMessage());
@@ -170,9 +136,6 @@ class IncapacidadController extends Controller
 
     public function show($id){
         $data = Incapacidad::with([
-            'empleado',
-            'empleado.historialMedico',
-            'empleado.image',
             'profesional',
             'profesional.image',
             'zonasAfectadas',
@@ -182,11 +145,6 @@ class IncapacidadController extends Controller
             'controlIncapacidad',
             'tipoPermiso',
             'nomIncidencias',
-            'accidente',
-            'accidente.departamento',
-            'accidente.accidenteCostEstudios',
-            'accidente.empleado',
-            'accidente.empleado.puesto'
         ])->find($id);
 
         if (!$data) {
@@ -196,61 +154,81 @@ class IncapacidadController extends Controller
         $archivosPorCategoria = $data->archivos->groupBy('categoria');
         $data->archivosPorCategoria = $archivosPorCategoria;
 
+        $tieneAltaMedicaST2 = $data->archivos->contains('categoria', 'Alta médica ST2');
+        $data->ST2 = $tieneAltaMedicaST2;
+
         return response()->json($data, 200);
     }
 
-    private function determinarTipoArchivo($base64)
-    {
-        $data = base64_decode($base64);
-        $finfo = finfo_open();
-        $mime = finfo_buffer($finfo, $data, FILEINFO_MIME_TYPE);
-        finfo_close($finfo);
-
-        $extensions = [
-            'image/jpeg' => 'jpeg',
-            'image/png' => 'png',
-            'application/pdf' => 'pdf',
-        ];
-
-        return $extensions[$mime] ?? 'application/octet-stream';
-    }
-
-    public function subirArchivos(Request $request){
-
+    public function update($id, Request $request){
         try{
-            foreach($request['archivos'] as $archivoBase64){
-                $archivoDecodificado = base64_decode($archivoBase64);
-        
-                $tipoArchivo = $this->determinarTipoArchivo($archivoBase64);
+            $incapacidad = Incapacidad::find($id);
+            $incapacidad->update(['TipoIncidencia' => $request['TipoIncidencia']]);
 
-                if(!$tipoArchivo){
-                    Log::error($tipoArchivo);
-                    return response()->json([
-                        'error' => 'Problema con la subida de archivos, revise que los archivos cumplan con estos tipos de formato: PNG, JPG y PDF'
-                    ], 500);
-                }
-        
-                $nombreArchivo = uniqid().'.'.$tipoArchivo;
-        
-                Storage::disk('private')->put('/archivos/'.$nombreArchivo, $archivoDecodificado);
-
-                Archivo::create([
-                    'url' => $nombreArchivo,
-                    'categoria' => $request['categoria'],
-                    'archivable_id' => $request['incapacidad_id'],
-                    'archivable_type' => Incapacidad::class 
-                ]);
-            }
+            foreach($incapacidad->nomIncidencias as $incidencia){
+                $incidencia->update(['TipoIncidencia' => $request['TipoIncidencia']]);
+            }            
 
             return response()->json([
-                'message' => 'Archivo guardado exitosamente',
-            ]);
+                'message' => 'Incapacidad editada con éxito',
+                'id' => $incapacidad->caso->id
+            ], 201);
 
         }catch(\Exception $e){
-            Log::error($e);
+            Log::error($e->getMessage());
             return response()->json([
-                'error' => 'Ocurrió un error: '.$e->getMessage()
+                'error' => 'Ocurrió un error al guardar'
+                // 'error' => $e
             ], 500);
         }
     }
+
+    public function importarRH($id)
+    {
+        try {
+            $incapacidad = Incapacidad::find($id);
+
+            $incidencias = $incapacidad->nomIncidencias->map(function ($item) {
+                return [
+                    'Aplicada' => $item['Aplicada'],
+                    'Axo' => $item['Axo'],
+                    'ControlIncapacidad' => $item['ControlIncapacidad'],
+                    'Dias' => $item['Dias'],
+                    'Empleado' => $item['Empleado'],
+                    'Fecha' => $item['Fecha'],
+                    'FechaEfectiva' => $item['FechaEfectiva'],
+                    'Importado' => $item['Importado'],
+                    'Incapacidad' => $item['Incapacidad'],
+                    'Integrado' => $item['Integrado'],
+                    'Secuela' => $item['Secuela'],
+                    'Sueldo' => $item['Sueldo'],
+                    'TipoIncidencia' => $item['TipoIncidencia'],
+                    'TipoPermiso' => $item['TipoPermiso'],
+                    'TipoRiesgo' => $item['TipoRiesgo']
+                ];
+            })->toArray();
+
+            $BDRecursosHumanos = $this->dataBaseService->conexionEmpresa($incapacidad->caso->empleado->cedi->empresa_id);
+            
+            if (!$BDRecursosHumanos) {
+                throw new \Exception('No se encontró conexión con la base de datos de RH');
+            }
+
+            $BDRecursosHumanos->table('NomIncidencias')->insert($incidencias);
+
+            $incapacidad->nomIncidencias()->update(['exportado' => true]);
+
+            return response()->json([
+                'message' => 'Incidencias exportadas a la nómina con éxito',
+                'id' => $incapacidad->caso->id
+            ], 201);
+        } catch (\Exception $e) {
+            Log::error($e->getMessage());
+            return response()->json([
+                'error' => 'Ocurrió un error al exportar'
+            ], 500);
+        }
+    }
+
+    
 }

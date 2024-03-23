@@ -4,25 +4,27 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateIncapacidadesTable extends Migration
+class CreateNomIncidenciasTable extends Migration
 {
     public function up()
     {
-        Schema::create('Incapacidades', function (Blueprint $table) {
+        Schema::create('NomIncidencias', function (Blueprint $table) {
+
             $table->id();
-
-            $table->string('folio')->nullable();
-
-            $table->date('fechaEfectiva');
-
-            // $table->date('expedido')->nullable();
-            $table->integer('dias')->nullable();
-
-            $table->longText('diagnostico')->nullable();
-
             
+            $table->integer('Empleado');
+            $table->dateTime('FechaEfectiva');
+            $table->decimal('Sueldo');
+            $table->decimal('Integrado');
+
             $table->string('TipoIncidencia');
             $table->foreign('TipoIncidencia')->references('TipoIncidencia')->on('NomTipoIncidencias');
+
+            $table->string('Incapacidad');
+            $table->smallInteger('Axo');
+            $table->date('Fecha');
+            $table->integer('Dias');
+            $table->string('Importado');
             
             $table->string('TipoRiesgo')->nullable()->default('0');
             $table->foreign('TipoRiesgo')->references('TipoRiesgo')->on('NomTipoRiesgos');
@@ -33,30 +35,25 @@ class CreateIncapacidadesTable extends Migration
             $table->string('ControlIncapacidad')->nullable()->default('0');
             $table->foreign('ControlIncapacidad')->references('ControlIncapacidad')->on('NomControlIncapacidades');
 
+            $table->boolean('Aplicada');
+
             $table->string('TipoPermiso')->nullable()->default('0');
             $table->foreign('TipoPermiso')->references('TipoPermiso')->on('NomTipoPermisos');
 
-            $table->string('causa')->nullable();
-            
-            $table->longText('observaciones')->nullable();
+            $table->unsignedBigInteger('incapacidad_id')->nullable();
+            $table->foreign('incapacidad_id')->references('id')->on('Incapacidades');
 
-            $table->unsignedBigInteger('empleado_id')->nullable();
-            $table->foreign('empleado_id')->references('id')->on('NomEmpleados')->onDelete('set null')->onUpdate('cascade');
-
-            $table->unsignedBigInteger('profesional_id')->nullable();
-            $table->foreign('profesional_id')->references('id')->on('Profesionales');
-
-            $table->timestamps();
+            $table->boolean('exportado')->default(false);
         });
     }
 
-    /**
-     * Reverse the migrations.
-     *
-     * @return void
-     */
     public function down()
     {
-        Schema::dropIfExists('Incapacidades');
+        Schema::table('NomIncidencias', function (Blueprint $table) {
+            $table->dropPrimary(['Empleado', 'FechaEfectiva']);
+        });
+
+        Schema::dropIfExists('NomIncidencias');
     }
+
 }

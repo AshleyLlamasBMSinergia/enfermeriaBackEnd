@@ -17,8 +17,6 @@ class Accidente extends Model
     
     protected $fillable = [
         'fecha',
-        'empleado_id',
-        'departamento_id',
         'lugar',
         'descripcion',
         'diagnostico_id',
@@ -30,10 +28,6 @@ class Accidente extends Model
         'costoEstudio',
         'costoConsulta',
         'costoMedicamento',
-        'costoTotalAccidente',
-        'incIMSS',
-        'diasIncIMSS',
-        'altaST2',
         'calificacion',
         'observaciones',
         'resultado',
@@ -41,7 +35,6 @@ class Accidente extends Model
         'salario',
         'turno',
         'profesional_id',
-        'incapacidad_id'
     ];
 
     // Uno a mucho inversa
@@ -56,25 +49,13 @@ class Accidente extends Model
         return $this->hasMany('App\Models\AccidenteCostEstudio');
     }
 
-    // Uno a muchos inversa
-    public function departamento()
-    {
-        return $this->belongsTo('App\Models\Departamento', 'departamento_id');
-    }
-
-    // Uno a muchos inversa
-    public function empleado()
-    {
-        return $this->belongsTo('App\Models\NomEmpleado', 'empleado_id');
-    }
-
     // Uno a muchos inversa con Profesional (Profesional)
     public function profesional()
     {
         return $this->belongsTo(Profesional::class, 'profesional_id');
     }
 
-    // Uno a Uno inversa
+    // Uno a muchos inversa
     public function incapacidad()
     {
         return $this->belongsTo('App\Models\Incapacidad', 'incapacidad_id');

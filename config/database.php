@@ -40,7 +40,7 @@ return [
             'host' => env('RRHH_DB_HOST'),
             'database' => 'RecursosHumanosCAN',
             'username' => env('RRHH_DB_USERNAME'),
-            'password' => env('RRHH_DB_PASSWORD'),
+            'password' => env('PRRHH_DB_PASSWORD'),
             'charset' => 'utf8',
             'prefix' => '',
             'prefix_indexes' => true,
@@ -74,6 +74,42 @@ return [
             'driver' => 'sqlsrv',
             'host' => env('RRHH_DB_HOST'),
             'database' => 'RecursosHumanosFCO',
+            'username' => env('RRHH_DB_USERNAME'),
+            'password' => env('RRHH_DB_PASSWORD'),
+            'charset' => 'utf8',
+            'prefix' => '',
+            'prefix_indexes' => true,
+        ],
+
+        //ENV
+        'RecursosHumanosENV' => [
+            'driver' => 'sqlsrv',
+            'host' => env('RRHH_DB_HOST'),
+            'database' => 'RecursosHumanosENV',
+            'username' => env('RRHH_DB_USERNAME'),
+            'password' => env('RRHH_DB_PASSWORD'),
+            'charset' => 'utf8',
+            'prefix' => '',
+            'prefix_indexes' => true,
+        ],
+
+        //CYSA
+        'RecursosHumanosCYSA' => [
+            'driver' => 'sqlsrv',
+            'host' => env('RRHH_DB_HOST'),
+            'database' => 'RecursosHumanosCYSA',
+            'username' => env('RRHH_DB_USERNAME'),
+            'password' => env('RRHH_DB_PASSWORD'),
+            'charset' => 'utf8',
+            'prefix' => '',
+            'prefix_indexes' => true,
+        ],
+
+        //BEL
+        'RecursosHumanosBEL' => [
+            'driver' => 'sqlsrv',
+            'host' => env('RRHH_DB_HOST'),
+            'database' => 'RecursosHumanosBEL',
             'username' => env('RRHH_DB_USERNAME'),
             'password' => env('RRHH_DB_PASSWORD'),
             'charset' => 'utf8',

@@ -5,9 +5,11 @@ namespace App\Http\Controllers\enfermeria;
 use App\Http\Controllers\Controller;
 use App\Models\Accidente;
 use App\Models\AccidenteCostEstudio;
+use App\Models\Caso;
 use App\Models\Departamento;
 use App\Models\NomEmpleado;
 use App\Services\DataBaseService;
+use App\Services\HeaderService;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
@@ -21,10 +23,42 @@ class AccidenteController extends Controller
         $this->dataBaseService = $dataBaseService;
     }
 
+    public function getEmpleadoSalario($id){
+
+        $empleadoEnfermeria = NomEmpleado::find($id);
+
+        if (!$empleadoEnfermeria) {
+            return response()->json(['error' => 'Empleado de enfermería no encontrado'], 404);
+        }
+
+        $conexion = $this->dataBaseService->conexionEmpresa($empleadoEnfermeria->cedi->empresa_id);
+
+        if (!$conexion) {
+            return response()->json(['error' => 'Sin conexión en la base de datos'], 500);
+        }
+
+        $empleado = $conexion->table('NomEmpleados')->where('Empleado', $empleadoEnfermeria->numero)->first();
+
+        if (!$empleado) {
+            return response()->json(['error' => 'Empleado de RH no encontrado'], 404);
+        }
+
+        $data = $empleado->Sueldo;
+
+        return response()->json($data, 200);
+    }
+
 
     public function store(Request $request){
+        Log::info($request);
 
         try{
+            $caso = Caso::find($request['caso_id']);
+
+            if (!$caso) {
+                return response()->json(['error' => 'Caso no encontrado'], 404);
+            }
+
             $empleadoEnfermeria = NomEmpleado::find($request['empleado_id']);
 
             if (!$empleadoEnfermeria) {
@@ -43,8 +77,6 @@ class AccidenteController extends Controller
                 return response()->json(['error' => 'Empleado de RH no encontrado'], 404);
             }
 
-            $departamento = Departamento::where('Departamento', $empleado->Departamento)->value('id');
-
             $fechaIngreso = Carbon::parse($empleado->FechaIngreso);
             $hoy = Carbon::now();
     
@@ -59,8 +91,6 @@ class AccidenteController extends Controller
 
             $accidente = Accidente::create([
                 'fecha' => $request['fecha'],
-                'empleado_id' => $request['empleado_id'],
-                'departamento_id' => $departamento,
                 'lugar' => $request['lugar'],
                 'descripcion' => $request['descripcion'],
                 'diagnostico_id' => $request['diagnostico_id'],
@@ -73,17 +103,13 @@ class AccidenteController extends Controller
                 'costoConsulta' => $request['costoConsulta'],
                 'costoMedicamento' => $request['costoMedicamento'],
                 'costoTotalAccidente' => $request['costoTotalAccidente'],
-                'incIMSS' => $request['incIMSS'] == '1',
-                'diasIncIMSS' => $request['incIMSS'] == '1' ? $request['diasIncIMSS'] : null,
-                'altaST2' => $request['altaST2'] == '1',
-                'calificacion' => $request['calificacion'] == '1',
+                'calificacion' => $request['calificacion'],
                 'observaciones' => $request['observaciones'],
                 'resultado' => $request['resultado'],
                 'profesional_id' => $request['profesional_id'],
-                'incapacidad_id' => $request['incapacidad_id'],
                 'antiguedad' => $antiguedad,
                 'turno' => $turno,
-                'salario' => 0
+                'salario' => $request['salario']
             ]);
     
             if($request['costos']){
@@ -96,6 +122,8 @@ class AccidenteController extends Controller
                 }
             }
 
+            $caso->update(['accidente_id' => $accidente->id]);
+
             return response()->json(['message' => 'Investigación de accidente guardada con éxito'], 201);
 
         }catch(\Exception $e){
@@ -107,8 +135,10 @@ class AccidenteController extends Controller
     }
 
     public function update($id, Request $request){
-        try{
 
+        Log::info($request);
+
+        try{
             $accidente = Accidente::find($id);
 
             if (!$accidente) {
@@ -163,17 +193,14 @@ class AccidenteController extends Controller
                 'costoConsulta' => $request['costoConsulta'],
                 'costoMedicamento' => $request['costoMedicamento'],
                 'costoTotalAccidente' => $request['costoTotalAccidente'],
-                'incIMSS' => $request['incIMSS'] == '1',
-                'diasIncIMSS' => $request['incIMSS'] == '1' ? $request['diasIncIMSS'] : null,
-                'altaST2' => $request['altaST2'] == '1',
-                'calificacion' => $request['calificacion'] == '1',
+                'calificacion' => $request['calificacion'],
                 'observaciones' => $request['observaciones'],
                 'resultado' => $request['resultado'],
                 'profesional_id' => $request['profesional_id'],
                 'incapacidad_id' => $request['incapacidad_id'],
                 'antiguedad' => $antiguedad,
                 'turno' => $turno,
-                'salario' => 0
+                'salario' => $request['salario']
             ]);
 
             foreach($accidente->accidenteCostEstudios as $costEstudio){

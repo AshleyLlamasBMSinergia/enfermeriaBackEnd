@@ -23,6 +23,8 @@ class CreateHistorialesMedicosTable extends Migration
             $table->decimal('talla')->nullable();
             $table->decimal('peso')->nullable();
 
+            $table->string('numeroEmergencia')->nullable();
+
             //PACIENTE: EMPLEADO - DEPENDIENTE
             $table->string('pacientable_id')->nullable(); // PACIENTE - ID TIPO
             $table->string('pacientable_type')->nullable(); // PACIENTE - TIPO

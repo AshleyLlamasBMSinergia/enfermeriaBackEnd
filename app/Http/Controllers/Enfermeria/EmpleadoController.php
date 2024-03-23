@@ -9,6 +9,7 @@ use App\Models\HistorialMedico;
 use App\Models\NomEmpleado;
 use App\Models\NomPuesto;
 use App\Models\User;
+use App\Services\DataBaseService;
 use App\Services\HeaderService;
 use Exception;
 use Illuminate\Support\Str;
@@ -20,12 +21,40 @@ use Illuminate\Support\Facades\Log;
 
 class EmpleadoController extends Controller
 {
+    protected $dataBaseService;
     protected $headerProfesionalCedisService;
 
-    public function __construct(HeaderService $headerService)
+    public function __construct(HeaderService $headerService, DataBaseService $dataBaseService)
     {
+        $this->dataBaseService = $dataBaseService;
         $this->headerProfesionalCedisService = $headerService->getProfesionalCedisFromHeader();
     }
+
+    public function getEmpleadoSalario($id){
+
+        $empleadoEnfermeria = NomEmpleado::find($id);
+
+        if (!$empleadoEnfermeria) {
+            return response()->json(['error' => 'Empleado de enfermería no encontrado'], 404);
+        }
+
+        $conexion = $this->dataBaseService->conexionEmpresa($empleadoEnfermeria->cedi->empresa_id);
+
+        if (!$conexion) {
+            return response()->json(['error' => 'Sin conexión en la base de datos'], 500);
+        }
+
+        $empleado = $conexion->table('NomEmpleados')->where('Empleado', $empleadoEnfermeria->numero)->first();
+
+        if (!$empleado) {
+            return response()->json(['error' => 'Empleado de RH no encontrado'], 404);
+        }
+
+        $data = $empleado->Sueldo;
+
+        return response()->json($data, 200);
+    }
+
     public function index(){
         $data = NomEmpleado::whereIn('cedi_id', $this->headerProfesionalCedisService->pluck('id'))->get();
         return response()->json($data, 200);
