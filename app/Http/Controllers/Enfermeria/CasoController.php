@@ -128,6 +128,7 @@ class CasoController extends Controller
             'incapacidades.controlIncapacidad',
             'incapacidades.tipoPermiso',
             'incapacidades.nomIncidencias',
+            'incapacidades.archivos'
         ])->find($id);
 
         if (!$data) {

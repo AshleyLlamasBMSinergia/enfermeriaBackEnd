@@ -79,4 +79,9 @@ class Incapacidad extends Model
     public function zonasAfectadas(){
         return $this->belongsToMany('App\Models\ZonaAfectada');
     }
+
+    //Uno a muchos polimorfico
+    public function archivos(){
+        return $this->morphMany('App\Models\Archivo', 'archivable');
+    }
 }

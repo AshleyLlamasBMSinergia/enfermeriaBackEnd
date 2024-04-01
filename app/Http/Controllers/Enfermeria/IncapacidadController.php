@@ -248,7 +248,9 @@ class IncapacidadController extends Controller
         if (!$data) {
             return response()->json(['error' => 'Incapacidad no encontrada'], 404);
         }
-        
+
+        $archivosPorCategoria = $data->archivos->groupBy('categoria');
+        $data->archivosPorCategoria = $archivosPorCategoria;
 
         return response()->json($data, 200);
     }
