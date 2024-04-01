@@ -247,7 +247,9 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/casos', [CasoController::class, 'index']);
     Route::post('/casos', [CasoController::class, 'store']);
     Route::get('/casos/{id}', [CasoController::class, 'show']);
+    Route::put('/casos/edit/{id}', [CasoController::class, 'edit']);
     Route::post('/casos/archivos', [ArchivoController::class, 'create']);
+    
 
     //NOM CONTROL INCAPACIDAD
     Route::get('/control-incapacidades', [NomControlIncapacidadController::class, 'index'])->can('incapacidades.index');

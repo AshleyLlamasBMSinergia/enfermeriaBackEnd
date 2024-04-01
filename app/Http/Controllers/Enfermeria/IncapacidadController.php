@@ -4,6 +4,7 @@ namespace App\Http\Controllers\enfermeria;
 
 use App\Http\Controllers\Controller;
 use App\Models\Archivo;
+use App\Models\Caso;
 use App\Models\Incapacidad;
 use App\Models\NomIncidencia;
 use App\Models\NomEmpleado;
@@ -11,6 +12,7 @@ use App\Models\User;
 use App\Services\DataBaseService;
 use App\Services\HeaderService;
 use Carbon\Carbon;
+use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
@@ -30,6 +32,93 @@ class IncapacidadController extends Controller
         $this->dataBaseService = $dataBaseService;
         $this->headerUserService = $headerService->getUserFromHeader();
         $this->headerProfesionalCedisService = $headerService->getProfesionalCedisFromHeader();
+    }
+
+
+    public function index(Request $request)
+    {
+        try {
+            $pageSize = $request->get('pageSize', 10);
+
+            $profesionalCedis = $this->headerProfesionalCedisService;
+        
+            $data = Incapacidad::with([
+                'caso' => function ($query) {
+                    $query->select('id', 'empleado_id');
+                },
+                'caso.empleado' => function ($query) {
+                    $query->select('id', 'nombre', 'numero');
+                },
+                'tipoIncidencia' => function ($query) {
+                    $query->select('TipoIncidencia', 'Nombre');
+                },
+                'nomIncidencias'
+            ])
+            ->whereHas('caso.empleado', function ($query) use ($profesionalCedis) {
+                $query->whereIn('cedi_id', $profesionalCedis->pluck('id'));
+            });
+
+            if ($request->has('caso')) {
+                $data = $data->whereHas('caso', function ($query) use ($request) {
+                    $query->where('id', $request['caso']);
+                });
+            }
+            
+            if ($request->has('folio')) {
+                $data = $data->where('folio', 'like', '%' . $request['folio'] . '%');
+            }
+
+            if ($request->has('numeroEmpleado')) {
+                $data = $data->whereHas('caso.empleado', function ($query) use ($request) {
+                    $query->where('numero', $request['numeroEmpleado']);
+                });
+            }
+
+            if ($request->has('empleado')) {
+                $data = $data->whereHas('caso.empleado', function ($query) use ($request) {
+                    $query->where('nombre', 'like', '%' . $request['empleado'] . '%');
+                });
+            }
+
+            if ($request->has('tipoDeincidencia')) {
+                $data = $data->whereHas('tipoIncidencia', function ($query) use ($request) {
+                    $query->where('Nombre', 'like', '%' . $request['tipoDeincidencia'] . '%');
+                });
+            }
+
+            if ($request->has('fecha')) {
+                $data = $data->whereDate('fechaEfectiva', $request['fecha']);
+            }
+            
+            if ($request->has('estatus')) {
+                $data = $data->where('estatus', $request['estatus']);
+            }
+
+            if ($request->has('exportado')) {
+                $exportado = $request['exportado'] == 'SI' ? true : false;
+                $data = $data->where(function ($query) use ($exportado) {
+                    $query->whereHas('nomIncidencias', function ($query) use ($exportado) {
+                        $query->where('exportado', $exportado);
+                    });
+                });
+            }
+
+            $data = $data->orderBy('id', 'desc')
+            ->paginate($pageSize);
+
+            $data->each(function ($incapacidad) {
+                $incapacidad->exportado = $incapacidad->nomIncidencias->every(function ($nomIncidencia) {
+                    return $nomIncidencia->exportado;
+                });
+            });
+
+            Log::info($data);
+
+            return response()->json($data, 200);
+        } catch (Exception $e) {
+            Log::error($e);
+            return response()->json(['error' => $e->getMessage()]);
+        }
     }
 
     public function store(Request $request)
@@ -52,12 +141,16 @@ class IncapacidadController extends Controller
                 try {
                     $casoController = new CasoController($this->headerService);
                     $casoId = $casoController->store($request, $empleadoRH->Departamento);
-                } catch (\Exception $e) {
+                } catch (Exception $e) {
                     Log::error($e);
                     return response()->json(['error' => $e->getMessage()], 500);
                 }
             }else{
                 $casoId = $request['caso_id'];
+
+                if(!$this->validarUltimaFechaConsecutivaIncidencias($request)){
+                    return response()->json(['error' => 'Fecha no consecutiva a la ultima incidencia'], 404);
+                }
             }    
 
             $fecha =  Carbon::parse($request['FechaEfectiva']);
@@ -125,8 +218,13 @@ class IncapacidadController extends Controller
                 'id' => $casoId
             ], 201);
 
-        }catch(\Exception $e){
+        }catch(Exception $e){
             Log::error($e->getMessage());
+
+            if($incapacidad){
+                $incapacidad->delete();
+            }
+
             return response()->json([
                 'error' => 'Ocurrió un error al guardar'
                 // 'error' => $e
@@ -136,8 +234,8 @@ class IncapacidadController extends Controller
 
     public function show($id){
         $data = Incapacidad::with([
-            'profesional',
-            'profesional.image',
+            'caso',
+            'caso.empleado',
             'zonasAfectadas',
             'tipoIncidencia',
             'tipoRiesgo',
@@ -151,11 +249,6 @@ class IncapacidadController extends Controller
             return response()->json(['error' => 'Incapacidad no encontrada'], 404);
         }
         
-        $archivosPorCategoria = $data->archivos->groupBy('categoria');
-        $data->archivosPorCategoria = $archivosPorCategoria;
-
-        $tieneAltaMedicaST2 = $data->archivos->contains('categoria', 'Alta médica ST2');
-        $data->ST2 = $tieneAltaMedicaST2;
 
         return response()->json($data, 200);
     }
@@ -211,7 +304,7 @@ class IncapacidadController extends Controller
             $BDRecursosHumanos = $this->dataBaseService->conexionEmpresa($incapacidad->caso->empleado->cedi->empresa_id);
             
             if (!$BDRecursosHumanos) {
-                throw new \Exception('No se encontró conexión con la base de datos de RH');
+                throw new Exception('No se encontró conexión con la base de datos de RH');
             }
 
             $BDRecursosHumanos->table('NomIncidencias')->insert($incidencias);
@@ -222,7 +315,7 @@ class IncapacidadController extends Controller
                 'message' => 'Incidencias exportadas a la nómina con éxito',
                 'id' => $incapacidad->caso->id
             ], 201);
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             Log::error($e->getMessage());
             return response()->json([
                 'error' => 'Ocurrió un error al exportar'
@@ -230,5 +323,61 @@ class IncapacidadController extends Controller
         }
     }
 
+    public function validarFechasConsecutivasDeIncidencias($id) {
+        $caso = Caso::find($id);
     
+        // Verificar si el caso existe
+        if (!$caso) {
+            return response()->json(['message' => 'El caso no existe'], 404);
+        }
+    
+        // Obtener todas las nomIncidencias asociadas al caso
+        $nomIncidencias = DB::table('incapacidades')
+                            ->join('NomIncidencias', 'incapacidades.id', '=', 'NomIncidencias.incapacidad_id')
+                            ->where('incapacidades.caso_id', $caso->id)
+                            ->pluck('NomIncidencias.fechaEfectiva')
+                            ->toArray();
+    
+        // Ordenar las fechas efectivas
+        sort($nomIncidencias);
+    
+        // Verificar si las fechas efectivas están consecutivas
+        $fechasConsecutivas = true;
+        for ($i = 0; $i < count($nomIncidencias) - 1; $i++) {
+            $fechaActual = strtotime($nomIncidencias[$i]);
+            $fechaSiguiente = strtotime($nomIncidencias[$i + 1]);
+            if ($fechaSiguiente - $fechaActual != 86400) { // 86400 segundos = 1 día
+                $fechasConsecutivas = false;
+                break;
+            }
+        }
+
+        return $fechasConsecutivas;
+    }
+
+    public function validarUltimaFechaConsecutivaIncidencias(Request $request) {
+        // Obtener la última fecha de nomIncidencias asociadas al caso
+        $ultimaFechaNomIncidencias = DB::table('casos')
+                                    ->join('incapacidades', 'casos.id', '=', 'incapacidades.caso_id')
+                                    ->join('NomIncidencias', 'incapacidades.id', '=', 'NomIncidencias.incapacidad_id')
+                                    ->where('casos.id', $request['caso_id'])
+                                    ->latest('NomIncidencias.FechaEfectiva')
+                                    ->value('NomIncidencias.FechaEfectiva');
+
+        // Verificar si la fecha recibida es consecutiva a la última fecha de nomIncidencias
+        if ($ultimaFechaNomIncidencias) {
+            $ultimaFechaNomIncidencias = strtotime($ultimaFechaNomIncidencias);
+            $nuevaFecha = strtotime($request['FechaEfectiva']);
+    
+            // Verificar si las fechas están separadas exactamente por un día
+            if ($nuevaFecha - $ultimaFechaNomIncidencias != 86400) {
+                return false;
+            }
+        } 
+        // else {
+        //     return response()->json(['error' => 'No hay incidencias asociadas al caso'], 404);
+        // }
+    
+        return true;
+    }    
 }

@@ -13,6 +13,8 @@ class Incapacidad extends Model
 
     protected $guarded = ['id', 'created_at', 'updated'];
 
+    protected $dates = ['fechaEfectiva'];
+
     protected $fillable = [
         'folio',
         'fechaEfectiva',
@@ -62,7 +64,6 @@ class Incapacidad extends Model
     public function caso(){
         return $this->belongsTo('App\Models\Caso', 'caso_id');
     }
-
     
     //Uno a Muchos Inversa
     public function tipoPermiso(){

@@ -3,15 +3,12 @@
 namespace App\Http\Controllers\enfermeria;
 
 use App\Http\Controllers\Controller;
-use App\Models\Archivo;
 use App\Models\Caso;
 use App\Models\Departamento;
-use App\Models\NomEmpleado;
-use App\Models\rh\NomEmpleado as RhNomEmpleado;
 use App\Services\HeaderService;
+use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
-use Illuminate\Support\Facades\Storage;
 
 class CasoController extends Controller
 {
@@ -21,21 +18,74 @@ class CasoController extends Controller
     {
         $this->headerProfesionalCedisService = $headerService->getProfesionalCedisFromHeader();
     }
-    public function index(){
-        try{
-            $profesionalCedis = $this->headerProfesionalCedisService;
+    
+    public function index(Request $request)
+    {
+        try {
+            $pageSize = $request->get('pageSize', 10);
 
-            $data = Caso::with('empleado')->whereHas('empleado' ,function ($query) use ($profesionalCedis){
+            $profesionalCedis = $this->headerProfesionalCedisService;
+        
+            $data = Caso::with([
+                'empleado' => function ($query) {
+                    $query->select('id', 'nombre', 'puesto_id');
+                },
+                'empleado.puesto' => function ($query) {
+                    $query->select('id', 'nombre');
+                },
+                'departamento' => function ($query) {
+                    $query->select('id', 'Nombre');
+                },
+                'incapacidades'          
+            ])
+            ->whereHas('empleado', function ($query) use ($profesionalCedis) {
                 $query->whereIn('cedi_id', $profesionalCedis->pluck('id'));
-            })->get();
+            });
+            
+            if ($request->has('caso')) {
+                $data = $data->where('id', $request['caso']);
+            }
+
+            if ($request->has('empleado')) {
+                $data = $data->whereHas('empleado', function ($query) use ($request) {
+                    $query->where('nombre', 'like', '%' . $request['empleado'] . '%');
+                });
+            }
+
+            if ($request->has('puesto')) {
+                $data = $data->whereHas('empleado', function ($query) use ($request) {
+                    $query->whereHas('puesto', function ($query) use ($request) {
+                        $query->where('nombre', 'like', '%' . $request['puesto'] . '%');
+                    });
+                });
+            }
+
+            if ($request->has('departamento')) {
+                $data = $data->whereHas('departamento', function ($query) use ($request) {
+                    $query->where('nombre', 'like', '%' . $request['departamento'] . '%');
+                });
+            }
+
+            if ($request->has('fecha')) {
+                $data = $data->whereHas('incapacidades', function ($query) use ($request) {
+                    $query->whereDate('fechaEfectiva', $request['fecha']);
+                });
+            }
+            
+            if ($request->has('estatus')) {
+                $data = $data->where('estatus', $request['estatus']);
+            }
+            
+            $data = $data->orderBy('id', 'desc')
+            ->paginate($pageSize);
+
             return response()->json($data, 200);
-        }catch (\Exception $e){
-            return response()->json([
-                'error'=> $e->getMessage()
-            ]);
+        } catch (Exception $e) {
+            Log::error($e);
+            return response()->json(['error' => $e->getMessage()]);
         }
     }
-
+    
     public function store(Request $request, $RHdepartamento_id){
         try {
             $departamento = Departamento::where('Departamento', $RHdepartamento_id)->value('id');
@@ -54,7 +104,7 @@ class CasoController extends Controller
 
             return $caso->id;
 
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             Log::error($e);
             return response()->json(['error'=> $e->getMessage()]);
         }
@@ -91,5 +141,28 @@ class CasoController extends Controller
         $data->ST2 = $tieneAltaMedicaST2;
 
         return response()->json($data, 200);
+    }
+
+    public function edit($id, Request $request){
+        try{
+            $caso = Caso::find($id);
+
+            if (!$caso) {
+                return response()->json(['error' => 'caso no encontrado'], 404);
+            }
+
+            $caso->update([
+                'estatus' => $request['estatus'],
+                'doctos' => $request['doctos']
+            ]);
+
+            return response()->json([
+                'message' => 'Caso editado exitosamente',
+            ]);
+
+        } catch (Exception $e) {
+            Log::error($e);
+            return response()->json(['error'=> $e->getMessage()]);
+        }
     }
 }

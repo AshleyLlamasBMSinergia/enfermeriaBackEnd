@@ -4,16 +4,29 @@ namespace App\Http\Controllers\Enfermeria;
 
 use App\Http\Controllers\Controller;
 use App\Models\Archivo;
+use App\Models\Caso;
+use App\Services\DataBaseService;
+use App\Services\HeaderService;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
 
 class ArchivoController extends Controller
 {
+
+    protected $headerService;
+    protected $dataBaseService;
+
+    public function __construct(DataBaseService $dataBaseService, HeaderService $headerService)
+    {
+        $this->headerService = $headerService;
+        $this->dataBaseService = $dataBaseService;
+    }
+
     public function archivo($url){
 
         try{
-
             $archivo = Archivo::where('url', $url)->first();
     
             if (!$archivo) {
@@ -52,12 +65,23 @@ class ArchivoController extends Controller
 
         try{
             foreach($request['archivos'] as $archivoBase64){
+
+                if($request['archivable_type'] == 'App\Models\Caso'){
+                    if($request['categoria'] == 'Alta médica ST2'){
+
+                        $incapacidadController = new IncapacidadController($this->dataBaseService, $this->headerService);
+                        // Verifica el resultado y toma acciones en consecuencia
+                        if (!$incapacidadController->validarFechasConsecutivasDeIncidencias($request['archivable_id'])) {
+                            return response()->json(['error' => 'Las fechas efectivas no están consecutivas'], 404);
+                        }
+                    }
+                }
+
                 $archivoDecodificado = base64_decode($archivoBase64);
         
                 $tipoArchivo = $this->determinarTipoArchivo($archivoBase64);
 
                 if(!$tipoArchivo){
-                    Log::error($tipoArchivo);
                     return response()->json([
                         'error' => 'Problema con la subida de archivos, revise que los archivos cumplan con estos tipos de formato: PNG, JPG y PDF'
                     ], 500);

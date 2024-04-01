@@ -11,6 +11,8 @@ class Caso extends Model
 
     protected $table = 'Casos';
 
+    protected $primaryKey = 'id';
+
     protected $guarded = ['id', 'created_at', 'updated'];
     
     protected $fillable = [
@@ -29,7 +31,7 @@ class Caso extends Model
 
     //Uno a Muchos
     public function incapacidades(){
-        return $this->hasMany('App\Models\Incapacidad');
+        return $this->hasMany ('App\Models\Incapacidad');
     }
 
     // Uno a muchos inversa

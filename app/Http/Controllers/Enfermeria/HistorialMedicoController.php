@@ -60,8 +60,10 @@ class HistorialMedicoController extends Controller
         return $pdf->stream('historial-medico.pdf');
     }  
 
-    public function index(){
+    public function index(Request $request){
         try {
+            $pageSize = $request->get('pageSize', 10);
+
             $profesionalCedisIds = $this->headerProfesionalCedisService->pluck('id');
     
             $data = HistorialMedico::with(['pacientable'])
@@ -69,7 +71,7 @@ class HistorialMedicoController extends Controller
                     $query->whereIn('cedi_id', $profesionalCedisIds);
                 })
                 ->take(100)->orderBy('id', 'desc')
-                ->get();
+                ->paginate($pageSize);
                
             return response()->json($data, 200);
         } catch(\Exception $e) {
